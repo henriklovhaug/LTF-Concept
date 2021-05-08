@@ -1,19 +1,23 @@
 #include<iostream>
 #include<vector>
+#include"player.h"
 
-class player
+class Player
 {
 private:
-    /* data */
+    int x = 0;
+    int y = 0;
+    int* ptrX = &x;
+    int* prtY = &y;
 public:
-    player(/* args */);
-    ~player();
+    Player(int x){
+        setX(x);
+    };
+    ~Player();
+    void setX(int x){
+        this->x = x;
+    }
+    int getX(){
+        return x;
+    }
 };
-
-player::player(/* args */)
-{
-}
-
-player::~player()
-{
-}
