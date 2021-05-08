@@ -2,16 +2,26 @@
 #include <vector>
 #include "Player.h"
 
-void Player::setX(int x)
+void Player::setX(float x)
 {
     this->x = x;
 }
+void Player::setY(float y)
+{
+    this->y = y;
+}
+void Player::setZ(float z)
+{
+    this->z=z;
+}
 
-int Player::getX()
+float Player::getX()
 {
     return this->x;
 }
-Player::Player(int x)
+Player::Player(float x, float y, float z)
 {
     setX(x);
+    setY(y);
+    setZ(z);
 }
