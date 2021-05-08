@@ -1,3 +1,8 @@
 **/build
+<<<<<<< HEAD
 CMakeLists.txt
 .vscode/c_cpp_properties.json
+=======
+**/.vscode
+CMakeLists.txt
+>>>>>>> 0c18ab9ba0ee461de8ebc72f2ef0ab5149243edf
