@@ -12,7 +12,7 @@ void Player::setY(float y)
 }
 void Player::setZ(float z)
 {
-    this->z=z;
+    this->z = z;
 }
 
 float Player::getX()
