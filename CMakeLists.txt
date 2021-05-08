@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(LinearTitanFall VERSION 0.1.0)
+project(LTF VERSION 0.1.0)
 
 INCLUDE_DIRECTORIES(
     e:/koding/vcpkg/installed/x64-windows/include
@@ -7,9 +7,10 @@ INCLUDE_DIRECTORIES(
 link_directories(
     e:/koding/vcpkg/installed/x64-windows/lib
 )
-add_executable(LinearTitanFall main.cpp)
 
-target_link_libraries(LinearTitanFall
+add_executable(LTF main.cpp)
+
+target_link_libraries(LTF
     raylib
 )
 

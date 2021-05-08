@@ -28,7 +28,7 @@
 					[
 						0
 					],
-					"name" : "LinearTitanFall",
+					"name" : "LTF",
 					"targetIndexes" : 
 					[
 						0,
@@ -42,15 +42,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Debug-fdbc3e021b970a512877.json",
+					"jsonFile" : "target-ALL_BUILD-Debug-54c45f874733b53d14dd.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "LinearTitanFall::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LinearTitanFall-Debug-2a32ffc367790061cbf4.json",
-					"name" : "LinearTitanFall",
+					"id" : "LTF::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LTF-Debug-4257f9cb2519aabdacab.json",
+					"name" : "LTF",
 					"projectIndex" : 0
 				},
 				{
@@ -89,7 +89,7 @@
 					[
 						0
 					],
-					"name" : "LinearTitanFall",
+					"name" : "LTF",
 					"targetIndexes" : 
 					[
 						0,
@@ -103,15 +103,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-Release-fdbc3e021b970a512877.json",
+					"jsonFile" : "target-ALL_BUILD-Release-54c45f874733b53d14dd.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "LinearTitanFall::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LinearTitanFall-Release-61c7fd1cf9afab261056.json",
-					"name" : "LinearTitanFall",
+					"id" : "LTF::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LTF-Release-80c2be68064e27f90ea3.json",
+					"name" : "LTF",
 					"projectIndex" : 0
 				},
 				{
@@ -150,7 +150,7 @@
 					[
 						0
 					],
-					"name" : "LinearTitanFall",
+					"name" : "LTF",
 					"targetIndexes" : 
 					[
 						0,
@@ -164,15 +164,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-MinSizeRel-fdbc3e021b970a512877.json",
+					"jsonFile" : "target-ALL_BUILD-MinSizeRel-54c45f874733b53d14dd.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "LinearTitanFall::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LinearTitanFall-MinSizeRel-70f484b6bcae580ec10d.json",
-					"name" : "LinearTitanFall",
+					"id" : "LTF::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LTF-MinSizeRel-715bd518a258eb9cf4e1.json",
+					"name" : "LTF",
 					"projectIndex" : 0
 				},
 				{
@@ -211,7 +211,7 @@
 					[
 						0
 					],
-					"name" : "LinearTitanFall",
+					"name" : "LTF",
 					"targetIndexes" : 
 					[
 						0,
@@ -225,15 +225,15 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "ALL_BUILD::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-fdbc3e021b970a512877.json",
+					"jsonFile" : "target-ALL_BUILD-RelWithDebInfo-54c45f874733b53d14dd.json",
 					"name" : "ALL_BUILD",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
-					"id" : "LinearTitanFall::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-LinearTitanFall-RelWithDebInfo-e7cbe1ce778b5166ba0a.json",
-					"name" : "LinearTitanFall",
+					"id" : "LTF::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-LTF-RelWithDebInfo-ca6e79753b00d2b76609.json",
+					"name" : "LTF",
 					"projectIndex" : 0
 				},
 				{

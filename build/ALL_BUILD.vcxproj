@@ -170,9 +170,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="E:\Koding\LTF\LTF-Concept\build\LinearTitanFall.vcxproj">
-      <Project>{48549A30-E12D-3A59-A703-6BA4162F3CCA}</Project>
-      <Name>LinearTitanFall</Name>
+    <ProjectReference Include="E:\Koding\LTF\LTF-Concept\build\LTF.vcxproj">
+      <Project>{7612C56C-EF1B-3FF8-AE1F-42E8994CA187}</Project>
+      <Name>LTF</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

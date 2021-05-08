@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "MinSizeRel/LinearTitanFall.exe"
+			"path" : "MinSizeRel/LTF.exe"
 		},
 		{
-			"path" : "MinSizeRel/LinearTitanFall.pdb"
+			"path" : "MinSizeRel/LTF.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -30,7 +30,7 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 10,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
@@ -42,7 +42,7 @@
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 12,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
@@ -82,7 +82,7 @@
 			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
 		}
 	],
-	"id" : "LinearTitanFall::@6890427a1f51a3e7e1df",
+	"id" : "LTF::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -112,8 +112,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "LinearTitanFall",
-	"nameOnDisk" : "LinearTitanFall.exe",
+	"name" : "LTF",
+	"nameOnDisk" : "LTF.exe",
 	"paths" : 
 	{
 		"build" : ".",

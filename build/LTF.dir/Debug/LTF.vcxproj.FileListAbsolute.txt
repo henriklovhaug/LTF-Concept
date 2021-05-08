@@ -1,0 +1,2 @@
+E:\Koding\LTF\LTF-Concept\build\Debug\raylib.dll
+E:\Koding\LTF\LTF-Concept\build\LTF.dir\Debug\LTF.vcxproj.CopyComplete

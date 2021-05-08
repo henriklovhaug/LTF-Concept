@@ -1,0 +1,10 @@
+^E:\KODING\LTF\LTF-CONCEPT\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/Koding/LTF/LTF-Concept -BE:/Koding/LTF/LTF-Concept/build --check-stamp-file E:/Koding/LTF/LTF-Concept/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

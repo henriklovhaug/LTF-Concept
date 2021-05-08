@@ -675,7 +675,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "LinearTitanFall"
+			"value" : "LTF"
 		},
 		{
 			"name" : "CMAKE_PROJECT_VERSION",
