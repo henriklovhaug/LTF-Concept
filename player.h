@@ -1,8 +1,9 @@
 class Player
 {
 private:
-    /* data */
+    int x;
 public:
-    Player(/* args */);
-    ~Player();
+    Player(int x);
+    int getX();
+    void setX(int x);
 };

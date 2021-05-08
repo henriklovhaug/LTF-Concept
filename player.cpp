@@ -1,23 +1,17 @@
-#include<iostream>
-#include<vector>
-#include"player.h"
+#include <iostream>
+#include <vector>
+#include "Player.h"
 
-class Player
+void Player::setX(int x)
 {
-private:
-    int x = 0;
-    int y = 0;
-    int* ptrX = &x;
-    int* prtY = &y;
-public:
-    Player(int x){
-        setX(x);
-    };
-    ~Player();
-    void setX(int x){
-        this->x = x;
-    }
-    int getX(){
-        return x;
-    }
-};
+    this->x = x;
+}
+
+int Player::getX()
+{
+    return this->x;
+}
+Player::Player(int x)
+{
+    setX(x);
+}
