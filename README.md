@@ -1,2 +1,4 @@
 # LTF-Concept
-Simple game using math
+
+This is a starter project in c++.
+Many mistakes will happen
