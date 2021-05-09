@@ -19,6 +19,14 @@ float Player::getX()
 {
     return this->x;
 }
+float Player::getY()
+{
+    return this->y;
+}
+float Player::getZ()
+{
+    return this->z;
+}
 Player::Player(float x, float y, float z)
 {
     setX(x);

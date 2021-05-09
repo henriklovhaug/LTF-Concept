@@ -1,11 +1,11 @@
 class Player
 {
 private:
-    float x;
+    float x = 0.0f;
     float *ptrX = &x;
-    float y;
+    float y = 0.0f;
     float *ptrY = &y;
-    float z;
+    float z = 0.0f;
     float *ptrZ = &z;
 
 public:
