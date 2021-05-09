@@ -29,17 +29,17 @@ float Player::getZ()
 }
 void Player::moveForward()
 {
-    this->xPosition--;
+    this->xPosition-=0.2f;
 }
 void Player::moveBackward()
 {
-    this->xPosition++;
+    this->xPosition+=0.2f;
 }
 void Player::moveLeft(){
-    this->yPosition++;
+    this->zPosition+=0.2f;
 }
 void Player::moveRight(){
-    this->yPosition--;
+    this->zPosition-=0.2f;
 }
 Player::Player(float x, float y, float z)
 {

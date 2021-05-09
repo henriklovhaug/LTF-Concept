@@ -4,6 +4,7 @@
 
 #define MAX_COLUMNS 20
 
+Player player(4.0f, 2.0f, 4.0f);
 int main(void)
 {
     // Initialization
@@ -13,10 +14,9 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "Henrik & Stefan");
 
-    Player player(4.0f, 2.0f, 4.0f);
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
-    camera.position = {4.0f, 2.0f, 4.0f};
+    camera.position = {player.getX(), player.getZ(), player.getY()};
     camera.target = {0.0f, 1.8f, 0.0f};
     camera.up = {0.0f, 1.0f, 0.0f};
     camera.fovy = 60.0f;
@@ -33,7 +33,7 @@ int main(void)
         colors[i] = RED;
     }
 
-    SetCameraMode(camera, CAMERA_FREE); // Set a first person camera mode
+    SetCameraMode(camera, CAMERA_FIRST_PERSON); // Set a first person camera mode
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -43,32 +43,24 @@ int main(void)
     {
         // Update
         //----------------------------------------------------------------------------------
-        UpdateCamera(&camera); // Update camera
-        if (IsKeyDown('W'))
+         if (IsKeyDown('W'))
         {
             player.moveForward();
-            camera.position = {player.getX(), player.getZ(), player.getY()};
         }
         if (IsKeyDown('S'))
         {
-            player.setX(player.getX() + 1.0f);
-            camera.position = {player.getX(), player.getZ(), player.getY()};
+            player.moveBackward();
         }
         if (IsKeyDown('A'))
         {
             player.moveLeft();
-            camera.position = {player.getX(), player.getZ(), player.getY()};
         }
         if (IsKeyDown('D'))
         {
             player.moveRight();
-            camera.position = {player.getX(), player.getZ(), player.getY()};
         }
-        /*if(IsKeyDown('W')) {
-            player.setX(player.getX()+1.0f);
-            camera.position = {player.getX(),player.getZ(),player.getY()};
-            }*/
-
+        camera.position = {player.getX(), player.getZ(), player.getY()};
+        UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
 
         // Draw
