@@ -1,4 +1,6 @@
 #include "raylib.h"
+#include "player.h"
+#include <iostream>
 
 #define MAX_COLUMNS 20
 
@@ -6,11 +8,12 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "Henrik & Stefan");
 
+    Player player(4.0f, 2.0f, 4.0f);
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
     camera.position = {4.0f, 2.0f, 4.0f};
@@ -30,7 +33,7 @@ int main(void)
         colors[i] = RED;
     }
 
-    SetCameraMode(camera, CAMERA_FIRST_PERSON); // Set a first person camera mode
+    SetCameraMode(camera, CAMERA_FREE); // Set a first person camera mode
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -41,6 +44,31 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
+        if (IsKeyDown('W'))
+        {
+            player.moveForward();
+            camera.position = {player.getX(), player.getZ(), player.getY()};
+        }
+        if (IsKeyDown('S'))
+        {
+            player.setX(player.getX() + 1.0f);
+            camera.position = {player.getX(), player.getZ(), player.getY()};
+        }
+        if (IsKeyDown('A'))
+        {
+            player.moveLeft();
+            camera.position = {player.getX(), player.getZ(), player.getY()};
+        }
+        if (IsKeyDown('D'))
+        {
+            player.moveRight();
+            camera.position = {player.getX(), player.getZ(), player.getY()};
+        }
+        /*if(IsKeyDown('W')) {
+            player.setX(player.getX()+1.0f);
+            camera.position = {player.getX(),player.getZ(),player.getY()};
+            }*/
+
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -64,18 +92,18 @@ int main(void)
         }
 
         EndMode3D();
-    /*
+        /*
         DrawRectangle(10, 10, 220, 70, Fade(SKYBLUE, 0.5f));
         DrawRectangleLines(10, 10, 220, 70, BLUE);
 
         DrawText("First person camera default controls:", 20, 20, 10, BLACK);
         DrawText("- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY);
         DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY);
+    std::cout << player.getX() << std::endl;
 */
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
-
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow(); // Close window and OpenGL context

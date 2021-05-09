@@ -4,28 +4,42 @@
 
 void Player::setX(float x)
 {
-    this->x = x;
+    this->xPosition = x;
 }
 void Player::setY(float y)
 {
-    this->y = y;
+    this->yPosition = y;
 }
 void Player::setZ(float z)
 {
-    this->z = z;
+    this->zPosition = z;
 }
 
 float Player::getX()
 {
-    return this->x;
+    return this->xPosition;
 }
 float Player::getY()
 {
-    return this->y;
+    return this->yPosition;
 }
 float Player::getZ()
 {
-    return this->z;
+    return this->zPosition;
+}
+void Player::moveForward()
+{
+    this->xPosition--;
+}
+void Player::moveBackward()
+{
+    this->xPosition++;
+}
+void Player::moveLeft(){
+    this->yPosition++;
+}
+void Player::moveRight(){
+    this->yPosition--;
 }
 Player::Player(float x, float y, float z)
 {
