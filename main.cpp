@@ -33,7 +33,10 @@ int main(void)
         positions[i] = {(float)GetRandomValue(-15, 15), heights[i] / 2.0f, (float)GetRandomValue(-15, 15)};
         colors[i] = BLUE;
     }
+    static float mousex = 0;
+    static float mousey = 0;
 
+    static Vector2 previousMouse = {0.0f, 0.0f}; //Get the position of the mouse
     SetCameraMode(camera, CAMERA_CUSTOM);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
@@ -43,39 +46,37 @@ int main(void)
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         DisableCursor();
-        static Vector2 previousMouse = {0.0f, 0.0f}; //Get the position of the mouse
         Vector2 currentMouse = GetMousePosition();
 
         Vector3 v1 = camera.position;
         Vector3 v2 = camera.target;
 
-        // Generate planes for camerarotaion
+        // Generate planes for camerarotaion, used for movement
         float dx = v2.x - v1.x;
         float dy = v2.y - v1.y;
         float dz = v2.z - v1.z;
 
-
-        // Delta mouseposition
-        float mousex = currentMouse.x - previousMouse.x;
-        float mousey = currentMouse.y - previousMouse.y;
-
-        previousMouse = currentMouse;
-
         float anglex = atan2f(dx, dz);
         float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
-        
+        // Delta mouseposition
+        mousex += (currentMouse.x - previousMouse.x) * - 0.003f;
+        mousey += (currentMouse.y - previousMouse.y) * 0.003f;
+
+        previousMouse = currentMouse;
+
         // Matrix calculation
         Matrix translation = MatrixTranslate(0, 0, (1 / 5.1f));
         Matrix rotation = MatrixRotateXYZ({PI * 2 - mousey, PI * 2 - mousex, 0});
         Matrix transform = MatrixMultiply(translation, rotation);
+        
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-        camera.target.x = transform.m12;
-        camera.target.y = transform.m13;
-        camera.target.z = transform.m14;
+        camera.target.x = camera.position.x - transform.m12;
+        camera.target.y = camera.position.y - transform.m13;
+        camera.target.z = camera.position.z - transform.m14;
         if (IsKeyDown('W'))
         {
             camera.target.y += 0.1f;
