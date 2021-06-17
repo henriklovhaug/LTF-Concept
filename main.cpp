@@ -5,6 +5,8 @@
 
 #define MAX_COLUMNS 20
 #define sensitivity 0.003f
+#define maxY 89.0f
+#define moveSpeed 0.2f;
 
 int main(void)
 {
@@ -60,11 +62,21 @@ int main(void)
         float anglex = atan2f(dx, dz);
         float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
+        if (IsKeyDown('W'))
+        {
+            camera.position.x += sinf(anglex) * moveSpeed;
+            camera.position.z += cosf(anglex) * moveSpeed;
+        }
+        if (IsKeyDown('S'))
+        {
+            camera.position.x -= sinf(anglex) * moveSpeed;
+            camera.position.z -= cosf(anglex) * moveSpeed;
+        }
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
         mousey += (currentMouse.y - previousMouse.y) * sensitivity;
 
-        previousMouse = currentMouse;                                                      
+        previousMouse = currentMouse;
 
         // Matrix calculation
         Matrix translation = MatrixTranslate(0, 0, 1.0f);
@@ -78,15 +90,7 @@ int main(void)
         camera.target.x = camera.position.x - transform.m12;
         camera.target.y = camera.position.y - transform.m13;
         camera.target.z = camera.position.z - transform.m14;
-        if (IsKeyDown('W'))
-        {
-            camera.target.y += 0.1f;
-        }
 
-        if (IsKeyDown('S'))
-        {
-            camera.target.y -= 0.1f;
-        }
         if (IsKeyDown('A'))
         {
             camera.target.z += 0.1f;
