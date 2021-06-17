@@ -1,15 +1,31 @@
+<<<<<<< HEAD
 #include <raylib.h>
 #include <iostream>
 #include <cmath>
 
 #define MAX_COLUMNS 20
 
+=======
+#include "raylib.h"
+#include "player.h"
+#include <iostream>
+#include <string>
+
+#define MAX_COLUMNS 20
+
+Player player(4.0f, 2.0f, 4.0f);
+>>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
+<<<<<<< HEAD
     const int screenWidth = 800;
     const int screenHeight = 450;
+=======
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
+>>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -109,8 +125,27 @@ int main(void)
         }
 
         EndMode3D();
+<<<<<<< HEAD
         EndDrawing();
         Vector2 currentMouse = GetMousePosition();
+=======
+        /*
+        DrawRectangle(10, 10, 220, 70, Fade(SKYBLUE, 0.5f));
+        DrawRectangleLines(10, 10, 220, 70, BLUE);
+
+        DrawText("First person camera default controls:", 20, 20, 10, BLACK);
+        DrawText("- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY);
+        DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY);
+        std::cout << player.getX() << std::endl;
+        */
+        /*std::string mystring = std::to_string(camera.target.x);
+        std::cout << "target x: " << mystring << std::endl;
+       std::string mystriny = std::to_string(camera.target.y);
+        std::cout << "target y: " << mystriny << std::endl;
+       std::string mystrinz = std::to_string(camera.target.z);
+        std::cout << "target z: " << mystrinz << std::endl;
+        EndDrawing();*/
+>>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
         //----------------------------------------------------------------------------------
         std::cout << currentMouse.x << std::endl;
         std::cout << currentMouse.y << std::endl;
