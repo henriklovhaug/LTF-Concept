@@ -36,6 +36,7 @@ int main(void)
         positions[i] = {(float)GetRandomValue(-15, 15), heights[i] / 2.0f, (float)GetRandomValue(-15, 15)};
         colors[i] = BLUE;
     }
+
     static float mousex = 0;
     static float mousey = 0;
 
@@ -62,6 +63,7 @@ int main(void)
         float anglex = atan2f(dx, dz);
         float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
+        // Movement
         if (IsKeyDown('W'))
         {
             camera.position.x += sinf(anglex) * moveSpeed;
@@ -71,6 +73,17 @@ int main(void)
         {
             camera.position.x -= sinf(anglex) * moveSpeed;
             camera.position.z -= cosf(anglex) * moveSpeed;
+        }
+        if (IsKeyDown('A'))
+        {
+            camera.position.x += cosf(anglex) * moveSpeed;
+            camera.position.z -= sinf(anglex) * moveSpeed;
+        }
+
+        if (IsKeyDown('D'))
+        {
+            camera.position.x -= cosf(anglex) * moveSpeed;
+            camera.position.z += sinf(anglex) * moveSpeed;
         }
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
@@ -90,16 +103,6 @@ int main(void)
         camera.target.x = camera.position.x - transform.m12;
         camera.target.y = camera.position.y - transform.m13;
         camera.target.z = camera.position.z - transform.m14;
-
-        if (IsKeyDown('A'))
-        {
-            camera.target.z += 0.1f;
-        }
-
-        if (IsKeyDown('D'))
-        {
-            camera.target.z -= 0.1f;
-        }
 
         if (IsKeyDown('F'))
         {
