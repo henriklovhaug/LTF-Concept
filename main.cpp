@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <raymath.h>
 #include <iostream>
 #include <cmath>
 
@@ -42,7 +43,8 @@ int main(void)
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         DisableCursor();
-        Vector2 previousMouse = GetMousePosition(); //Get the position of the mouse
+        static Vector2 previousMouse = {0.0f, 0.0f}; //Get the position of the mouse
+        Vector2 currentMouse = GetMousePosition();
 
         Vector3 v1 = camera.position;
         Vector3 v2 = camera.target;
@@ -56,13 +58,22 @@ int main(void)
         float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
         // Delta mouseposition
-        float mousex = GetMousePosition().x - previousMouse.x;
-        float mousey = GetMousePosition().y - previousMouse.y;
+        float mousex = currentMouse.x - previousMouse.x;
+        float mousey = currentMouse.y - previousMouse.y;
+
+        previousMouse = currentMouse;
+
+        // Matrix calculation
+        Matrix translation = MatrixTranslate(0, 0, (1 / 5.1f));
+        Matrix rotation = MatrixRotateXYZ({PI * 2 - mousey, PI * 2 - mousex, 0});
+        Matrix transform = MatrixMultiply(translation, rotation);
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-        camera.target.x = sin(anglex)*cos(angley);
+        camera.target.x = transform.m12;
+        camera.target.y = transform.m13;
+        camera.target.z = transform.m14;
         if (IsKeyDown('W'))
         {
             camera.target.y += 0.1f;
@@ -72,12 +83,12 @@ int main(void)
         {
             camera.target.y -= 0.1f;
         }
-        if(IsKeyDown('A'))
+        if (IsKeyDown('A'))
         {
             camera.target.z += 0.1f;
         }
 
-        if(IsKeyDown('D'))
+        if (IsKeyDown('D'))
         {
             camera.target.z -= 0.1f;
         }
@@ -109,30 +120,10 @@ int main(void)
         }
 
         EndMode3D();
-<<<<<<< HEAD
         EndDrawing();
-        Vector2 currentMouse = GetMousePosition();
-=======
-        /*
-        DrawRectangle(10, 10, 220, 70, Fade(SKYBLUE, 0.5f));
-        DrawRectangleLines(10, 10, 220, 70, BLUE);
-
-        DrawText("First person camera default controls:", 20, 20, 10, BLACK);
-        DrawText("- Move with keys: W, A, S, D", 40, 40, 10, DARKGRAY);
-        DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY);
-        std::cout << player.getX() << std::endl;
-        */
-        /*std::string mystring = std::to_string(camera.target.x);
-        std::cout << "target x: " << mystring << std::endl;
-       std::string mystriny = std::to_string(camera.target.y);
-        std::cout << "target y: " << mystriny << std::endl;
-       std::string mystrinz = std::to_string(camera.target.z);
-        std::cout << "target z: " << mystrinz << std::endl;
-        EndDrawing();*/
->>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
         //----------------------------------------------------------------------------------
-        std::cout << currentMouse.x << std::endl;
-        std::cout << currentMouse.y << std::endl;
+        std::cout << mousex << std::endl;
+        std::cout << mousey << std::endl;
 
         /*std::cout << "Camera up x: " << camera.up.x << std::endl;
         std::cout << "Camera up y: " << camera.up.y << std::endl;
