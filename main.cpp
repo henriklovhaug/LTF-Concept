@@ -54,8 +54,6 @@ int main(void)
         float dy = v2.y - v1.y;
         float dz = v2.z - v1.z;
 
-        float anglex = atan2f(dx, dz);
-        float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
         // Delta mouseposition
         float mousex = currentMouse.x - previousMouse.x;
@@ -63,6 +61,10 @@ int main(void)
 
         previousMouse = currentMouse;
 
+        float anglex = atan2f(dx, dz);
+        float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
+
+        
         // Matrix calculation
         Matrix translation = MatrixTranslate(0, 0, (1 / 5.1f));
         Matrix rotation = MatrixRotateXYZ({PI * 2 - mousey, PI * 2 - mousex, 0});
