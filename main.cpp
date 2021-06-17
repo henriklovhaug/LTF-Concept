@@ -4,6 +4,7 @@
 #include <cmath>
 
 #define MAX_COLUMNS 20
+#define sensitivity 0.003f
 
 int main(void)
 {
@@ -60,16 +61,16 @@ int main(void)
         float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * - 0.003f;
-        mousey += (currentMouse.y - previousMouse.y) * 0.003f;
+        mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
+        mousey += (currentMouse.y - previousMouse.y) * sensitivity;
 
-        previousMouse = currentMouse;
+        previousMouse = currentMouse;                                                      
 
         // Matrix calculation
-        Matrix translation = MatrixTranslate(0, 0, (1 / 5.1f));
+        Matrix translation = MatrixTranslate(0, 0, 1.0f);
         Matrix rotation = MatrixRotateXYZ({PI * 2 - mousey, PI * 2 - mousex, 0});
         Matrix transform = MatrixMultiply(translation, rotation);
-        
+
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
@@ -125,8 +126,7 @@ int main(void)
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
-        std::cout << mousex << std::endl;
-        std::cout << mousey << std::endl;
+        std::cout << Vector3Length(Vector3Subtract(camera.position, camera.target)) << std::endl;
 
         /*std::cout << "Camera up x: " << camera.up.x << std::endl;
         std::cout << "Camera up y: " << camera.up.y << std::endl;
