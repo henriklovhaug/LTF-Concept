@@ -62,7 +62,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-        camera.target.x = sin(anglex)*cos(angley)
+        camera.target.x = sin(anglex)*cos(angley);
         if (IsKeyDown('W'))
         {
             camera.target.y += 0.1f;
