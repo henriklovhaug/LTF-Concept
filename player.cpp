@@ -1,6 +1,4 @@
-#include <iostream>
-#include <vector>
-#include "Player.h"
+#include "Player.hpp"
 
 void Player::setX(float x)
 {
@@ -29,17 +27,19 @@ float Player::getZ()
 }
 void Player::moveForward()
 {
-    this->xPosition-=0.2f;
+    this->xPosition -= 0.2f;
 }
 void Player::moveBackward()
 {
-    this->xPosition+=0.2f;
+    this->xPosition += 0.2f;
 }
-void Player::moveLeft(){
-    this->zPosition+=0.2f;
+void Player::moveLeft()
+{
+    this->zPosition += 0.2f;
 }
-void Player::moveRight(){
-    this->zPosition-=0.2f;
+void Player::moveRight()
+{
+    this->zPosition -= 0.2f;
 }
 Player::Player(float x, float y, float z)
 {
