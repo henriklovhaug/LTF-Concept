@@ -1,19 +1,17 @@
 #include "raylib.h"
 #include "player.h"
-#include<iostream>
-#include<string>
-#include <sstream>
+#include <iostream>
+#include <string>
 
 #define MAX_COLUMNS 20
-
 
 Player player(4.0f, 2.0f, 4.0f);
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450 ;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "Henrik & Stefan");
 
@@ -73,7 +71,7 @@ int main(void)
         ClearBackground(RAYWHITE);
 
         BeginMode3D(camera);
-        
+
         DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE);  // Draw a blue wall
         DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);   // Draw a green wall
@@ -96,16 +94,16 @@ int main(void)
         DrawText("- Mouse move to look around", 40, 60, 10, DARKGRAY);
         std::cout << player.getX() << std::endl;
         */
-       std::string mystring = std::to_string(camera.target.x);
+        /*std::string mystring = std::to_string(camera.target.x);
         std::cout << "target x: " << mystring << std::endl;
        std::string mystriny = std::to_string(camera.target.y);
         std::cout << "target y: " << mystriny << std::endl;
        std::string mystrinz = std::to_string(camera.target.z);
         std::cout << "target z: " << mystrinz << std::endl;
-        EndDrawing();
+        EndDrawing();*/
         //----------------------------------------------------------------------------------
     }
-    
+
     // De-Initialization
     //--------------------------------------------------------------------------------------
     CloseWindow(); // Close window and OpenGL context
