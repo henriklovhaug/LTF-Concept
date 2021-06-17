@@ -1,31 +1,15 @@
-<<<<<<< HEAD
 #include <raylib.h>
 #include <iostream>
 #include <cmath>
 
 #define MAX_COLUMNS 20
 
-=======
-#include "raylib.h"
-#include "player.h"
-#include <iostream>
-#include <string>
-
-#define MAX_COLUMNS 20
-
-Player player(4.0f, 2.0f, 4.0f);
->>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-<<<<<<< HEAD
     const int screenWidth = 800;
     const int screenHeight = 450;
-=======
-    const int screenWidth = 800 * 3;
-    const int screenHeight = 450 * 3;
->>>>>>> 2f0ace6345e1499813a0f0df8636912bd862132b
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
