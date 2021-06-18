@@ -34,6 +34,7 @@ private:
     float angley = atan2f(dy, sqrtf(dx *dx + dz * dz));
 
 public:
+    //Player will controll camera (Position, Target, Up)
     Player(Vector3 position, Vector3 target, Vector3 up);
     void setPosition(Vector3 position);
     void setTarget(Vector3 target);
@@ -41,7 +42,7 @@ public:
 
     //Movement methods and helpers
     void updatePlaneXZ();
-    
+
     void moveForward();
     void moveBackward();
     void moveLeft();
@@ -61,6 +62,7 @@ public:
     float getTargetY();
     float getTargetZ();
 
+    Vector3 getUp();
     float getUpX();
     float getUpY();
     float getUpZ();

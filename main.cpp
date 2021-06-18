@@ -10,21 +10,21 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenWidth = 800 * 2;
+    const int screenHeight = 450 * 2;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
+    // Initialise player
+    Player player({4.0f, 2.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
-    camera.position = {4.0f, 2.0f, 4.0f};
-    camera.target = {0.0f, 1.0f, 0.0f};
-    camera.up = {0.0f, 1.0f, 0.0f};
+    camera.position = player.getPosition();
+    camera.target = player.getTarget();
+    camera.up = player.getUp();
     camera.fovy = 60.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
-
-    // Initialise player
-    Player player({4.0f, 2.0f, 4.0f},{0.0f, 1.0f, 0.0f},{0.0f, 1.0f, 0.0f});
+    //camera.projection = CAMERA_PERSPECTIVE;
 
     // Generates some random columns
     float heights[MAX_COLUMNS] = {0};
@@ -51,12 +51,11 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        DisableCursor();
+        DisableCursor(); // Mouse can move freely without worrying about screenborders
         Vector2 currentMouse = GetMousePosition();
 
-
-        // Movement
-        #pragma region movement
+// Movement
+#pragma region movement
 
         if (IsKeyDown('W'))
         {
@@ -75,20 +74,19 @@ int main(void)
         {
             player.moveRight();
         }
-        #pragma endregion
-        
+#pragma endregion
+
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
         mousey += (currentMouse.y - previousMouse.y) * sensitivity;
 
         previousMouse = currentMouse;
 
-
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-        player.updateTarget(mousex,mousey);
+        player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
         camera.target = player.getTarget();

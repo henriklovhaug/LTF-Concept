@@ -110,6 +110,10 @@ float Player::getTargetZ()
     return this->target.z;
 }
 
+Vector3 Player::getUp()
+{
+    return this->up;
+}
 float Player::getUpX()
 {
     return this->up.x;
