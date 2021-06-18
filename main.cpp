@@ -2,11 +2,9 @@
 #include <raymath.h>
 #include <iostream>
 #include <cmath>
+#include "player.hpp"
 
 #define MAX_COLUMNS 20
-#define sensitivity 0.003f
-#define maxY 89.0f
-#define moveSpeed 0.2f;
 
 int main(void)
 {
@@ -25,6 +23,9 @@ int main(void)
     camera.fovy = 60.0f;
     camera.projection = CAMERA_PERSPECTIVE;
 
+    // Initialise player
+    Player player({4.0f, 2.0f, 4.0f},{0.0f, 1.0f, 0.0f},{0.0f, 1.0f, 0.0f});
+
     // Generates some random columns
     float heights[MAX_COLUMNS] = {0};
     Vector3 positions[MAX_COLUMNS] = {0};
@@ -41,6 +42,7 @@ int main(void)
     static float mousey = 0;
 
     static Vector2 previousMouse = {0.0f, 0.0f}; //Get the position of the mouse
+
     SetCameraMode(camera, CAMERA_CUSTOM);
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
@@ -52,57 +54,44 @@ int main(void)
         DisableCursor();
         Vector2 currentMouse = GetMousePosition();
 
-        Vector3 v1 = camera.position;
-        Vector3 v2 = camera.target;
-
-        // Generate planes for camerarotaion, used for movement
-        float dx = v2.x - v1.x;
-        float dy = v2.y - v1.y;
-        float dz = v2.z - v1.z;
-
-        float anglex = atan2f(dx, dz);
-        float angley = atan2f(dy, sqrtf(dx * dx + dz * dz));
 
         // Movement
+        #pragma region movement
+
         if (IsKeyDown('W'))
         {
-            camera.position.x += sinf(anglex) * moveSpeed;
-            camera.position.z += cosf(anglex) * moveSpeed;
+            player.moveForward();
         }
         if (IsKeyDown('S'))
         {
-            camera.position.x -= sinf(anglex) * moveSpeed;
-            camera.position.z -= cosf(anglex) * moveSpeed;
+            player.moveBackward();
         }
         if (IsKeyDown('A'))
         {
-            camera.position.x += cosf(anglex) * moveSpeed;
-            camera.position.z -= sinf(anglex) * moveSpeed;
+            player.moveLeft();
         }
 
         if (IsKeyDown('D'))
         {
-            camera.position.x -= cosf(anglex) * moveSpeed;
-            camera.position.z += sinf(anglex) * moveSpeed;
+            player.moveRight();
         }
+        #pragma endregion
+        
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
         mousey += (currentMouse.y - previousMouse.y) * sensitivity;
 
         previousMouse = currentMouse;
 
-        // Matrix calculation
-        Matrix translation = MatrixTranslate(0, 0, 1.0f);
-        Matrix rotation = MatrixRotateXYZ({PI * 2 - mousey, PI * 2 - mousex, 0});
-        Matrix transform = MatrixMultiply(translation, rotation);
 
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-        camera.target.x = camera.position.x - transform.m12;
-        camera.target.y = camera.position.y - transform.m13;
-        camera.target.z = camera.position.z - transform.m14;
+        player.updateTarget(mousex,mousey);
+
+        camera.position = player.getPosition();
+        camera.target = player.getTarget();
 
         if (IsKeyDown('F'))
         {
