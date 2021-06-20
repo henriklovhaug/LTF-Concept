@@ -2,6 +2,8 @@
 #include <raymath.h>
 #include <iostream>
 #include <cmath>
+#include <ctime>
+#include <string>
 #include "player.hpp"
 
 #define MAX_COLUMNS 20
@@ -15,7 +17,11 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
-    // Initialise player
+    // Get delta time for forcesensitive physics
+    clock_t start, finish;
+    static double deltaTime = 0;
+
+    // Initialize player
     Player player({4.0f, 2.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
 
     // Define the camera to look into our 3d world (position, target, up vector)
@@ -51,6 +57,7 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
+        start = clock();
         DisableCursor(); // Mouse can move freely without worrying about screenborders
         Vector2 currentMouse = GetMousePosition();
 
@@ -77,8 +84,8 @@ int main(void)
 #pragma endregion
 
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * -sensitivity;
-        mousey += (currentMouse.y - previousMouse.y) * sensitivity;
+        mousex += (currentMouse.x - previousMouse.x) * -sensitivity; //Sensitivity is found in player.hpp
+        mousey += (currentMouse.y - previousMouse.y) * -sensitivity;
 
         previousMouse = currentMouse;
 
@@ -86,6 +93,17 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
+
+        // Makes sure player can't turn camera over on it's head
+        if (mousey > 85.0f * DEG2RAD)
+        {
+            mousey = 85.0f * DEG2RAD;
+        }
+        else if (mousey < -85.0f * DEG2RAD)
+        {
+            mousey = -85.0f * DEG2RAD;
+        }
+
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
@@ -93,8 +111,7 @@ int main(void)
 
         if (IsKeyDown('F'))
         {
-            camera.up.y = 0;
-            camera.up.x = 1;
+            player.setUp({1.0f, 0, 0});
         }
 
         // Draw
@@ -120,11 +137,15 @@ int main(void)
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
-        std::cout << Vector3Length(Vector3Subtract(camera.position, camera.target)) << std::endl;
+        std::cout << deltaTime << std::endl;
 
         /*std::cout << "Camera up x: " << camera.up.x << std::endl;
         std::cout << "Camera up y: " << camera.up.y << std::endl;
         std::cout << "Camera up z: " << camera.up.z << std::endl;*/
+
+        // Stop clock and calulate deltaTimme
+        finish = clock();
+        deltaTime = (double(finish) - double(start)) / CLOCKS_PER_SEC;
     }
 
     // De-Initialization
