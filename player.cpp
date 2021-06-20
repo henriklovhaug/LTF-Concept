@@ -1,10 +1,14 @@
 #include "Player.hpp"
-#include <raylib.h>
-#include <raymath.h>
 
-// Player target update (what the player looks at)
+/**
+ * @brief Turns mouse movement into rotation of player
+ * 
+ * @param deltaX 
+ * @param deltaY MouseDelta y has to be handled before it's passed into method i.e. cap how far up the player can see etc.
+ */
 void Player::updateTarget(float deltaX, float deltaY)
 {
+
     Matrix translation = MatrixTranslate(0, 0, 1.0f);
     Matrix rotation = MatrixRotateXYZ({PI * 2 - deltaY, PI * 2 - deltaX, 0});
     Matrix transform = MatrixMultiply(translation, rotation);
@@ -18,7 +22,6 @@ void Player::updatePlaneXZ()
     v2 = getTarget();
 
     dx = v2.x - v1.x;
-    dy = v2.y - v1.y;
     dz = v2.z - v1.z;
 
     anglex = atan2f(dx, dz);
@@ -48,6 +51,33 @@ void Player::moveRight()
     position.z += sinf(anglex) * moveSpeed;
 }
 
+void Player::jump()
+{
+    if (canJump)
+    {
+        position.y = 2.1f;
+        speed.y = jumpConstant;
+    }
+}
+void Player::updateGravity(float deltaTime)
+{
+    if (getPositionY() > 2.0f)
+    {
+        canJump = false;
+        Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
+                                  Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
+        speed.y -= deltaTime * gravityconstant;
+        position = Vector3Add(position, temp);
+    }else if(getPositionY() < 1.8f)
+    {
+        position.y = 2;
+    }
+    else
+    {
+        canJump = true;
+    }
+}
+
 // Setters and constructor
 #pragma region Setters and constructor
 void Player::setPosition(Vector3 position)
@@ -65,6 +95,14 @@ void Player::setUp(Vector3 up)
     this->up = up;
 }
 
+/**
+ * @brief Construct a new Player object
+ * 
+ * @param position 
+ * @param target 
+ * @param up 
+ * 
+ */
 Player::Player(Vector3 position, Vector3 target, Vector3 up)
 {
     setPosition(position);
@@ -114,6 +152,10 @@ Vector3 Player::getUp()
 {
     return this->up;
 }
+Vector3 Player::getGravityVector()
+{
+    return Vector3Negate(Vector3Scale(this->up, 2));
+}
 float Player::getUpX()
 {
     return this->up.x;
@@ -125,5 +167,10 @@ float Player::getUpY()
 float Player::getUpZ()
 {
     return this->up.z;
+}
+
+float Player::getSpeedY()
+{
+    return this->speed.y;
 }
 #pragma endregion
