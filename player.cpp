@@ -51,9 +51,28 @@ void Player::moveRight()
     position.z += sinf(anglex) * moveSpeed;
 }
 
-void Player::updateGravity(double deltaTime)
+void Player::jump()
 {
-    
+    if (canJump)
+    {
+        position.y = 2.1f;
+        speed.y = jumpConstant;
+    }
+}
+void Player::updateGravity(float deltaTime)
+{
+    if (getPositionY() > 2.0f)
+    {
+        canJump = false;
+        Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
+                                  Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
+        speed = temp;
+        position = Vector3Add(position, temp);
+    }
+    else
+    {
+        canJump = true;
+    }
 }
 
 // Setters and constructor

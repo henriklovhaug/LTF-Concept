@@ -17,7 +17,7 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
-    // Get delta time for forcesensitive physics
+    // Get delta time for force-sensitive physics
     clock_t start, finish;
     static double deltaTime = 0;
 
@@ -81,6 +81,10 @@ int main(void)
         {
             player.moveRight();
         }
+        if (IsKeyPressed(KEY_SPACE))
+        {
+            player.jump();
+        }
 #pragma endregion
 
         // Delta mouseposition
@@ -104,6 +108,7 @@ int main(void)
             mousey = -85.0f * DEG2RAD;
         }
 
+        player.updateGravity(deltaTime);
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
@@ -137,7 +142,7 @@ int main(void)
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
-        std::cout << deltaTime << std::endl;
+        std::cout << player.getPositionY() << std::endl;
 
         /*std::cout << "Camera up x: " << camera.up.x << std::endl;
         std::cout << "Camera up y: " << camera.up.y << std::endl;

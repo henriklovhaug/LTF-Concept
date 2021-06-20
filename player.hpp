@@ -4,6 +4,8 @@
 #define sensitivity 0.003f
 #define maxY 89.0f
 #define moveSpeed 0.2f
+#define gravityconstant 150.0f
+#define jumpConstant 200.0f
 
 #pragma once
 
@@ -20,7 +22,8 @@ private:
     Vector3 up;
 
     //Speed vector
-    Vector3 speed;
+    Vector3 speed = {0, 0, 0};
+
     // Mouse delta
     float mousex = 0;
     float mousey = 0;
@@ -37,9 +40,12 @@ private:
     float anglex;
     float angley = atan2f(dy, sqrtf(dx *dx + dz * dz));
 
+    // Boolean var
+    bool canJump = true;
+
 public:
     // Player will controll camera (Position, Target, Up)
-    
+
     Player(Vector3 position, Vector3 target, Vector3 up);
 
     void setPosition(Vector3 position);
@@ -55,7 +61,7 @@ public:
     void moveRight();
 
     void jump();
-    void updateGravity(double deltaTime);
+    void updateGravity(float deltaTime);
 
     //Update target while playing
 
@@ -77,5 +83,4 @@ public:
     float getUpX();
     float getUpY();
     float getUpZ();
-    
 };
