@@ -5,7 +5,7 @@
 #define maxY 89.0f
 #define moveSpeed 0.2f
 #define gravityconstant 150.0f
-#define jumpConstant 200.0f
+#define jumpConstant 50.0f
 
 #pragma once
 
@@ -83,4 +83,6 @@ public:
     float getUpX();
     float getUpY();
     float getUpZ();
+
+    float getSpeedY();
 };

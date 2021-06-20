@@ -19,7 +19,7 @@ int main(void)
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
-    static double deltaTime = 0;
+    static float deltaTime = 0;
 
     // Initialize player
     Player player({4.0f, 2.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
@@ -150,7 +150,7 @@ int main(void)
 
         // Stop clock and calulate deltaTimme
         finish = clock();
-        deltaTime = (double(finish) - double(start)) / CLOCKS_PER_SEC;
+        deltaTime = (float(finish) - float(start)) / CLOCKS_PER_SEC;
     }
 
     // De-Initialization

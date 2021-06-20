@@ -66,8 +66,11 @@ void Player::updateGravity(float deltaTime)
         canJump = false;
         Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
                                   Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
-        speed = temp;
+        speed.y -= deltaTime * gravityconstant;
         position = Vector3Add(position, temp);
+    }else if(getPositionY() < 1.8f)
+    {
+        position.y = 2;
     }
     else
     {
@@ -151,7 +154,7 @@ Vector3 Player::getUp()
 }
 Vector3 Player::getGravityVector()
 {
-    return Vector3Negate(this->up);
+    return Vector3Negate(Vector3Scale(this->up, 2));
 }
 float Player::getUpX()
 {
@@ -164,5 +167,10 @@ float Player::getUpY()
 float Player::getUpZ()
 {
     return this->up.z;
+}
+
+float Player::getSpeedY()
+{
+    return this->speed.y;
 }
 #pragma endregion
