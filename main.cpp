@@ -17,6 +17,11 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
+    // Blender models
+    // TODO: find out if path has to be absolute or resource path can be specified in CMake
+    Model model = LoadModel("F:/Koding/LTF3/LTF-Concept/resources/wierdBox.obj");
+    BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
+
     // Get delta time for force-sensitive physics
     clock_t start, finish;
     static float deltaTime = 0;
@@ -54,6 +59,11 @@ int main(void)
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
+    /*--------------------------------------------------------------------------------------
+    Console sysout area for properties not needed to be repeated during playing
+    ---------------------------------------------------------------------------------------*/
+    std::cout << "max x: " << bounds.max.x << std::endl;
+    std::cout << "min x: " << bounds.min.x << std::endl;
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -132,6 +142,9 @@ int main(void)
         DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);   // Draw a green wall
         DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);   // Draw a yellow wall
 
+        //Testdraw models
+        DrawModel(model, {0, 0, 20}, 1, RED);
+
         // Draw some cubes around
         for (int i = 0; i < MAX_COLUMNS; i++)
         {
@@ -155,6 +168,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
+    UnloadModel(model);
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
