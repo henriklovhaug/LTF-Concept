@@ -20,7 +20,7 @@ int main(void)
 
     // Blender models
     // TODO: find out if path has to be absolute or resource path can be specified in CMake
-    Model model = LoadModel("C:/Users/henri/LTF/LTF-Concept/resources/cone.obj");
+    Model model = LoadModel("Resources/wierdBox.obj");
     BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     // Get delta time for force-sensitive physics
@@ -65,6 +65,7 @@ int main(void)
     ---------------------------------------------------------------------------------------*/
     std::cout << "max x: " << bounds.max.x << std::endl;
     std::cout << "min x: " << bounds.min.x << std::endl;
+
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -156,7 +157,8 @@ int main(void)
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
-        std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
+        //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
+        std::cout << player.getPositionY() << std::endl;
 
 
         // Stop clock and calulate deltaTimme
