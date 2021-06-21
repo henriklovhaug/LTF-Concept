@@ -43,6 +43,9 @@ private:
     // Boolean var
     bool canJump = true;
 
+    // Radius       used for testing
+    float radius = 5;
+
 public:
     // Player will controll camera (Position, Target, Up)
 
@@ -85,4 +88,6 @@ public:
     float getUpZ();
 
     float getSpeedY();
+
+    float getRadius();
 };

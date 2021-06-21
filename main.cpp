@@ -5,6 +5,7 @@
 #include <ctime>
 #include <string>
 #include "player.hpp"
+#include "LTF.hpp"
 
 #define MAX_COLUMNS 20
 
@@ -19,7 +20,7 @@ int main(void)
 
     // Blender models
     // TODO: find out if path has to be absolute or resource path can be specified in CMake
-    Model model = LoadModel("F:/Koding/LTF3/LTF-Concept/resources/wierdBox.obj");
+    Model model = LoadModel("C:/Users/henri/LTF/LTF-Concept/resources/cone.obj");
     BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     // Get delta time for force-sensitive physics
@@ -155,11 +156,8 @@ int main(void)
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
-        std::cout << player.getPositionY() << std::endl;
+        std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
 
-        /*std::cout << "Camera up x: " << camera.up.x << std::endl;
-        std::cout << "Camera up y: " << camera.up.y << std::endl;
-        std::cout << "Camera up z: " << camera.up.z << std::endl;*/
 
         // Stop clock and calulate deltaTimme
         finish = clock();

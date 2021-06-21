@@ -173,4 +173,9 @@ float Player::getSpeedY()
 {
     return this->speed.y;
 }
+
+float Player::getRadius()
+{
+    return this->radius;
+}
 #pragma endregion
