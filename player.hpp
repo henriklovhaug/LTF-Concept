@@ -43,7 +43,7 @@ private:
     // Boolean var
     bool canJump = true;
 
-    // Radius       used for testing
+    // Radius     used for testing
     float radius = 5;
 
 public:

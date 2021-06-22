@@ -8,7 +8,6 @@
  */
 void Player::updateTarget(float deltaX, float deltaY)
 {
-
     Matrix translation = MatrixTranslate(0, 0, 1.0f);
     Matrix rotation = MatrixRotateXYZ({PI * 2 - deltaY, PI * 2 - deltaX, 0});
     Matrix transform = MatrixMultiply(translation, rotation);

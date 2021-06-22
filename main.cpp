@@ -6,10 +6,11 @@
 #include <string>
 #include "player.hpp"
 #include "LTF.hpp"
+#include "collisionObject.hpp"
 
 #define MAX_COLUMNS 20
 
-int main(void)
+int main(void) 
 {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -20,8 +21,11 @@ int main(void)
 
     // Blender models
     // TODO: find out if path has to be absolute or resource path can be specified in CMake
-    Model model = LoadModel("Resources/wierdBox.obj");
-    BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
+    //Model model = LoadModel("Resources/cone.obj");
+    //BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
+
+    //test new class
+    CollisionObject myObj({0,0,20},false,2,"cone.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -53,7 +57,7 @@ int main(void)
     static float mousex = 0;
     static float mousey = 0;
 
-    static Vector2 previousMouse = {0.0f, 0.0f}; //Get the position of the mouse
+    static Vector2 previousMouse = GetMousePosition(); //Get the position of the mouse
 
     SetCameraMode(camera, CAMERA_CUSTOM);
 
@@ -63,8 +67,8 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << "max x: " << bounds.max.x << std::endl;
-    std::cout << "min x: " << bounds.min.x << std::endl;
+    std::cout << "max x: " << myObj.getBox().max.x << std::endl;
+    std::cout << "min x: " << myObj.getBox().min.x << std::endl;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -145,7 +149,7 @@ int main(void)
         DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);   // Draw a yellow wall
 
         //Testdraw models
-        DrawModel(model, {0, 0, 20}, 1, RED);
+        DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
 
         // Draw some cubes around
         for (int i = 0; i < MAX_COLUMNS; i++)
@@ -158,7 +162,7 @@ int main(void)
         EndDrawing();
         //----------------------------------------------------------------------------------
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
-        std::cout << player.getPositionY() << std::endl;
+        //std::cout << player.getPositionY() << std::endl;
 
 
         // Stop clock and calulate deltaTimme
@@ -168,7 +172,8 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadModel(model);
+    //TODO: write desctructor for collisionObject
+   // UnloadModel(model);
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
