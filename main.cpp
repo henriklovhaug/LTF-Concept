@@ -7,6 +7,8 @@
 #include "player.hpp"
 #include "LTF.hpp"
 #include "collisionObject.hpp"
+#include <list>
+#include <vector>
 
 #define MAX_COLUMNS 20
 
@@ -14,8 +16,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 2;
-    const int screenHeight = 450 * 2;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -41,6 +43,13 @@ int main(void)
     camera.up = player.getUp();
     camera.fovy = 60.0f;
     //camera.projection = CAMERA_PERSPECTIVE;
+
+    //Objects in play area
+    std::vector<CollisionObject> objectList;
+    for (int i = 0; i < MAX_COLUMNS; i++)
+    {
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 1, float(GetRandomValue(-15, 15))}, false, 1, "cone.obj"));
+    }
 
     // Generates some random columns
     float heights[MAX_COLUMNS] = {0};
@@ -108,7 +117,7 @@ int main(void)
         mousey += (currentMouse.y - previousMouse.y) * -sensitivity;
 
         previousMouse = currentMouse;
-
+#pragma endregion
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
@@ -159,10 +168,23 @@ int main(void)
         }
 
         // Draw some cubes around
-        for (int i = 0; i < MAX_COLUMNS; i++)
+        /*for (int i = 0; i < MAX_COLUMNS; i++)
         {
             DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
             DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
+        }*/
+
+        //TODO: There is bugs at collision
+        for (int i = 0; i < MAX_COLUMNS; i++)
+        {
+            if (!LTF::collision(objectList.at(i), player))
+            {
+                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), BLUE);
+            }
+            else
+            {
+                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), RED);
+            }
         }
 
         EndMode3D();
