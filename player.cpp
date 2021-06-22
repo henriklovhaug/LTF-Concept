@@ -8,7 +8,6 @@
  */
 void Player::updateTarget(float deltaX, float deltaY)
 {
-
     Matrix translation = MatrixTranslate(0, 0, 1.0f);
     Matrix rotation = MatrixRotateXYZ({PI * 2 - deltaY, PI * 2 - deltaX, 0});
     Matrix transform = MatrixMultiply(translation, rotation);
@@ -55,25 +54,23 @@ void Player::jump()
 {
     if (canJump)
     {
-        position.y = 2.1f;
         speed.y = jumpConstant;
     }
 }
+
 void Player::updateGravity(float deltaTime)
 {
-    if (getPositionY() > 2.0f)
+    Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
+                              Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
+    speed.y -= deltaTime * gravityconstant;
+    if (Vector3Add(position, temp).y > 2.0f)
     {
         canJump = false;
-        Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
-                                  Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
-        speed.y -= deltaTime * gravityconstant;
         position = Vector3Add(position, temp);
-    }else if(getPositionY() < 1.8f)
-    {
-        position.y = 2;
     }
     else
     {
+        position.y = 2.0f;
         canJump = true;
     }
 }
@@ -172,5 +169,10 @@ float Player::getUpZ()
 float Player::getSpeedY()
 {
     return this->speed.y;
+}
+
+float Player::getRadius()
+{
+    return this->radius;
 }
 #pragma endregion
