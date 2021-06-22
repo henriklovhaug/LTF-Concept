@@ -1,6 +1,8 @@
 #include <raylib.h>
 #include <string>
 
+#pragma once
+
 class CollisionObject
 {
 private:

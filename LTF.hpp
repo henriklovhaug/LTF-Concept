@@ -1,7 +1,9 @@
 /*TODO: Create collision take takes in (object,object) and (object,player)
 these two can be the same, but could be beneficial to keep them seperate*/
-#pragma once
 #include <raylib.h>
+#include "collisionObject.hpp"
+
+#pragma once
 namespace LTF
 {
 
@@ -27,6 +29,33 @@ namespace LTF
             dmin += powf(center.z - box.max.z, 2);
 
         if (dmin <= (radius * radius))
+            collision = true;
+
+        return collision;
+    }
+    //TODO: Needs to account for scaling?
+    bool collision(CollisionObject object, Player player)
+    {
+        bool collision = false;
+
+        float dmin = 0;
+
+        if (object.getPosition().x - player.getPositionX() < object.getBox().min.x)
+            dmin += powf(player.getPositionX() - object.getBox().min.x, 2);
+        else if (object.getPosition().x - player.getPositionX() > object.getBox().max.x)
+            dmin += powf(player.getPositionX() - object.getBox().max.x, 2);
+
+        if (object.getPosition().y - player.getPositionY() < object.getBox().min.y)
+            dmin += powf(player.getPositionY() - object.getBox().min.y, 2);
+        else if (object.getPosition().y - player.getPositionY() > object.getBox().max.y)
+            dmin += powf(player.getPositionY() - object.getBox().max.y, 2);
+
+        if (object.getPosition().z - player.getPositionZ() < object.getBox().min.z)
+            dmin += powf(player.getPositionZ() - object.getBox().min.z, 2);
+        else if (object.getPosition().z - player.getPositionZ() > object.getBox().max.z)
+            dmin += powf(player.getPositionZ() - object.getBox().max.z, 2);
+
+        if (dmin <= (player.getRadius() * player.getRadius()))
             collision = true;
 
         return collision;

@@ -10,7 +10,7 @@
 
 #define MAX_COLUMNS 20
 
-int main(void) 
+int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ int main(void)
     //BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     //test new class
-    CollisionObject myObj({0,0,20},false,2,"cone.obj");
+    CollisionObject myObj({0, 0, 20}, false, 1, "cone.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -149,7 +149,14 @@ int main(void)
         DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);   // Draw a yellow wall
 
         //Testdraw models
-        DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
+        if (!LTF::collision(myObj, player))
+        {
+            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), BLUE);
+        }
+        else
+        {
+            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
+        }
 
         // Draw some cubes around
         for (int i = 0; i < MAX_COLUMNS; i++)
@@ -164,7 +171,6 @@ int main(void)
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
 
-
         // Stop clock and calulate deltaTimme
         finish = clock();
         deltaTime = (float(finish) - float(start)) / CLOCKS_PER_SEC;
@@ -173,7 +179,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
     //TODO: write desctructor for collisionObject
-   // UnloadModel(model);
+    // UnloadModel(model);
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
