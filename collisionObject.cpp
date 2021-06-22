@@ -58,5 +58,5 @@ Model CollisionObject::getModel()
 
 BoundingBox CollisionObject::getBox()
 {
-    return MeshBoundingBox(getModel().meshes[0]);
+    return MeshBoundingBox(this->model.meshes[0]);
 }

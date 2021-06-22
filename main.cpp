@@ -137,7 +137,7 @@ int main(void)
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
-        camera.target = player.getTarget();
+        camera.target = player.getTarget(); 
 
         if (IsKeyDown('F'))
         {

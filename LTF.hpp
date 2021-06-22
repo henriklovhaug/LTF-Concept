@@ -33,7 +33,7 @@ namespace LTF
 
         return collision;
     }
-    //TODO: Needs to account for scaling?
+    //TODO: Needs to account for scaling? And needs bugfix
     bool collision(CollisionObject object, Player player)
     {
         bool collision = false;
@@ -41,19 +41,19 @@ namespace LTF
         float dmin = 0;
 
         if (object.getPosition().x - player.getPositionX() < object.getBox().min.x)
-            dmin += powf(player.getPositionX() - object.getBox().min.x, 2);
+            dmin += powf(player.getPositionX() - object.getBox().min.x + object.getPosition().x, 2);
         else if (object.getPosition().x - player.getPositionX() > object.getBox().max.x)
-            dmin += powf(player.getPositionX() - object.getBox().max.x, 2);
+            dmin += powf(player.getPositionX() - object.getBox().max.x + object.getPosition().x, 2);
 
         if (object.getPosition().y - player.getPositionY() < object.getBox().min.y)
-            dmin += powf(player.getPositionY() - object.getBox().min.y, 2);
+            dmin += powf(player.getPositionY() - object.getBox().min.y + object.getPosition().y, 2);
         else if (object.getPosition().y - player.getPositionY() > object.getBox().max.y)
-            dmin += powf(player.getPositionY() - object.getBox().max.y, 2);
+            dmin += powf(player.getPositionY() - object.getBox().max.y + object.getPosition().y, 2);
 
         if (object.getPosition().z - player.getPositionZ() < object.getBox().min.z)
-            dmin += powf(player.getPositionZ() - object.getBox().min.z, 2);
+            dmin += powf(player.getPositionZ() - object.getBox().min.z + object.getPosition().z, 2);
         else if (object.getPosition().z - player.getPositionZ() > object.getBox().max.z)
-            dmin += powf(player.getPositionZ() - object.getBox().max.z, 2);
+            dmin += powf(player.getPositionZ() - object.getBox().max.z + object.getPosition().z, 2);
 
         if (dmin <= (player.getRadius() * player.getRadius()))
             collision = true;
