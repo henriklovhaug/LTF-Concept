@@ -1,5 +1,6 @@
 #include "collisionObject.hpp"
 #include <raylib.h>
+#include <raymath.h>
 
 
 CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale, std::string name)
@@ -9,6 +10,8 @@ CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale, s
     setScale(scale);
     setOBJname(name);
     this->model = LoadModel(objURL.c_str());
+    this->box = MeshBoundingBox(this->model.meshes[0]);
+    scaleBox(scale);
 }
 
 void CollisionObject::setPosition(Vector3 position)
@@ -58,5 +61,12 @@ Model CollisionObject::getModel()
 
 BoundingBox CollisionObject::getBox()
 {
-    return MeshBoundingBox(this->model.meshes[0]);
+    return this->box;
+}
+
+void CollisionObject::scaleBox(float scale)
+{
+    Vector3 diff = Vector3Subtract(Vector3Scale(this->box.max,scale),this->box.max);
+    this->box.max = Vector3Scale(this->box.max,scale);
+    this->box.min = Vector3Subtract(this->box.min,diff);
 }

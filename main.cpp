@@ -48,7 +48,7 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 1, float(GetRandomValue(-15, 15))}, false, 1, "cone.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, "cone.obj"));
     }
 
     // Generates some random columns
@@ -88,7 +88,7 @@ int main(void)
 
 // Movement
 #pragma region movement
-
+    
         if (IsKeyDown('W'))
         {
             player.moveForward();
@@ -110,13 +110,14 @@ int main(void)
         {
             player.jump();
         }
-#pragma endregion
+
 
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity; //Sensitivity is found in player.hpp
         mousey += (currentMouse.y - previousMouse.y) * -sensitivity;
 
         previousMouse = currentMouse;
+
 #pragma endregion
         // Update
         //----------------------------------------------------------------------------------
@@ -173,8 +174,6 @@ int main(void)
             DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
             DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
         }*/
-
-        //TODO: There is bugs at collision
         for (int i = 0; i < MAX_COLUMNS; i++)
         {
             if (!LTF::collision(objectList.at(i), player))
