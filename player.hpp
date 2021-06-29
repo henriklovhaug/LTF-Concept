@@ -76,6 +76,7 @@ public:
     float getPositionX();
     float getPositionY();
     float getPositionZ();
+    Vector3 getNextPosition(int direction);
 
     Vector3 getTarget();
     float getTargetX();

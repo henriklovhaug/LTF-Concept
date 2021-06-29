@@ -89,20 +89,20 @@ int main(void)
 // Movement
 #pragma region movement
     
-        if (IsKeyDown('W'))
+        if (IsKeyDown('W') && !LTF::collision(objectList,player,1))
         {
             player.moveForward();
         }
-        if (IsKeyDown('S'))
+        if (IsKeyDown('S') && !LTF::collision(objectList,player,2))
         {
             player.moveBackward();
         }
-        if (IsKeyDown('A'))
+        if (IsKeyDown('A') && !LTF::collision(objectList,player,3))
         {
             player.moveLeft();
         }
 
-        if (IsKeyDown('D'))
+        if (IsKeyDown('D') && !LTF::collision(objectList,player,4))
         {
             player.moveRight();
         }

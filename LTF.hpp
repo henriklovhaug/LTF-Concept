@@ -4,7 +4,10 @@ these two can be the same, but could be beneficial to keep them seperate*/
 /* TODO: need collision for infinitely thin walls*/
 
 #include <raylib.h>
+#include <raymath.h>
 #include "collisionObject.hpp"
+#include <vector>
+#include "player.hpp"
 
 #pragma once
 namespace LTF
@@ -45,5 +48,25 @@ namespace LTF
                player.getPositionX() < object.getBox().max.x + object.getPosition().x &&
                player.getPositionY() < object.getBox().max.y + object.getPosition().y &&
                player.getPositionZ() < object.getBox().max.z + object.getPosition().z;
+    }
+
+    bool collision(CollisionObject object, Vector3 player)
+    {
+        return object.getBox().min.x + object.getPosition().x < player.x &&
+               object.getBox().min.y + object.getPosition().y < player.y &&
+               object.getBox().min.z + object.getPosition().z < player.z &&
+               player.x < object.getBox().max.x + object.getPosition().x &&
+               player.y < object.getBox().max.y + object.getPosition().y &&
+               player.z < object.getBox().max.z + object.getPosition().z;
+    }
+
+    bool collision(std::vector<CollisionObject> list, Player player, int direction)
+    {
+        for (CollisionObject obj : list)
+        {
+            if (collision(obj, player.getNextPosition(direction)))
+                return true;
+        }
+        return false;
     }
 }

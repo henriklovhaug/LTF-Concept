@@ -50,6 +50,27 @@ void Player::moveRight()
     position.z += sinf(anglex) * moveSpeed;
 }
 
+Vector3 Player::getNextPosition(int direction)
+{
+    switch (direction)
+    {
+    case 1:
+        return {getPositionX() + sinf(anglex) * moveSpeed, getPositionY(), getPositionZ() + cosf(anglex) * moveSpeed};
+        break;
+    case 2:
+        return {getPositionX() - sinf(anglex) * moveSpeed, getPositionY(), getPositionZ() - cosf(anglex) * moveSpeed};
+        break;
+    case 3:
+        return {getPositionX() + sinf(anglex) * moveSpeed, getPositionY(), getPositionZ() - cosf(anglex) * moveSpeed};
+        break;
+    case 4:
+        return {getPositionX() - sinf(anglex) * moveSpeed, getPositionY(), getPositionZ() + cosf(anglex) * moveSpeed};
+        break;
+    default:
+        break;
+    }
+}
+
 void Player::jump()
 {
     if (canJump)
