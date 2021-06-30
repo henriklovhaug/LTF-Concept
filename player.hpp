@@ -3,7 +3,7 @@
 
 #define sensitivity 0.003f
 #define maxY 89.0f
-#define moveSpeed 0.2f
+#define MOVESPEED 0.2f
 #define gravityconstant 150.0f
 #define jumpConstant 50.0f
 
@@ -29,8 +29,7 @@ private:
     float mousey = 0;
 
     // Planes used for movement
-    Vector3 v1 = getPosition();
-    Vector3 v2 = getTarget();
+    Vector3 movement;
 
     // Generate planes for movement
     float dx;
@@ -59,6 +58,7 @@ public:
     void updatePlaneXZ();
 
     Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b);
+    Vector3 getMovement(Vector3 v1, Vector3 v2);
     void moveForward();
     void moveBackward();
     void moveLeft();

@@ -9,7 +9,10 @@ these two can be the same, but could be beneficial to keep them seperate*/
 #include "collisionObject.hpp"
 #include <vector>
 #include "player.hpp"
-
+/**
+ * @brief Only use LTF in main
+ * 
+ */
 namespace LTF
 {
 #pragma region collision
