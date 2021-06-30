@@ -45,7 +45,6 @@ private:
 
     // Radius     used for testing
     float radius = 1;
-    
 
 public:
     // Player will controll camera (Position, Target, Up)
@@ -59,6 +58,7 @@ public:
     //Movement methods and helpers
     void updatePlaneXZ();
 
+    Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b);
     void moveForward();
     void moveBackward();
     void moveLeft();

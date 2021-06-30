@@ -1,5 +1,6 @@
 #include "Player.hpp"
 
+
 /**
  * @brief Turns mouse movement into rotation of player
  * 
@@ -25,11 +26,11 @@ void Player::updatePlaneXZ()
 
     anglex = atan2f(dx, dz);
 }
+//TODO: all these movements should be translated to vectors. Easier to detect collisions.
 void Player::moveForward()
 {
-    updatePlaneXZ();
-    position.x += sinf(anglex) * moveSpeed;
-    position.z += cosf(anglex) * moveSpeed;
+    Vector3 moveVector = Vector3Normalize(projection(getTarget(),{1,0,0},{0,0,1}));
+    setPosition(Vector3Add(getPosition(),Vector3Scale(moveVector,moveSpeed)));
 }
 void Player::moveBackward()
 {
@@ -197,3 +198,16 @@ float Player::getRadius()
     return this->radius;
 }
 #pragma endregion
+Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
+    {
+        if (Vector3DotProduct(v2b, v3b) == 0)
+        {
+            return Vector3Add(Vector3Scale(v2b,Vector3DotProduct(v1,v2b)/Vector3DotProduct(v2b,v2b)),
+            Vector3Scale(v3b,Vector3DotProduct(v1,v3b)/Vector3DotProduct(v3b,v3b)));
+        }
+        else
+        {
+            //TODO: Handle not orthogonal basis
+            return {0,0,0};
+        }
+    }

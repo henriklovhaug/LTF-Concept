@@ -21,10 +21,6 @@ int main(void)
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
-    // Blender models
-    // TODO: find out if path has to be absolute or resource path can be specified in CMake
-    //Model model = LoadModel("Resources/cone.obj");
-    //BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     //test new class
     CollisionObject myObj({0, 0, 0}, false, 1, "arch.obj");
@@ -192,6 +188,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
+        std::cout << player.projection(player.getTarget(),{1,0,0},{0,0,1}).x << std::endl;
 
         // Stop clock and calulate deltaTimme
         finish = clock();
@@ -202,6 +199,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     //TODO: write desctructor for collisionObject
     // UnloadModel(model);
+    std::cout << LTF::Vector3Angle({1,0,0},{1,1,0}) << std::endl;
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

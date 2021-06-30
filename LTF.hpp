@@ -3,16 +3,16 @@ these two can be the same, but could be beneficial to keep them seperate*/
 
 /* TODO: need collision for infinitely thin walls*/
 
+#pragma once
 #include <raylib.h>
 #include <raymath.h>
 #include "collisionObject.hpp"
 #include <vector>
 #include "player.hpp"
 
-#pragma once
 namespace LTF
 {
-
+#pragma region collision
     bool collision(BoundingBox box, Vector3 positionBox, Vector3 center, float radius)
     {
         bool collision = false;
@@ -69,4 +69,38 @@ namespace LTF
         }
         return false;
     }
+#pragma endregion
+
+    /**
+     * @brief Projects vector one onto plane created by vector two and three
+     * 
+     * @param v1 Vector one
+     * @param v2b Vector two
+     * @param v3b Vector three
+     * @return Projected vector
+     */
+    Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
+    {
+        if (Vector3DotProduct(v2b, v3b) == 0)
+        {
+            return Vector3Add(Vector3Scale(v2b,Vector3DotProduct(v1,v2b)/Vector3DotProduct(v2b,v2b)),
+            Vector3Scale(v3b,Vector3DotProduct(v1,v3b)/Vector3DotProduct(v3b,v3b)));
+        }
+        else
+        {
+            return {0,0,0};
+        }
+    }
+    /**
+     * @brief Calculates angle between two vectors
+     * 
+     * @param v1 Vector one
+     * @param v2 Vector two
+     * @return Angle in degrees. Use DEG2RAD to convert back
+     */
+    float Vector3Angle(Vector3 v1, Vector3 v2)
+    {
+        return acosf(Vector3DotProduct(v1,v2)/(Vector3Length(v1)*Vector3Length(v2)))*RAD2DEG;
+    }
+
 }
