@@ -27,7 +27,7 @@ int main(void)
     //BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     //test new class
-    CollisionObject myObj({0, 0, 20}, false, 1, "cone.obj");
+    CollisionObject myObj({0, 0, 0}, false, 1, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -167,6 +167,7 @@ int main(void)
         {
             DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
         }
+        DrawBoundingBox(myObj.getBox(),GREEN);
 
         // Draw some cubes around
         /*for (int i = 0; i < MAX_COLUMNS; i++)
