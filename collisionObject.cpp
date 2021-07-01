@@ -2,7 +2,14 @@
 #include <raylib.h>
 #include <raymath.h>
 
-
+/**
+ * @brief Construct a new Collision Object:: Collision Object object
+ * 
+ * @param position Vector3 position
+ * @param isGround is it ground? soon to be removed
+ * @param scale Scale of object. Will be scaled in all directions
+ * @param name name of object file. i.e. "floor.obj"
+ */
 CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale, std::string name)
 {
     setPosition(position);

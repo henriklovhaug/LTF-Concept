@@ -25,23 +25,42 @@ void Player::updatePlaneXZ()
 
     anglex = atan2f(dx, dz);
 }
-//TODO: all these movements should be translated to vectors. Easier to detect collisions.
+
+void Player::updateBases()
+{
+    if (up.x == 1)
+    {
+        bases.first = {0, 0, 1};
+        bases.second = {0, 1, 0};
+    }
+    else if (up.z == 1)
+    {
+        bases.first = {1, 0, 0};
+        bases.second = {0, 1, 0};
+    }
+    else
+    {
+        bases.first = {1, 0, 0};
+        bases.second = {0, 0, 1};
+    }
+}
+
 void Player::moveForward()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)));
 }
 void Player::moveBackward()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
 void Player::moveLeft()
 {
 
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)))));
 }
 void Player::moveRight()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
 
 /**
@@ -61,18 +80,20 @@ Vector3 Player::getNextPosition(int direction)
     switch (direction)
     {
     case 1:
-        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED));
         break;
     case 2:
-        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
+
         break;
     case 3:
-        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
         break;
     case 4:
-        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
         break;
     default:
+        return {0, 0, 0};
         break;
     }
 }
