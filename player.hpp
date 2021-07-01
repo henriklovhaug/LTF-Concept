@@ -63,6 +63,7 @@ public:
 
     Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b);
     Vector3 getMovement(Vector3 v1, Vector3 v2);
+    
     void moveForward();
     void moveBackward();
     void moveLeft();

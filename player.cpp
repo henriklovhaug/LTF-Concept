@@ -75,6 +75,12 @@ Vector3 Player::getMovement(Vector3 v1, Vector3 v2)
     return Vector3Normalize(projection(Vector3Subtract(getTarget(), getPosition()), v1, v2));
 }
 
+/**
+ * @brief calculates where player whould be next tick. Used for preemptive crash detection
+ * 
+ * @param direction 1: forward, 2: backwards, 3: left, 4: right
+ * @return Vector3 where player would be
+ */
 Vector3 Player::getNextPosition(int direction)
 {
     switch (direction)
@@ -106,6 +112,13 @@ void Player::jump()
     }
 }
 
+/**
+ * @brief Makes player fall
+ * 
+ * @param deltaTime makes method independent from framerate
+ * 
+ * TODO: make it work when up is flipped
+ */
 void Player::updateGravity(float deltaTime)
 {
     Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
@@ -145,7 +158,7 @@ void Player::setUp(Vector3 up)
  * 
  * @param position 
  * @param target 
- * @param up 
+ * @param up Defines up and gravity vector
  * 
  */
 Player::Player(Vector3 position, Vector3 target, Vector3 up)
@@ -224,6 +237,7 @@ float Player::getRadius()
     return this->radius;
 }
 #pragma endregion
+
 Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
 {
     if (Vector3DotProduct(v2b, v3b) == 0)

@@ -16,8 +16,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 3;
-    const int screenHeight = 450 * 3;
+    const int screenWidth = 800 * 2;
+    const int screenHeight = 450 * 2;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -46,8 +46,6 @@ int main(void)
         objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, "cone.obj"));
     }
     CollisionObject testFloor({0, -2, 0}, false, 2, "floor.obj");
-
-
 
     static float mousex = 0;
     static float mousey = 0;
@@ -129,6 +127,12 @@ int main(void)
         if (IsKeyPressed('F'))
         {
             player.setUp({1.0f, 0, 0});
+            player.updateBases();
+        }
+        if (IsKeyPressed('G'))
+        {
+            player.setUp({0, 1.0f, 0});
+            player.updateBases();
         }
 
         // Draw
@@ -139,11 +143,11 @@ int main(void)
 
         BeginMode3D(camera);
 
-        DrawModel(testFloor.getModel(),testFloor.getPosition(),testFloor.getScale(),GRAY);
+        DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
         //DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
-        DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE);  // Draw a blue wall
-        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);   // Draw a green wall
-        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);   // Draw a yellow wall
+        DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
+        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
+        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
 
         //Testdraw models
         if (!LTF::collision(myObj, player))
@@ -181,7 +185,9 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
-        std::cout << player.projection(player.getTarget(), {1, 0, 0}, {0, 0, 1}).x << std::endl;
+        std::cout << "x: " << player.getGravityVector().x << std::endl;
+        std::cout << "y: " << player.getGravityVector().y << std::endl;
+        std::cout << "z: " << player.getGravityVector().z << std::endl;
 
         // Stop clock and calulate deltaTimme
         finish = clock();
