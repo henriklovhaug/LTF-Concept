@@ -17,37 +17,64 @@ void Player::updateTarget(float deltaX, float deltaY)
 
 void Player::updatePlaneXZ()
 {
-    v1 = getPosition();
-    v2 = getTarget();
+    Vector3 v1 = getPosition();
+    Vector3 v2 = getTarget();
 
     dx = v2.x - v1.x;
     dz = v2.z - v1.z;
 
     anglex = atan2f(dx, dz);
 }
+//TODO: all these movements should be translated to vectors. Easier to detect collisions.
 void Player::moveForward()
 {
-    updatePlaneXZ();
-    position.x += sinf(anglex) * moveSpeed;
-    position.z += cosf(anglex) * moveSpeed;
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
 }
 void Player::moveBackward()
 {
-    updatePlaneXZ();
-    position.x -= sinf(anglex) * moveSpeed;
-    position.z -= cosf(anglex) * moveSpeed;
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
 }
 void Player::moveLeft()
 {
-    updatePlaneXZ();
-    position.x += cosf(anglex) * moveSpeed;
-    position.z -= sinf(anglex) * moveSpeed;
+
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)))));
 }
 void Player::moveRight()
 {
-    updatePlaneXZ();
-    position.x -= cosf(anglex) * moveSpeed;
-    position.z += sinf(anglex) * moveSpeed;
+    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
+}
+
+/**
+ * @brief Get normalized vector projected onto plane
+ * 
+ * @param v1 basis one
+ * @param v2 basis two
+ * @return Vector3 projected
+ */
+Vector3 Player::getMovement(Vector3 v1, Vector3 v2)
+{
+    return Vector3Normalize(projection(Vector3Subtract(getTarget(), getPosition()), v1, v2));
+}
+
+Vector3 Player::getNextPosition(int direction)
+{
+    switch (direction)
+    {
+    case 1:
+        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        break;
+    case 2:
+        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        break;
+    case 3:
+        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        break;
+    case 4:
+        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        break;
+    default:
+        break;
+    }
 }
 
 void Player::jump()
@@ -176,3 +203,16 @@ float Player::getRadius()
     return this->radius;
 }
 #pragma endregion
+Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
+{
+    if (Vector3DotProduct(v2b, v3b) == 0)
+    {
+        return Vector3Add(Vector3Scale(v2b, Vector3DotProduct(v1, v2b) / Vector3DotProduct(v2b, v2b)),
+                          Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b)));
+    }
+    else
+    {
+        //TODO: Handle not orthogonal basis
+        return {0, 0, 0};
+    }
+}

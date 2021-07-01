@@ -7,6 +7,8 @@
 #include "player.hpp"
 #include "LTF.hpp"
 #include "collisionObject.hpp"
+#include <list>
+#include <vector>
 
 #define MAX_COLUMNS 20
 
@@ -14,18 +16,14 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 2;
-    const int screenHeight = 450 * 2;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
-    // Blender models
-    // TODO: find out if path has to be absolute or resource path can be specified in CMake
-    //Model model = LoadModel("Resources/cone.obj");
-    //BoundingBox bounds = MeshBoundingBox(model.meshes[0]);
 
     //test new class
-    CollisionObject myObj({0, 0, 20}, false, 1, "cone.obj");
+    CollisionObject myObj({0, 0, 0}, false, 1, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -41,6 +39,13 @@ int main(void)
     camera.up = player.getUp();
     camera.fovy = 60.0f;
     //camera.projection = CAMERA_PERSPECTIVE;
+
+    //Objects in play area
+    std::vector<CollisionObject> objectList;
+    for (int i = 0; i < MAX_COLUMNS; i++)
+    {
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, "cone.obj"));
+    }
 
     // Generates some random columns
     float heights[MAX_COLUMNS] = {0};
@@ -79,21 +84,21 @@ int main(void)
 
 // Movement
 #pragma region movement
-
-        if (IsKeyDown('W'))
+    
+        if (IsKeyDown('W') && !LTF::collision(objectList,player,1))
         {
             player.moveForward();
         }
-        if (IsKeyDown('S'))
+        if (IsKeyDown('S') && !LTF::collision(objectList,player,2))
         {
             player.moveBackward();
         }
-        if (IsKeyDown('A'))
+        if (IsKeyDown('A') && !LTF::collision(objectList,player,3))
         {
             player.moveLeft();
         }
 
-        if (IsKeyDown('D'))
+        if (IsKeyDown('D') && !LTF::collision(objectList,player,4))
         {
             player.moveRight();
         }
@@ -101,7 +106,7 @@ int main(void)
         {
             player.jump();
         }
-#pragma endregion
+
 
         // Delta mouseposition
         mousex += (currentMouse.x - previousMouse.x) * -sensitivity; //Sensitivity is found in player.hpp
@@ -109,6 +114,7 @@ int main(void)
 
         previousMouse = currentMouse;
 
+#pragma endregion
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
@@ -128,7 +134,7 @@ int main(void)
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
-        camera.target = player.getTarget();
+        camera.target = player.getTarget(); 
 
         if (IsKeyDown('F'))
         {
@@ -157,12 +163,24 @@ int main(void)
         {
             DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
         }
+        DrawBoundingBox(myObj.getBox(),GREEN);
 
         // Draw some cubes around
-        for (int i = 0; i < MAX_COLUMNS; i++)
+        /*for (int i = 0; i < MAX_COLUMNS; i++)
         {
             DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
             DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
+        }*/
+        for (int i = 0; i < MAX_COLUMNS; i++)
+        {
+            if (!LTF::collision(objectList.at(i), player))
+            {
+                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), BLUE);
+            }
+            else
+            {
+                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), RED);
+            }
         }
 
         EndMode3D();
@@ -170,6 +188,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
+        std::cout << player.projection(player.getTarget(),{1,0,0},{0,0,1}).x << std::endl;
 
         // Stop clock and calulate deltaTimme
         finish = clock();
@@ -180,6 +199,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     //TODO: write desctructor for collisionObject
     // UnloadModel(model);
+    std::cout << LTF::Vector3Angle({1,0,0},{1,1,0}) << std::endl;
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

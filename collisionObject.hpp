@@ -23,6 +23,7 @@ private:
 
     //Bounds around model
     BoundingBox box;
+    void scaleBox(float scale);
 
 public:
     CollisionObject(Vector3 position, bool isGround, float scale, std::string name = "0");
