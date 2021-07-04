@@ -25,23 +25,42 @@ void Player::updatePlaneXZ()
 
     anglex = atan2f(dx, dz);
 }
-//TODO: all these movements should be translated to vectors. Easier to detect collisions.
+
+void Player::updateBases()
+{
+    if (up.x == 1)
+    {
+        bases.first = {0, 0, 1};
+        bases.second = {0, 1, 0};
+    }
+    else if (up.z == 1)
+    {
+        bases.first = {1, 0, 0};
+        bases.second = {0, 1, 0};
+    }
+    else
+    {
+        bases.first = {1, 0, 0};
+        bases.second = {0, 0, 1};
+    }
+}
+
 void Player::moveForward()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)));
 }
 void Player::moveBackward()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
 void Player::moveLeft()
 {
 
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)))));
 }
 void Player::moveRight()
 {
-    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
 
 /**
@@ -56,27 +75,39 @@ Vector3 Player::getMovement(Vector3 v1, Vector3 v2)
     return Vector3Normalize(projection(Vector3Subtract(getTarget(), getPosition()), v1, v2));
 }
 
+/**
+ * @brief calculates where player whould be next tick. Used for preemptive crash detection
+ * 
+ * @param direction 1: forward, 2: backwards, 3: left, 4: right
+ * @return Vector3 where player would be
+ */
 Vector3 Player::getNextPosition(int direction)
 {
     switch (direction)
     {
     case 1:
-        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED));
         break;
     case 2:
-        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
+
         break;
     case 3:
-        return {getPositionX() + sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() - cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
         break;
     case 4:
-        return {getPositionX() - sinf(anglex) * MOVESPEED, getPositionY(), getPositionZ() + cosf(anglex) * MOVESPEED};
+        return Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
         break;
+    case 5:
     default:
+        return {0, 0, 0};
         break;
     }
 }
-
+/**
+ * @brief Le jump
+ * 
+ */
 void Player::jump()
 {
     if (canJump)
@@ -85,21 +116,36 @@ void Player::jump()
     }
 }
 
+//TODO: this needs testing
+/**
+ * @brief Makes player fall
+ * 
+ * @param deltaTime makes method independent from framerate
+ * 
+ */
 void Player::updateGravity(float deltaTime)
 {
     Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
                               Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
-    speed.y -= deltaTime * gravityconstant;
-    if (Vector3Add(position, temp).y > 2.0f)
+    speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
+    if(Vector3Add(position,temp).y > 2) 
     {
-        canJump = false;
         position = Vector3Add(position, temp);
     }
-    else
-    {
-        position.y = 2.0f;
-        canJump = true;
-    }
+}
+
+/**
+ * @brief gives where the player will be next tick
+ * 
+ * @param deltaTime makes it independent from framrate
+ * @return Vector3 
+ */
+Vector3 Player::getNextGravity(float deltaTime)
+{
+    Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
+                              Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
+    speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
+    return Vector3Add(position, temp);
 }
 
 // Setters and constructor
@@ -124,7 +170,7 @@ void Player::setUp(Vector3 up)
  * 
  * @param position 
  * @param target 
- * @param up 
+ * @param up Defines up and gravity vector
  * 
  */
 Player::Player(Vector3 position, Vector3 target, Vector3 up)
@@ -203,6 +249,7 @@ float Player::getRadius()
     return this->radius;
 }
 #pragma endregion
+
 Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
 {
     if (Vector3DotProduct(v2b, v3b) == 0)

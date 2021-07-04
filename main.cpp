@@ -16,11 +16,10 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 3;
-    const int screenHeight = 450 * 3;
+    const int screenWidth = 800 * 2;
+    const int screenHeight = 450 * 2;
 
     InitWindow(screenWidth, screenHeight, "LTF");
-
 
     //test new class
     CollisionObject myObj({0, 0, 0}, false, 1, "arch.obj");
@@ -46,18 +45,7 @@ int main(void)
     {
         objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, "cone.obj"));
     }
-
-    // Generates some random columns
-    float heights[MAX_COLUMNS] = {0};
-    Vector3 positions[MAX_COLUMNS] = {0};
-    Color colors[MAX_COLUMNS] = {0};
-
-    for (int i = 0; i < MAX_COLUMNS; i++)
-    {
-        heights[i] = (float)GetRandomValue(1, 12);
-        positions[i] = {(float)GetRandomValue(-15, 15), heights[i] / 2.0f, (float)GetRandomValue(-15, 15)};
-        colors[i] = BLUE;
-    }
+    CollisionObject testFloor({0, -2, 0}, false, 2, "floor.obj");
 
     static float mousex = 0;
     static float mousey = 0;
@@ -84,21 +72,21 @@ int main(void)
 
 // Movement
 #pragma region movement
-    
-        if (IsKeyDown('W') && !LTF::collision(objectList,player,1))
+
+        if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
         {
             player.moveForward();
         }
-        if (IsKeyDown('S') && !LTF::collision(objectList,player,2))
+        if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
         {
             player.moveBackward();
         }
-        if (IsKeyDown('A') && !LTF::collision(objectList,player,3))
+        if (IsKeyDown('A') && !LTF::collision(objectList, player, 3))
         {
             player.moveLeft();
         }
 
-        if (IsKeyDown('D') && !LTF::collision(objectList,player,4))
+        if (IsKeyDown('D') && !LTF::collision(objectList, player, 4))
         {
             player.moveRight();
         }
@@ -107,10 +95,9 @@ int main(void)
             player.jump();
         }
 
-
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * -sensitivity; //Sensitivity is found in player.hpp
-        mousey += (currentMouse.y - previousMouse.y) * -sensitivity;
+        mousex += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
+        mousey += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
 
         previousMouse = currentMouse;
 
@@ -130,15 +117,23 @@ int main(void)
             mousey = -85.0f * DEG2RAD;
         }
 
-        player.updateGravity(deltaTime);
+        if(!LTF::collision(objectList,player,deltaTime)) player.updateGravity(deltaTime);
+        
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
-        camera.target = player.getTarget(); 
+        camera.target = player.getTarget();
+        camera.up = player.getUp();
 
-        if (IsKeyDown('F'))
+        if (IsKeyPressed('F'))
         {
             player.setUp({1.0f, 0, 0});
+            player.updateBases();
+        }
+        if (IsKeyPressed('G'))
+        {
+            player.setUp({0, 1.0f, 0});
+            player.updateBases();
         }
 
         // Draw
@@ -149,10 +144,11 @@ int main(void)
 
         BeginMode3D(camera);
 
-        DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
-        DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE);  // Draw a blue wall
-        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);   // Draw a green wall
-        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);   // Draw a yellow wall
+        DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
+        //DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
+        DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
+        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
+        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
 
         //Testdraw models
         if (!LTF::collision(myObj, player))
@@ -163,7 +159,7 @@ int main(void)
         {
             DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
         }
-        DrawBoundingBox(myObj.getBox(),GREEN);
+        DrawBoundingBox(myObj.getBox(), GREEN);
 
         // Draw some cubes around
         /*for (int i = 0; i < MAX_COLUMNS; i++)
@@ -171,24 +167,26 @@ int main(void)
             DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
             DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
         }*/
-        for (int i = 0; i < MAX_COLUMNS; i++)
+        for (CollisionObject obj : objectList)
         {
-            if (!LTF::collision(objectList.at(i), player))
+            if (!LTF::collision(obj, player))
             {
-                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), BLUE);
+                DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), BLUE);
             }
             else
             {
-                DrawModel(objectList.at(i).getModel(), objectList.at(i).getPosition(), objectList.at(i).getScale(), RED);
+                DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), RED);
             }
         }
 
         EndMode3D();
         EndDrawing();
         //----------------------------------------------------------------------------------
+        /*                               Console out place
+        ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
-        std::cout << player.projection(player.getTarget(),{1,0,0},{0,0,1}).x << std::endl;
+        std::cout << player.getPositionY() << std::endl;
 
         // Stop clock and calulate deltaTimme
         finish = clock();
@@ -199,7 +197,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     //TODO: write desctructor for collisionObject
     // UnloadModel(model);
-    std::cout << LTF::Vector3Angle({1,0,0},{1,1,0}) << std::endl;
+    std::cout << LTF::Vector3Angle({1, 0, 0}, {1, 1, 0}) << std::endl;
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 
