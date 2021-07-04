@@ -125,13 +125,9 @@ void Player::jump()
  */
 void Player::updateGravity(float deltaTime)
 {
-    Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
-                              Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
-    speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
-    if(Vector3Add(position,temp).y > 2) 
-    {
-        position = Vector3Add(position, temp);
-    }
+
+        position = getNextGravityVector(deltaTime);
+
 }
 
 /**
@@ -140,12 +136,17 @@ void Player::updateGravity(float deltaTime)
  * @param deltaTime makes it independent from framrate
  * @return Vector3 
  */
-Vector3 Player::getNextGravity(float deltaTime)
+Vector3 Player::getNextGravityVector(float deltaTime)
 {
     Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
                               Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
     speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
     return Vector3Add(position, temp);
+}
+
+void Player::resetSpeed()
+{
+    this->speed = {0,0,0};
 }
 
 // Setters and constructor

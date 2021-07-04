@@ -22,14 +22,14 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject myObj({0, 0, 0}, false, 1, "arch.obj");
+    CollisionObject myObj({0, 0, 0}, false, 1, ORANGE, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
     static float deltaTime = 0;
 
     // Initialize player
-    Player player({4.0f, 2.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+    Player player({4.0f, 4.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
 
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
@@ -43,9 +43,10 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, "cone.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, BLUE, "cone.obj"));
     }
-    CollisionObject testFloor({0, -2, 0}, false, 2, "floor.obj");
+    CollisionObject testFloor({0, -2, 0}, false, 2, GREEN, "floor.obj");
+    objectList.push_back(testFloor);
 
     static float mousex = 0;
     static float mousey = 0;
@@ -106,7 +107,8 @@ int main(void)
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
         //----------------------------------------------------------------------------------
-
+        
+#pragma region forces and limits
         // Makes sure player can't turn camera over on it's head
         if (mousey > 85.0f * DEG2RAD)
         {
@@ -117,9 +119,18 @@ int main(void)
             mousey = -85.0f * DEG2RAD;
         }
 
-        if(!LTF::collision(objectList,player,deltaTime)) player.updateGravity(deltaTime);
-        
+        if (!LTF::collision(objectList, player, deltaTime))
+        {
+            player.updateGravity(deltaTime);
+        }
+        else
+        {
+            player.resetSpeed();
+        }
+
         player.updateTarget(mousex, mousey);
+
+#pragma endregion
 
         camera.position = player.getPosition();
         camera.target = player.getTarget();
@@ -153,7 +164,7 @@ int main(void)
         //Testdraw models
         if (!LTF::collision(myObj, player))
         {
-            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), BLUE);
+            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), myObj.getColor());
         }
         else
         {
@@ -161,17 +172,12 @@ int main(void)
         }
         DrawBoundingBox(myObj.getBox(), GREEN);
 
-        // Draw some cubes around
-        /*for (int i = 0; i < MAX_COLUMNS; i++)
-        {
-            DrawCube(positions[i], 2.0f, heights[i], 2.0f, colors[i]);
-            DrawCubeWires(positions[i], 2.0f, heights[i], 2.0f, MAROON);
-        }*/
         for (CollisionObject obj : objectList)
         {
             if (!LTF::collision(obj, player))
             {
-                DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), BLUE);
+                DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), obj.getColor());
+                DrawBoundingBox(obj.getBox(), GREEN);
             }
             else
             {
@@ -188,7 +194,7 @@ int main(void)
         //std::cout << player.getPositionY() << std::endl;
         std::cout << player.getPositionY() << std::endl;
 
-        // Stop clock and calulate deltaTimme
+        // Stop clock and calulate deltaTime
         finish = clock();
         deltaTime = (float(finish) - float(start)) / CLOCKS_PER_SEC;
     }
@@ -197,7 +203,6 @@ int main(void)
     //--------------------------------------------------------------------------------------
     //TODO: write desctructor for collisionObject
     // UnloadModel(model);
-    std::cout << LTF::Vector3Angle({1, 0, 0}, {1, 1, 0}) << std::endl;
     CloseWindow(); // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

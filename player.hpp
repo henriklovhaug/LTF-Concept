@@ -71,7 +71,8 @@ public:
 
     void jump();
     void updateGravity(float deltaTime);
-    Vector3 getNextGravity(float deltaTime);
+    Vector3 getNextGravityVector(float deltaTime);
+    void resetSpeed();
 
     //Update target while playing
 

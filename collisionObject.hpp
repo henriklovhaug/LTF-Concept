@@ -21,18 +21,21 @@ private:
     //Model loaded from file
     Model model;
 
+    Color color;
+
     //Bounds around model
     BoundingBox box;
     void scaleBox(float scale);
 
 public:
-    CollisionObject(Vector3 position, bool isGround, float scale, std::string name = "0");
+    CollisionObject(Vector3 position, bool isGround, float scale, Color color, std::string name = "0");
 
     void setPosition(Vector3 position);
     void setOBJname(std::string name);
     void setScale(float scale);
     void setIsGround(bool isGround);
-    
+    void boundingBoxCorrection();
+    void setColor(Color color);
 
     Vector3 getPosition();
     std::string getOBJname();
@@ -40,4 +43,5 @@ public:
     bool getIsGround();
     Model getModel();
     BoundingBox getBox();
+    Color getColor();
 };
