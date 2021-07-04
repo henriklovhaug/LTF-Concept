@@ -96,8 +96,8 @@ int main(void)
         }
 
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * -sensitivity; //Sensitivity is found in player.hpp
-        mousey += (currentMouse.y - previousMouse.y) * -sensitivity;
+        mousex += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
+        mousey += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
 
         previousMouse = currentMouse;
 
@@ -117,7 +117,8 @@ int main(void)
             mousey = -85.0f * DEG2RAD;
         }
 
-        player.updateGravity(deltaTime);
+        if(!LTF::collision(objectList,player,deltaTime)) player.updateGravity(deltaTime);
+        
         player.updateTarget(mousex, mousey);
 
         camera.position = player.getPosition();
@@ -185,9 +186,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
-        std::cout << "x: " << player.getGravityVector().x << std::endl;
-        std::cout << "y: " << player.getGravityVector().y << std::endl;
-        std::cout << "z: " << player.getGravityVector().z << std::endl;
+        std::cout << player.getPositionY() << std::endl;
 
         // Stop clock and calulate deltaTimme
         finish = clock();

@@ -98,12 +98,16 @@ Vector3 Player::getNextPosition(int direction)
     case 4:
         return Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
         break;
+    case 5:
     default:
         return {0, 0, 0};
         break;
     }
 }
-
+/**
+ * @brief Le jump
+ * 
+ */
 void Player::jump()
 {
     if (canJump)
@@ -112,28 +116,30 @@ void Player::jump()
     }
 }
 
+//TODO: this needs testing
 /**
  * @brief Makes player fall
  * 
  * @param deltaTime makes method independent from framerate
  * 
- * TODO: make it work when up is flipped
  */
 void Player::updateGravity(float deltaTime)
 {
     Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
                               Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
-    speed.y -= deltaTime * gravityconstant;
-    if (Vector3Add(position, temp).y > 2.0f)
+    speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
+    if(Vector3Add(position,temp).y > 2) 
     {
-        canJump = false;
         position = Vector3Add(position, temp);
     }
-    else
-    {
-        position.y = 2.0f;
-        canJump = true;
-    }
+}
+
+Vector3 Player::getNextGravity(float deltaTime)
+{
+    Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
+                              Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
+    speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
+    return Vector3Add(position, temp);
 }
 
 // Setters and constructor

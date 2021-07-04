@@ -2,7 +2,7 @@
 #include <raymath.h>
 #include <utility>
 
-#define sensitivity 0.003f
+#define SENSITIVITY 0.003f
 #define maxY 89.0f
 #define MOVESPEED 0.2f
 #define gravityconstant 150.0f
@@ -71,6 +71,7 @@ public:
 
     void jump();
     void updateGravity(float deltaTime);
+    Vector3 getNextGravity(float deltaTime);
 
     //Update target while playing
 

@@ -72,6 +72,15 @@ namespace LTF
         }
         return false;
     }
+    bool collision(std::vector<CollisionObject> list, Player player,float deltatime)
+    {
+        for (CollisionObject obj : list)
+        {
+            if (collision(obj, player.getNextGravity(deltatime)))
+                return true;
+        }
+        return false;
+    }
 #pragma endregion
 
     /**
@@ -86,12 +95,12 @@ namespace LTF
     {
         if (Vector3DotProduct(v2b, v3b) == 0)
         {
-            return Vector3Add(Vector3Scale(v2b,Vector3DotProduct(v1,v2b)/Vector3DotProduct(v2b,v2b)),
-            Vector3Scale(v3b,Vector3DotProduct(v1,v3b)/Vector3DotProduct(v3b,v3b)));
+            return Vector3Add(Vector3Scale(v2b, Vector3DotProduct(v1, v2b) / Vector3DotProduct(v2b, v2b)),
+                              Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b)));
         }
         else
         {
-            return {0,0,0};
+            return {0, 0, 0};
         }
     }
     /**
@@ -103,7 +112,7 @@ namespace LTF
      */
     float Vector3Angle(Vector3 v1, Vector3 v2)
     {
-        return acosf(Vector3DotProduct(v1,v2)/(Vector3Length(v1)*Vector3Length(v2)))*RAD2DEG;
+        return acosf(Vector3DotProduct(v1, v2) / (Vector3Length(v1) * Vector3Length(v2))) * RAD2DEG;
     }
 
 }
