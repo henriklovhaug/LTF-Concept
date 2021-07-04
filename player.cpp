@@ -2,8 +2,8 @@
 
 /**
  * @brief Turns mouse movement into rotation of player
- * 
- * @param deltaX 
+ *
+ * @param deltaX
  * @param deltaY MouseDelta y has to be handled before it's passed into method i.e. cap how far up the player can see etc.
  */
 void Player::updateTarget(float deltaX, float deltaY)
@@ -65,7 +65,7 @@ void Player::moveRight()
 
 /**
  * @brief Get normalized vector projected onto plane
- * 
+ *
  * @param v1 basis one
  * @param v2 basis two
  * @return Vector3 projected
@@ -77,7 +77,7 @@ Vector3 Player::getMovement(Vector3 v1, Vector3 v2)
 
 /**
  * @brief calculates where player whould be next tick. Used for preemptive crash detection
- * 
+ *
  * @param direction 1: forward, 2: backwards, 3: left, 4: right
  * @return Vector3 where player would be
  */
@@ -105,7 +105,7 @@ Vector3 Player::getNextPosition(int direction)
 }
 /**
  * @brief Le jump
- * 
+ *
  */
 void Player::jump()
 {
@@ -118,9 +118,9 @@ void Player::jump()
 //TODO: this needs testing
 /**
  * @brief Makes player fall
- * 
+ *
  * @param deltaTime makes method independent from framerate
- * 
+ *
  */
 void Player::updateGravity(float deltaTime)
 {
@@ -129,9 +129,9 @@ void Player::updateGravity(float deltaTime)
 
 /**
  * @brief gives where the player will be next tick
- * 
+ *
  * @param deltaTime makes it independent from framrate
- * @return Vector3 
+ * @return Vector3
  */
 Vector3 Player::getNextGravityVector(float deltaTime)
 {
@@ -139,7 +139,7 @@ Vector3 Player::getNextGravityVector(float deltaTime)
                               Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
     speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
     return Vector3Add(position, temp);
-} 
+}
 
 void Player::resetSpeed()
 {
@@ -165,11 +165,11 @@ void Player::setUp(Vector3 up)
 
 /**
  * @brief Construct a new Player object
- * 
- * @param position 
- * @param target 
+ *
+ * @param position
+ * @param target
  * @param up Defines up and gravity vector
- * 
+ *
  */
 Player::Player(Vector3 position, Vector3 target, Vector3 up)
 {

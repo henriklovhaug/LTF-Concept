@@ -4,7 +4,7 @@
 
 /**
  * @brief Construct a new Collision Object:: Collision Object object
- * 
+ *
  * @param position Vector3 position
  * @param isGround is it ground? soon to be removed
  * @param scale Scale of object. Will be scaled in all directions
@@ -31,7 +31,7 @@ void CollisionObject::boundingBoxCorrection()
 void CollisionObject::setPosition(Vector3 position)
 {
     this->position = position;
-} 
+}
 
 void CollisionObject::setOBJname(std::string name)
 {

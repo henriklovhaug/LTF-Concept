@@ -27,9 +27,10 @@ int main(void)
     // Get delta time for force-sensitive physics
     clock_t start, finish;
     static float deltaTime = 0;
-    
+
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+    RayHitInfo hitInfo = {0};
     Ray ray = {player.getPosition(),player.getTarget()};
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
@@ -56,8 +57,8 @@ int main(void)
 
     static Vector2 previousMouse = GetMousePosition(); //Get the position of the mouse
 
-    SetCameraMode(camera, CAMERA_CUSTOM); 
- 
+    SetCameraMode(camera, CAMERA_CUSTOM);
+
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -79,7 +80,6 @@ int main(void)
 
         if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
         {
-           // if(getRay)
             player.moveForward();
         }
         if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
@@ -165,9 +165,11 @@ int main(void)
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
         DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
         DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
+        DrawRay({{1,1,0},{0,0,0}},PINK);
 
         //Testdraw models
-        if (!LTF::collision(myObj, player))
+
+        if (!LTF::collision(myObj, player) && GetCollisionRayModel(ray,myObj.getModel()).distance < 0.01f)
         {
             DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), myObj.getColor());
         }
@@ -197,7 +199,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
-        std::cout << player.getPositionY() << std::endl;
+        std::cout << GetCollisionRayModel(ray,myObj.getModel()).hit << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

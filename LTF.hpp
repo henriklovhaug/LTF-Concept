@@ -11,7 +11,7 @@ these two can be the same, but could be beneficial to keep them seperate*/
 #include "player.hpp"
 /**
  * @brief Only use LTF in main
- * 
+ *
  */
 namespace LTF
 {
@@ -85,7 +85,7 @@ namespace LTF
 
     /**
      * @brief Projects vector one onto plane created by vector two and three
-     * 
+     *
      * @param v1 Vector one
      * @param v2b Vector two
      * @param v3b Vector three
@@ -105,7 +105,7 @@ namespace LTF
     }
     /**
      * @brief Calculates angle between two vectors
-     * 
+     *
      * @param v1 Vector one
      * @param v2 Vector two
      * @return Angle in degrees. Use DEG2RAD to convert back
