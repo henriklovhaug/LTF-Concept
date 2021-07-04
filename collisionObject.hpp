@@ -15,9 +15,6 @@ private:
     // Scale of object
     float scale;
 
-    // ground ? walkable : will collide
-    bool isGround;
-
     //Model loaded from file
     Model model;
 
@@ -28,19 +25,17 @@ private:
     void scaleBox(float scale);
 
 public:
-    CollisionObject(Vector3 position, bool isGround, float scale, Color color, std::string name = "0");
+    CollisionObject(Vector3 position, float scale, Color color, std::string name = "0");
 
     void setPosition(Vector3 position);
     void setOBJname(std::string name);
     void setScale(float scale);
-    void setIsGround(bool isGround);
     void boundingBoxCorrection();
     void setColor(Color color);
 
     Vector3 getPosition();
     std::string getOBJname();
     float getScale();
-    bool getIsGround();
     Model getModel();
     BoundingBox getBox();
     Color getColor();

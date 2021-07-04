@@ -26,8 +26,8 @@ private:
     Vector3 speed = {0, 0, 0};
 
     // Mouse delta
-    float mousex = 0;
-    float mousey = 0;
+    float mouseX = 0;
+    float mouseY = 0;
 
     // Planes used for movement
     Vector3 movement;

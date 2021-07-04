@@ -10,10 +10,9 @@
  * @param scale Scale of object. Will be scaled in all directions
  * @param name name of object file. i.e. "floor.obj"
  */
-CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale,Color color, std::string name)
+CollisionObject::CollisionObject(Vector3 position, float scale,Color color, std::string name)
 {
     setPosition(position);
-    setIsGround(isGround);
     setScale(scale);
     setOBJname(name);
     setColor(color);
@@ -44,10 +43,7 @@ void CollisionObject::setScale(float scale)
     this->scale = scale;
 }
 
-void CollisionObject::setIsGround(bool isGround)
-{
-    this->isGround = isGround;
-}
+
 
 void CollisionObject::setColor(Color color)
 {
@@ -69,10 +65,6 @@ std::string CollisionObject::getOBJname()
     return this->objURL;
 }
 
-bool CollisionObject::getIsGround()
-{
-    return this->isGround;
-}
 
 Color CollisionObject::getColor()
 {

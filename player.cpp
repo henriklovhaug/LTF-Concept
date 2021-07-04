@@ -90,7 +90,6 @@ Vector3 Player::getNextPosition(int direction)
         break;
     case 2:
         return Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED)));
-
         break;
     case 3:
         return Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement({1, 0, 0}, {0, 0, 1}), MOVESPEED))));
@@ -125,9 +124,7 @@ void Player::jump()
  */
 void Player::updateGravity(float deltaTime)
 {
-
         position = getNextGravityVector(deltaTime);
-
 }
 
 /**

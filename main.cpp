@@ -22,7 +22,7 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject myObj({0, 0, 0}, false, 1, ORANGE, "arch.obj");
+    CollisionObject myObj({0, 0, 0}, 1, ORANGE, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -43,18 +43,21 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, BLUE, "cone.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, 2, BLUE, "cone.obj"));
     }
-    CollisionObject testFloor({0, -2, 0}, false, 2, GREEN, "floor.obj");
+    //Other collision stuff
+    CollisionObject testFloor({0, -2, 0}, 2, GREEN, "floor.obj");
     objectList.push_back(testFloor);
+    CollisionObject testWall({20, 0, 0}, 1, BROWN, "wall.obj");
+    objectList.push_back(testWall);
 
-    static float mousex = 0;
-    static float mousey = 0;
+    static float mouseX = 0;
+    static float mouseY = 0;
 
     static Vector2 previousMouse = GetMousePosition(); //Get the position of the mouse
 
-    SetCameraMode(camera, CAMERA_CUSTOM);
-
+    SetCameraMode(camera, CAMERA_CUSTOM); 
+ 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
 
@@ -97,8 +100,8 @@ int main(void)
         }
 
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
-        mousey += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
+        mouseX += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
+        mouseY += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
 
         previousMouse = currentMouse;
 
@@ -106,17 +109,17 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
-        //----------------------------------------------------------------------------------
-        
+                               //----------------------------------------------------------------------------------
+
 #pragma region forces and limits
         // Makes sure player can't turn camera over on it's head
-        if (mousey > 85.0f * DEG2RAD)
+        if (mouseY > 85.0f * DEG2RAD)
         {
-            mousey = 85.0f * DEG2RAD;
+            mouseY = 85.0f * DEG2RAD;
         }
-        else if (mousey < -85.0f * DEG2RAD)
+        else if (mouseY < -85.0f * DEG2RAD)
         {
-            mousey = -85.0f * DEG2RAD;
+            mouseY = -85.0f * DEG2RAD;
         }
 
         if (!LTF::collision(objectList, player, deltaTime))
@@ -128,7 +131,7 @@ int main(void)
             player.resetSpeed();
         }
 
-        player.updateTarget(mousex, mousey);
+        player.updateTarget(mouseX, mouseY);
 
 #pragma endregion
 
