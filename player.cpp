@@ -139,7 +139,7 @@ Vector3 Player::getNextGravityVector(float deltaTime)
                               Vector3Scale(getGravityVector(), powf(deltaTime, 2) * gravityconstant));
     speed = Vector3Add(speed, Vector3Scale(getGravityVector(), deltaTime * 75));
     return Vector3Add(position, temp);
-}
+} 
 
 void Player::resetSpeed()
 {

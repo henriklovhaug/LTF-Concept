@@ -29,7 +29,7 @@ int main(void)
     static float deltaTime = 0;
 
     // Initialize player
-    Player player({4.0f, 4.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+    Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
 
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
