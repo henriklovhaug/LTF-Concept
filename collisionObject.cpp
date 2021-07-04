@@ -10,15 +10,23 @@
  * @param scale Scale of object. Will be scaled in all directions
  * @param name name of object file. i.e. "floor.obj"
  */
-CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale, std::string name)
+CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale,Color color, std::string name)
 {
     setPosition(position);
     setIsGround(isGround);
     setScale(scale);
     setOBJname(name);
+    setColor(color);
     this->model = LoadModel(objURL.c_str());
     this->box = MeshBoundingBox(this->model.meshes[0]);
     scaleBox(scale);
+    boundingBoxCorrection();
+}
+
+void CollisionObject::boundingBoxCorrection()
+{
+    this->box.max = Vector3Add(this->box.max,this->position);
+    this->box.min = Vector3Add(this->box.min,this->position);
 }
 
 void CollisionObject::setPosition(Vector3 position)
@@ -41,6 +49,11 @@ void CollisionObject::setIsGround(bool isGround)
     this->isGround = isGround;
 }
 
+void CollisionObject::setColor(Color color)
+{
+    this->color = color;
+}
+
 Vector3 CollisionObject::getPosition()
 {
     return this->position;
@@ -59,6 +72,11 @@ std::string CollisionObject::getOBJname()
 bool CollisionObject::getIsGround()
 {
     return this->isGround;
+}
+
+Color CollisionObject::getColor()
+{
+    return this->color;
 }
 
 Model CollisionObject::getModel()

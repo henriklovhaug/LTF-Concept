@@ -45,22 +45,22 @@ namespace LTF
     //TODO: handle player mesh instead of player point
     bool collision(CollisionObject object, Player player)
     {
-        return object.getBox().min.x + object.getPosition().x < player.getPositionX() &&
-               object.getBox().min.y + object.getPosition().y < player.getPositionY() &&
-               object.getBox().min.z + object.getPosition().z < player.getPositionZ() &&
-               player.getPositionX() < object.getBox().max.x + object.getPosition().x &&
-               player.getPositionY() < object.getBox().max.y + object.getPosition().y &&
-               player.getPositionZ() < object.getBox().max.z + object.getPosition().z;
+        return object.getBox().min.x < player.getPositionX() &&
+               object.getBox().min.y < player.getPositionY() &&
+               object.getBox().min.z < player.getPositionZ() &&
+               player.getPositionX() < object.getBox().max.x &&
+               player.getPositionY() < object.getBox().max.y &&
+               player.getPositionZ() < object.getBox().max.z;
     }
 
     bool collision(CollisionObject object, Vector3 player)
     {
-        return object.getBox().min.x + object.getPosition().x < player.x &&
-               object.getBox().min.y + object.getPosition().y < player.y &&
-               object.getBox().min.z + object.getPosition().z < player.z &&
-               player.x < object.getBox().max.x + object.getPosition().x &&
-               player.y < object.getBox().max.y + object.getPosition().y &&
-               player.z < object.getBox().max.z + object.getPosition().z;
+        return object.getBox().min.x < player.x &&
+               object.getBox().min.y < player.y &&
+               object.getBox().min.z < player.z &&
+               player.x < object.getBox().max.x &&
+               player.y < object.getBox().max.y &&
+               player.z < object.getBox().max.z;
     }
 
     bool collision(std::vector<CollisionObject> list, Player player, int direction)
@@ -72,11 +72,11 @@ namespace LTF
         }
         return false;
     }
-    bool collision(std::vector<CollisionObject> list, Player player,float deltatime)
+    bool collision(std::vector<CollisionObject> list, Player player, float deltatime)
     {
         for (CollisionObject obj : list)
         {
-            if (collision(obj, player.getNextGravity(deltatime)))
+            if (collision(obj, player.getNextGravityVector(deltatime)))
                 return true;
         }
         return false;
