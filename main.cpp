@@ -27,10 +27,10 @@ int main(void)
     // Get delta time for force-sensitive physics
     clock_t start, finish;
     static float deltaTime = 0;
-
+    
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
-
+    Ray ray = {player.getPosition(),player.getTarget()};
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
     camera.position = player.getPosition();
@@ -79,6 +79,7 @@ int main(void)
 
         if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
         {
+           // if(getRay)
             player.moveForward();
         }
         if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
@@ -138,6 +139,7 @@ int main(void)
         camera.position = player.getPosition();
         camera.target = player.getTarget();
         camera.up = player.getUp();
+        ray = {player.getPosition(),player.getTarget()};
 
         if (IsKeyPressed('F'))
         {
