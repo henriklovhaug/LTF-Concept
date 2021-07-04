@@ -134,6 +134,12 @@ void Player::updateGravity(float deltaTime)
     }
 }
 
+/**
+ * @brief gives where the player will be next tick
+ * 
+ * @param deltaTime makes it independent from framrate
+ * @return Vector3 
+ */
 Vector3 Player::getNextGravity(float deltaTime)
 {
     Vector3 temp = Vector3Add(Vector3Scale(speed, deltaTime),
