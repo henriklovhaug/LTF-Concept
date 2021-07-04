@@ -22,7 +22,7 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject myObj({0, 0, 0}, 1, ORANGE, "arch.obj");
+    CollisionObject arch({0, 0, 0}, 1, ORANGE, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -65,8 +65,8 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << "max x: " << myObj.getBox().max.x << std::endl;
-    std::cout << "min x: " << myObj.getBox().min.x << std::endl;
+    std::cout << "max x: " << arch.getBox().max.x << std::endl;
+    std::cout << "min x: " << arch.getBox().min.x << std::endl;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -139,7 +139,8 @@ int main(void)
         camera.position = player.getPosition();
         camera.target = player.getTarget();
         camera.up = player.getUp();
-        ray = {player.getPosition(),player.getTarget()};
+        ray = {player.getPosition(),Vector3Scale(player.getTarget(),50000)};
+
 
         if (IsKeyPressed('F'))
         {
@@ -169,15 +170,15 @@ int main(void)
 
         //Testdraw models
 
-        if (!LTF::collision(myObj, player) && GetCollisionRayModel(ray,myObj.getModel()).distance < 0.01f)
+        if (!LTF::collision(arch, player) && GetCollisionRayModel(ray,arch.getModel()).distance < 0.01f)
         {
-            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), myObj.getColor());
+            DrawModel(arch.getModel(), arch.getPosition(), arch.getScale(), arch.getColor());
         }
         else
         {
-            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
+            DrawModel(arch.getModel(), arch.getPosition(), arch.getScale(), RED);
         }
-        DrawBoundingBox(myObj.getBox(), GREEN);
+        DrawBoundingBox(arch.getBox(), GREEN);
 
         for (CollisionObject obj : objectList)
         {
@@ -199,7 +200,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
         //std::cout << player.getPositionY() << std::endl;
-        std::cout << GetCollisionRayModel(ray,myObj.getModel()).hit << std::endl;
+        std::cout << GetCollisionRayModel(ray,arch.getModel()).hit << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
