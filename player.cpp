@@ -246,6 +246,13 @@ float Player::getRadius()
 {
     return this->radius;
 }
+
+Ray Player::getRay()
+{
+    this->ray.position = this->position;
+    this->ray.direction = Vector3Subtract(this->target,this->position);
+    return ray;
+}
 #pragma endregion
 
 Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)

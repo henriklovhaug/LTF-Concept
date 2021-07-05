@@ -188,7 +188,7 @@ int main(void)
             if (!LTF::collision(obj, player))
             {
                 DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), obj.getColor());
-                DrawBoundingBox(obj.getBox(), GREEN);
+                //DrawBoundingBox(obj.getBox(), GREEN);
             }
             else
             {
@@ -202,8 +202,7 @@ int main(void)
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
         //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
-        std::cout << LTF::GetRayCollisionModel(LTF::rayTransform(GetMouseRay(ray
-        , camera),3), testWall.getModel(),testWall.getPosition()).hit << std::endl;
+        std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(),testWall.getPosition()).hit << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

@@ -31,6 +31,7 @@ private:
 
     // Planes used for movement
     Vector3 movement;
+    Ray ray;
 
     // Generate planes for movement
     float dx;
@@ -86,6 +87,7 @@ public:
     Vector3 getNextPosition(int direction);
 
     Vector3 getTarget();
+    Ray getRay();
     float getTargetX();
     float getTargetY();
     float getTargetZ();
