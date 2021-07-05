@@ -281,3 +281,8 @@ Vector3 Player::getFeets()
     else
         return Vector3Add(this->position, Vector3Negate(this->up));
 }
+
+Vector3 Player::getHead()
+{
+    return Vector3Add(this->position,this->up);
+}

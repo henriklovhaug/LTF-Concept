@@ -209,7 +209,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
         //std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
-        std::cout << player.getSpeedY() << std::endl;
+        std::cout << player.canJump() << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

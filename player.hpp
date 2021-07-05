@@ -79,6 +79,7 @@ public:
     float getPositionZ();
     Vector3 getNextPosition(int direction);
     Vector3 getFeets();
+    Vector3 getHead();
 
     Vector3 getTarget();
     Ray getRay();
