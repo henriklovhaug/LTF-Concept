@@ -33,18 +33,10 @@ private:
     Vector3 movement;
     Ray ray;
 
-    // Generate planes for movement
-    float dx;
-    float dy;
-    float dz;
-
-    float anglex;
-    float angley = atan2f(dy, sqrtf(dx *dx + dz * dz));
-
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
     // Boolean var
-    bool canJump = true;
+    bool isCrouched = false;
 
     // Radius     used for testing
     float radius = 1;
@@ -59,7 +51,6 @@ public:
     void setUp(Vector3 up);
 
     //Movement methods and helpers
-    void updatePlaneXZ();
     void updateBases();
 
     Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b);
@@ -69,6 +60,8 @@ public:
     void moveBackward();
     void moveLeft();
     void moveRight();
+
+    void crouch();
 
     void jump();
     void updateGravity(float deltaTime);
@@ -85,6 +78,7 @@ public:
     float getPositionY();
     float getPositionZ();
     Vector3 getNextPosition(int direction);
+    Vector3 getFeets();
 
     Vector3 getTarget();
     Ray getRay();
@@ -99,6 +93,7 @@ public:
     float getUpZ();
 
     float getSpeedY();
+    bool canJump();
 
     float getRadius();
 };

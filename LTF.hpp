@@ -53,14 +53,14 @@ namespace LTF
                player.getPositionZ() < object.getBox().max.z;
     }
 
-    bool collision(CollisionObject object, Vector3 player)
+    bool collision(CollisionObject object, Vector3 vector)
     {
-        return object.getBox().min.x < player.x &&
-               object.getBox().min.y < player.y &&
-               object.getBox().min.z < player.z &&
-               player.x < object.getBox().max.x &&
-               player.y < object.getBox().max.y &&
-               player.z < object.getBox().max.z;
+        return object.getBox().min.x < vector.x &&
+               object.getBox().min.y < vector.y &&
+               object.getBox().min.z < vector.z &&
+               vector.x < object.getBox().max.x &&
+               vector.y < object.getBox().max.y &&
+               vector.z < object.getBox().max.z;
     }
 
     bool collision(std::vector<CollisionObject> list, Player player, int direction)

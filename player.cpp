@@ -15,16 +15,6 @@ void Player::updateTarget(float deltaX, float deltaY)
     setTarget({getPositionX() - transform.m12, getPositionY() - transform.m13, getPositionZ() - transform.m14});
 }
 
-void Player::updatePlaneXZ()
-{
-    Vector3 v1 = getPosition();
-    Vector3 v2 = getTarget();
-
-    dx = v2.x - v1.x;
-    dz = v2.z - v1.z;
-
-    anglex = atan2f(dx, dz);
-}
 
 void Player::updateBases()
 {
@@ -63,6 +53,13 @@ void Player::moveRight()
     setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
 
+void Player::crouch()
+{
+    if (!canJump() && !isCrouched)
+    {
+        this->position = Vector3Subtract(this->position, this->up);
+    }
+}
 /**
  * @brief Get normalized vector projected onto plane
  *
@@ -109,10 +106,18 @@ Vector3 Player::getNextPosition(int direction)
  */
 void Player::jump()
 {
-    if (canJump)
+    if (canJump())
     {
         speed.y = jumpConstant;
     }
+}
+
+bool Player::canJump()
+{
+    Vector3 temp = Vector3Add(this->up, this->speed);
+    return this->up.x == temp.x &&
+           this->up.y == temp.y &&
+           this->up.z == temp.z;
 }
 
 //TODO: this needs testing
@@ -124,7 +129,7 @@ void Player::jump()
  */
 void Player::updateGravity(float deltaTime)
 {
-        position = getNextGravityVector(deltaTime);
+    position = getNextGravityVector(deltaTime);
 }
 
 /**
@@ -143,7 +148,7 @@ Vector3 Player::getNextGravityVector(float deltaTime)
 
 void Player::resetSpeed()
 {
-    this->speed = {0,0,0};
+    this->speed = {0, 0, 0};
 }
 
 // Setters and constructor
@@ -250,7 +255,7 @@ float Player::getRadius()
 Ray Player::getRay()
 {
     this->ray.position = this->position;
-    this->ray.direction = Vector3Subtract(this->target,this->position);
+    this->ray.direction = Vector3Subtract(this->target, this->position);
     return ray;
 }
 #pragma endregion
@@ -267,4 +272,12 @@ Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
         //TODO: Handle not orthogonal basis
         return {0, 0, 0};
     }
+}
+
+Vector3 Player::getFeets()
+{
+    if (!isCrouched)
+        return Vector3Add(this->position, getGravityVector());
+    else
+        return Vector3Add(this->position, Vector3Negate(this->up));
 }

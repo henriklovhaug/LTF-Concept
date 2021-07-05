@@ -94,9 +94,16 @@ int main(void)
         {
             player.moveRight();
         }
+
         if (IsKeyPressed(KEY_SPACE))
         {
             player.jump();
+        }
+
+        if(IsKeyDown(KEY_LEFT_SHIFT))
+        {
+            std::cout << true << std::endl;
+            player.crouch();
         }
 
         // Delta mouseposition
@@ -201,7 +208,8 @@ int main(void)
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
         //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
-        std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
+        //std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
+        std::cout << player.getSpeedY() << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
