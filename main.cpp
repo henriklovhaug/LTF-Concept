@@ -31,7 +31,7 @@ int main(void)
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
 
-    Vector2 ray = {float(GetScreenWidth())/2, float(GetScreenHeight())/2};
+    Vector2 ray = {float(GetScreenWidth()) / 2, float(GetScreenHeight()) / 2};
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
     camera.position = player.getPosition();
@@ -202,7 +202,7 @@ int main(void)
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
         //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
-        std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(),testWall.getPosition()).hit << std::endl;
+        std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
