@@ -22,7 +22,7 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject arch({0, 0, 0}, 1, ORANGE, "arch.obj");
+    CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -30,8 +30,8 @@ int main(void)
 
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
-    RayHitInfo hitInfo = {0};
-    Ray ray = {player.getPosition(),player.getTarget()};
+
+    Vector2 ray = {float(GetScreenWidth())/2, float(GetScreenHeight())/2};
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
     camera.position = player.getPosition();
@@ -65,8 +65,8 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << "max x: " << arch.getBox().max.x << std::endl;
-    std::cout << "min x: " << arch.getBox().min.x << std::endl;
+    std::cout << "max x: " << arch2.getBox().max.x << std::endl;
+    std::cout << "min x: " << arch2.getBox().min.x << std::endl;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -139,8 +139,6 @@ int main(void)
         camera.position = player.getPosition();
         camera.target = player.getTarget();
         camera.up = player.getUp();
-        ray = {player.getPosition(),Vector3Scale(player.getTarget(),50000)};
-
 
         if (IsKeyPressed('F'))
         {
@@ -162,23 +160,28 @@ int main(void)
         BeginMode3D(camera);
 
         DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
-        //DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
         DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
         DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
-        DrawRay({{1,1,0},{0,0,0}},PINK);
+        DrawRay({{1, 1, 0}, {0, 0, 0}}, PINK);
 
         //Testdraw models
 
-        if (!LTF::collision(arch, player) && GetCollisionRayModel(ray,arch.getModel()).distance < 0.01f)
+        if (!LTF::collision(arch2, player))
         {
-            DrawModel(arch.getModel(), arch.getPosition(), arch.getScale(), arch.getColor());
+            DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), arch2.getColor());
         }
         else
         {
-            DrawModel(arch.getModel(), arch.getPosition(), arch.getScale(), RED);
+            if (GetCollisionRayModel(GetMouseRay({float(GetScreenWidth()) / 2, float(GetScreenHeight()) / 2}, camera), arch2.getModel()).hit &&
+                GetCollisionRayModel(GetMouseRay({float(GetScreenWidth()) / 2, float(GetScreenHeight()) / 2}, camera), arch2.getModel()).distance < 1)
+            {
+                DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), RED);
+            }
+            else
+                DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), arch2.getColor());
         }
-        DrawBoundingBox(arch.getBox(), GREEN);
+        DrawBoundingBox(arch2.getBox(), GREEN);
 
         for (CollisionObject obj : objectList)
         {
@@ -198,9 +201,9 @@ int main(void)
         //----------------------------------------------------------------------------------
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
-        //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
-        //std::cout << player.getPositionY() << std::endl;
-        std::cout << GetCollisionRayModel(ray,arch.getModel()).hit << std::endl;
+        //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
+        std::cout << LTF::GetRayCollisionModel(LTF::rayTransform(GetMouseRay(ray
+        , camera),3), testWall.getModel(),testWall.getPosition()).hit << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
