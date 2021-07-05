@@ -76,7 +76,7 @@ namespace LTF
     {
         for (CollisionObject obj : list)
         {
-            if (collision(obj, Vector3Subtract(player.getNextGravityVector(deltatime),player.getUp())))
+            if (collision(obj, Vector3Add(player.getNextGravityVector(deltatime),player.getGravityVector())))
                 return true;
         }
         return false;

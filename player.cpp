@@ -108,7 +108,7 @@ void Player::jump()
 {
     if (canJump())
     {
-        speed.y = jumpConstant;
+        speed = Vector3Scale(this->up,jumpConstant);
     }
 }
 
@@ -272,17 +272,4 @@ Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
         //TODO: Handle not orthogonal basis
         return {0, 0, 0};
     }
-}
-
-Vector3 Player::getFeets()
-{
-    if (!isCrouched)
-        return Vector3Add(this->position, getGravityVector());
-    else
-        return Vector3Add(this->position, Vector3Negate(this->up));
-}
-
-Vector3 Player::getHead()
-{
-    return Vector3Add(this->position,this->up);
 }

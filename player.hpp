@@ -36,12 +36,12 @@ private:
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
     // Boolean var
-    bool isCrouched = false;
 
     // Radius     used for testing
     float radius = 1;
 
 public:
+    bool isCrouched = false;
     // Player will controll camera (Position, Target, Up)
 
     Player(Vector3 position, Vector3 target, Vector3 up);
@@ -78,8 +78,6 @@ public:
     float getPositionY();
     float getPositionZ();
     Vector3 getNextPosition(int direction);
-    Vector3 getFeets();
-    Vector3 getHead();
 
     Vector3 getTarget();
     Ray getRay();
