@@ -77,7 +77,9 @@ int main(void)
 // Movement
 #pragma region movement
 
-        if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
+        if (IsKeyDown('W') &&
+            (LTF::collisionInfo(player.getRay(), arch2, 1).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), arch2, 1).distance <= 0))
         {
             player.moveForward(1);
         }
@@ -183,8 +185,8 @@ int main(void)
         }
         else
         {
-            if (GetCollisionRayModel(player.getRay(),arch2.getModel()).hit &&
-                GetCollisionRayModel(player.getRay(),arch2.getModel()).distance < 1)
+            if (GetCollisionRayModel(player.getRay(), arch2.getModel()).hit &&
+                GetCollisionRayModel(player.getRay(), arch2.getModel()).distance < 1)
             {
                 DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), RED);
             }

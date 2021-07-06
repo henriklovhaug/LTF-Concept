@@ -1,5 +1,3 @@
-/*TODO: Create collision take takes in (object,object) and (object,player)
-these two can be the same, but could be beneficial to keep them seperate*/
 
 /* TODO: need collision for infinitely thin walls*/
 
@@ -91,15 +89,16 @@ namespace LTF
      * @param v3b Vector three
      * @return Projected vector
      */
-    Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
+    Vector3 projectNormal(Vector3 v1, Vector3 v2b, Vector3 v3b)
     {
         if (Vector3DotProduct(v2b, v3b) == 0)
         {
-            return Vector3Add(Vector3Scale(v2b, Vector3DotProduct(v1, v2b) / Vector3DotProduct(v2b, v2b)),
-                              Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b)));
+            return Vector3Normalize(Vector3Add(Vector3Scale(v2b, Vector3DotProduct(v1, v2b) / Vector3DotProduct(v2b, v2b)),
+                              Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b))));
         }
         else
         {
+            //TODO: Handle wrong bases
             return {0, 0, 0};
         }
     }

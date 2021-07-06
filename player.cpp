@@ -69,7 +69,7 @@ void Player::crouch()
  */
 Vector3 Player::getMovement(Vector3 v1, Vector3 v2)
 {
-    return Vector3Normalize(projection(Vector3Subtract(getTarget(), getPosition()), v1, v2));
+    return Vector3Normalize(project(Vector3Subtract(getTarget(), getPosition()), v1, v2));
 }
 
 /**
@@ -120,7 +120,7 @@ bool Player::canJump()
            this->up.z == temp.z;
 }
 
-//TODO: this needs testing
+//TODO: this needs testing, can clip through ground somtimes
 /**
  * @brief Makes player fall
  *
@@ -255,12 +255,12 @@ float Player::getRadius()
 Ray Player::getRay()
 {
     this->ray.position = this->position;
-    this->ray.direction = Vector3Subtract(this->target, this->position);
+    this->ray.direction = Vector3Normalize(project(Vector3Subtract(this->target, this->position),bases.first,bases.second));
     return ray;
 }
 #pragma endregion
 
-Vector3 Player::projection(Vector3 v1, Vector3 v2b, Vector3 v3b)
+Vector3 Player::project(Vector3 v1, Vector3 v2b, Vector3 v3b)
 {
     if (Vector3DotProduct(v2b, v3b) == 0)
     {
