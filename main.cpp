@@ -79,7 +79,7 @@ int main(void)
 
         if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
         {
-            player.moveForward();
+            player.moveForward(1);
         }
         if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
         {

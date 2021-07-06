@@ -35,9 +35,9 @@ void Player::updateBases()
     }
 }
 
-void Player::moveForward()
+void Player::moveForward(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)));
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar)));
 }
 void Player::moveBackward()
 {
