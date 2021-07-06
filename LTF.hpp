@@ -76,7 +76,7 @@ namespace LTF
     {
         for (CollisionObject obj : list)
         {
-            if (collision(obj, Vector3Add(player.getNextGravityVector(deltatime),player.getGravityVector())))
+            if (collision(obj, Vector3Add(player.getNextGravityVector(deltatime), player.getGravityVector())))
                 return true;
         }
         return false;
@@ -115,8 +115,7 @@ namespace LTF
         return acosf(Vector3DotProduct(v1, v2) / (Vector3Length(v1) * Vector3Length(v2))) * RAD2DEG;
     }
 
-
-//gathered from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm and raylib's src/models.c
+    //gathered from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm and raylib's src/models.c
     RayHitInfo GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3)
     {
 #define EPSILON 0.000001 // A small number
@@ -181,7 +180,6 @@ namespace LTF
     {
         RayHitInfo collision = {0};
 
-
         if (mesh.vertices != NULL)
         {
             int triangleCount = mesh.triangleCount;
@@ -205,9 +203,9 @@ namespace LTF
                     c = vertdata[i * 3 + 2];
                 }
 
-                a = Vector3Add(Vector3Transform(a, transform),position);
-                b = Vector3Add(Vector3Transform(b, transform),position);
-                c = Vector3Add(Vector3Transform(c, transform),position);
+                a = Vector3Add(Vector3Transform(a, transform), position);
+                b = Vector3Add(Vector3Transform(b, transform), position);
+                c = Vector3Add(Vector3Transform(c, transform), position);
 
                 RayHitInfo triHitInfo = GetRayCollisionTriangle(ray, a, b, c);
 
@@ -222,7 +220,6 @@ namespace LTF
 
         return collision;
     }
-
 
     RayHitInfo GetRayCollisionModel(Ray ray, Model model, Vector3 position)
     {
@@ -268,4 +265,70 @@ namespace LTF
         }
     }
 
+    RayHitInfo GetRayCollisionBox(Ray ray, BoundingBox box)
+    {
+        RayHitInfo collision = {0};
+
+        // Note: If ray.position is inside the box, the distance is negative (as if the ray was reversed)
+        // Reversing ray.direction will give use the correct result.
+        bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
+                         (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
+                         (ray.position.z > box.min.z) && (ray.position.z < box.max.z);
+
+        if (insideBox)
+            ray.direction = Vector3Negate(ray.direction);
+
+        float t[11] = {0};
+
+        t[8] = 1.0f / ray.direction.x;
+        t[9] = 1.0f / ray.direction.y;
+        t[10] = 1.0f / ray.direction.z;
+
+        t[0] = (box.min.x - ray.position.x) * t[8];
+        t[1] = (box.max.x - ray.position.x) * t[8];
+        t[2] = (box.min.y - ray.position.y) * t[9];
+        t[3] = (box.max.y - ray.position.y) * t[9];
+        t[4] = (box.min.z - ray.position.z) * t[10];
+        t[5] = (box.max.z - ray.position.z) * t[10];
+        t[6] = (float)fmax(fmax(fmin(t[0], t[1]), fmin(t[2], t[3])), fmin(t[4], t[5]));
+        t[7] = (float)fmin(fmin(fmax(t[0], t[1]), fmax(t[2], t[3])), fmax(t[4], t[5]));
+
+        collision.hit = !((t[7] < 0) || (t[6] > t[7]));
+        collision.distance = t[6];
+        collision.position = Vector3Add(ray.position, Vector3Scale(ray.direction, collision.distance));
+
+        collision.normal = Vector3Lerp(box.min, box.max, 0.5f);
+
+        collision.normal = Vector3Subtract(collision.position, collision.normal);
+
+        collision.normal = Vector3Scale(collision.normal, 2.01f);
+        collision.normal = Vector3Divide(collision.normal, Vector3Subtract(box.max, box.min));
+
+
+        collision.normal = Vector3Normalize(collision.normal);
+
+        if (insideBox)
+        {
+            // Reset ray.direction
+            ray.direction = Vector3Negate(ray.direction);
+            // Fix result
+            collision.distance *= -1.0f;
+            collision.normal = Vector3Negate(collision.normal);
+        }
+
+        return collision;
+    }
+
+    RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction)
+    {
+        RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
+        if (info.hit && info.distance < 5)
+        {
+            return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition());
+        }
+        else
+        {
+            return info;
+        }
+    }
 }

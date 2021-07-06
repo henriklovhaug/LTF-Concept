@@ -100,7 +100,7 @@ int main(void)
             player.jump();
         }
 
-        if(IsKeyDown(KEY_LEFT_SHIFT))
+        if (IsKeyDown(KEY_LEFT_SHIFT))
         {
             std::cout << true << std::endl;
             player.crouch();
@@ -156,6 +156,10 @@ int main(void)
             player.setUp({0, 1.0f, 0});
             player.updateBases();
         }
+        if (IsKeyPressed('Z'))
+        {
+            player.setPosition({4.0f, 4.0f, 4.0f});
+        }
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -179,8 +183,8 @@ int main(void)
         }
         else
         {
-            if (GetCollisionRayModel(GetMouseRay({float(GetScreenWidth()) / 2, float(GetScreenHeight()) / 2}, camera), arch2.getModel()).hit &&
-                GetCollisionRayModel(GetMouseRay({float(GetScreenWidth()) / 2, float(GetScreenHeight()) / 2}, camera), arch2.getModel()).distance < 1)
+            if (GetCollisionRayModel(player.getRay(),arch2.getModel()).hit &&
+                GetCollisionRayModel(player.getRay(),arch2.getModel()).distance < 1)
             {
                 DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), RED);
             }
@@ -209,7 +213,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
         //std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
-        std::cout << player.canJump() << std::endl;
+        std::cout << LTF::collisionInfo(player.getRay(), arch2, 1).distance << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
