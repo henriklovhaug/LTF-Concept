@@ -9,8 +9,10 @@
  * @param isGround is it ground? soon to be removed
  * @param scale Scale of object. Will be scaled in all directions
  * @param name name of object file. i.e. "floor.obj"
+ *
+ * @note Position in Blender need to be {0,0,0}
  */
-CollisionObject::CollisionObject(Vector3 position, float scale,Color color, std::string name)
+CollisionObject::CollisionObject(Vector3 position, float scale,Color color, std::string name = "0")
 {
     setPosition(position);
     setScale(scale);

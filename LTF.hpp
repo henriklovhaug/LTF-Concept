@@ -268,6 +268,15 @@ namespace LTF
     {
         RayHitInfo collision = {0};
 
+        // Note: If ray.position is inside the box, the distance is negative (as if the ray was reversed)
+        // Reversing ray.direction will give use the correct result.
+        bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
+                         (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
+                         (ray.position.z > box.min.z) && (ray.position.z < box.max.z);
+
+        if (insideBox)
+            ray.direction = Vector3Negate(ray.direction);
+
         float t[11] = {0};
 
         t[8] = 1.0f / ray.direction.x;
@@ -294,11 +303,25 @@ namespace LTF
         collision.normal = Vector3Scale(collision.normal, 2.01f);
         collision.normal = Vector3Divide(collision.normal, Vector3Subtract(box.max, box.min));
 
+#pragma warning(disable : 4244)
+        collision.normal.x = (int)collision.normal.x;
+        collision.normal.y = (int)collision.normal.y;
+        collision.normal.z = (int)collision.normal.z;
+
         collision.normal = Vector3Normalize(collision.normal);
+
+        if (insideBox)
+        {
+            // Reset ray.direction
+            ray.direction = Vector3Negate(ray.direction);
+            // Fix result
+            collision.distance *= -1.0f;
+            collision.normal = Vector3Negate(collision.normal);
+        }
 
         return collision;
     }
-
+    //TODO: Handle objects other than squares
     RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction)
     {
         ray = rayTransform(ray, direction);
@@ -316,7 +339,7 @@ namespace LTF
 
     RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
     {
-        RayHitInfo result = collisionInfo(ray, objList.at(0), direction);
+        RayHitInfo result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : objList)
         {
@@ -324,9 +347,8 @@ namespace LTF
 
             if (temp.hit)
             {
-                if (temp.distance > 0 && temp.distance < result.distance)
+                if (temp.distance > 0 && temp.distance <= result.distance)
                 {
-                    std::cout << "here " << std::endl;
                     result = temp;
                 }
             }

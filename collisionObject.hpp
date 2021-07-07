@@ -25,7 +25,7 @@ private:
     void scaleBox(float scale);
 
 public:
-    CollisionObject(Vector3 position, float scale, Color color, std::string name = "0");
+    CollisionObject(Vector3 position, float scale, Color color, std::string name);
 
     void setPosition(Vector3 position);
     void setOBJname(std::string name);

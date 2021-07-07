@@ -22,7 +22,6 @@ int main(void)
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
@@ -41,15 +40,19 @@ int main(void)
 
     //Objects in play area
     std::vector<CollisionObject> objectList;
-    for (int i = 0; i < MAX_COLUMNS; i++)
+    /*for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, 2, BLUE, "cone.obj"));
-    }
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 2, BLUE, "box.obj"));
+    }*/
     //Other collision stuff
+    CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
+    objectList.push_back(arch2);
     CollisionObject testFloor({0, -2, 0}, 2, GREEN, "floor.obj");
     objectList.push_back(testFloor);
-    CollisionObject testWall({20, 0, 0}, 1, BROWN, "wall.obj");
+    CollisionObject testWall({0, 0, 10}, 1, BROWN, "wall.obj");
     objectList.push_back(testWall);
+    CollisionObject spBox({20, 0, 0}, 1, YELLOW, "Rwall.obj");
+    objectList.push_back(spBox);
 
     static float mouseX = 0;
     static float mouseY = 0;
@@ -64,8 +67,6 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << "max x: " << arch2.getBox().max.x << std::endl;
-    std::cout << "min x: " << arch2.getBox().min.x << std::endl;
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -83,16 +84,22 @@ int main(void)
         {
             player.moveForward(1);
         }
-        if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
+        if (IsKeyDown('S') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 2).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 2).distance <= 0))
         {
             player.moveBackward();
         }
-        if (IsKeyDown('A') && !LTF::collision(objectList, player, 3))
+        if (IsKeyDown('A') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 3).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 3).distance <= 0))
         {
             player.moveLeft();
         }
 
-        if (IsKeyDown('D') && !LTF::collision(objectList, player, 4))
+        if (IsKeyDown('D') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 4).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 4).distance <= 0))
         {
             player.moveRight();
         }
@@ -173,8 +180,8 @@ int main(void)
 
         DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
-        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
-        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
+        //DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
+        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD); // Draw a yellow wall
         DrawRay({{1, 1, 0}, {0, 0, 0}}, PINK);
 
         //Testdraw models
