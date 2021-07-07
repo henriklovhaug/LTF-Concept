@@ -42,9 +42,11 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 1, float(GetRandomValue(-15, 15))}, 2, BLUE, "box.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 1, BLUE, "box.obj"));
     }
     //Other collision stuff
+    CollisionObject box({-10.5f,0,0},1,BLUE,"box.obj");
+    objectList.push_back(box);
     CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
     objectList.push_back(arch2);
     CollisionObject testFloor({0, -2, 0}, 2, GREEN, "floor.obj");
