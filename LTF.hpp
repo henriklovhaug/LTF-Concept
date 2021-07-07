@@ -115,7 +115,7 @@ namespace LTF
     }
 
     //gathered from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm and raylib's src/models.c
-    RayHitInfo GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3)
+    RayHitInfo GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, float scale = 1)
     {
 #define EPSILON 0.000001 // A small number
 
@@ -175,7 +175,7 @@ namespace LTF
         return collision;
     }
 
-    RayHitInfo GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix transform, Vector3 position)
+    RayHitInfo GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix transform, Vector3 position, float scale = 1)
     {
         RayHitInfo collision = {0};
 
@@ -202,9 +202,9 @@ namespace LTF
                     c = vertdata[i * 3 + 2];
                 }
 
-                a = Vector3Add(Vector3Transform(a, transform), position);
-                b = Vector3Add(Vector3Transform(b, transform), position);
-                c = Vector3Add(Vector3Transform(c, transform), position);
+                a = Vector3Add(Vector3Scale(Vector3Transform(a, transform),scale), position);
+                b = Vector3Add(Vector3Scale(Vector3Transform(b, transform),scale), position);
+                c = Vector3Add(Vector3Scale(Vector3Transform(c, transform),scale), position);
 
                 RayHitInfo triHitInfo = GetRayCollisionTriangle(ray, a, b, c);
 
@@ -220,7 +220,7 @@ namespace LTF
         return collision;
     }
 
-    RayHitInfo GetRayCollisionModel(Ray ray, Model model, Vector3 position)
+    RayHitInfo GetRayCollisionModel(Ray ray, Model model, Vector3 position, float scale = 1)
     {
         RayHitInfo collision = {0};
 
@@ -264,6 +264,13 @@ namespace LTF
         }
     }
 
+    /**
+     * @brief Get the Ray Collision Box object
+     *
+     * @param ray (Player position, Player direction from player point of view)
+     * @param box (boundingbox of object)
+     * @return RayHitInfo (bool hit, etc..)
+     */
     RayHitInfo GetRayCollisionBox(Ray ray, BoundingBox box)
     {
         RayHitInfo collision = {0};
@@ -322,7 +329,7 @@ namespace LTF
         return collision;
     }
     //TODO: Handle objects other than squares
-    RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction)
+    RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction, float scale = 1)
     {
         ray = rayTransform(ray, direction);
 
@@ -337,13 +344,13 @@ namespace LTF
         }
     }
 
-    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
+    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction, float scale = 1)
     {
         RayHitInfo result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : objList)
         {
-            RayHitInfo temp = collisionInfo(ray, obj, direction);
+            RayHitInfo temp = collisionInfo(ray, obj, direction,scale);
 
             if (temp.hit)
             {
