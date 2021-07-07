@@ -78,8 +78,8 @@ int main(void)
 #pragma region movement
 
         if (IsKeyDown('W') &&
-            (LTF::collisionInfo(player.getRay(), arch2, 1).distance > 0.5f ||
-             LTF::collisionInfo(player.getRay(), arch2, 1).distance <= 0))
+            (LTF::collisionInfo(player.getRay(), objectList, 1).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 1).distance <= 0))
         {
             player.moveForward(1);
         }
@@ -213,9 +213,8 @@ int main(void)
         //----------------------------------------------------------------------------------
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
-        //std::cout << arch2.getModel().meshes[0].vertices << std::endl;
-        //std::cout << LTF::GetRayCollisionModel(player.getRay(), testWall.getModel(), testWall.getPosition()).hit << std::endl;
-        std::cout << LTF::collisionInfo(player.getRay(), arch2, 1).distance << std::endl;
+        std::cout << LTF::collisionInfo(player.getRay(), objectList, 1).distance << std::endl;
+        //std::cout << LTF::Vector3Angle(player.getRay().direction,Vector3Perpendicular(player.getRay().direction)) << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

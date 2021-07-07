@@ -94,7 +94,7 @@ namespace LTF
         if (Vector3DotProduct(v2b, v3b) == 0)
         {
             return Vector3Normalize(Vector3Add(Vector3Scale(v2b, Vector3DotProduct(v1, v2b) / Vector3DotProduct(v2b, v2b)),
-                              Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b))));
+                                               Vector3Scale(v3b, Vector3DotProduct(v1, v3b) / Vector3DotProduct(v3b, v3b))));
         }
         else
         {
@@ -268,15 +268,6 @@ namespace LTF
     {
         RayHitInfo collision = {0};
 
-        // Note: If ray.position is inside the box, the distance is negative (as if the ray was reversed)
-        // Reversing ray.direction will give use the correct result.
-        bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
-                         (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
-                         (ray.position.z > box.min.z) && (ray.position.z < box.max.z);
-
-        if (insideBox)
-            ray.direction = Vector3Negate(ray.direction);
-
         float t[11] = {0};
 
         t[8] = 1.0f / ray.direction.x;
@@ -303,23 +294,15 @@ namespace LTF
         collision.normal = Vector3Scale(collision.normal, 2.01f);
         collision.normal = Vector3Divide(collision.normal, Vector3Subtract(box.max, box.min));
 
-
         collision.normal = Vector3Normalize(collision.normal);
-
-        if (insideBox)
-        {
-            // Reset ray.direction
-            ray.direction = Vector3Negate(ray.direction);
-            // Fix result
-            collision.distance *= -1.0f;
-            collision.normal = Vector3Negate(collision.normal);
-        }
 
         return collision;
     }
 
     RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction)
     {
+        ray = rayTransform(ray, direction);
+
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
         if (info.hit && info.distance < 5)
         {
@@ -329,5 +312,26 @@ namespace LTF
         {
             return info;
         }
+    }
+
+    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
+    {
+        RayHitInfo result = collisionInfo(ray, objList.at(0), direction);
+
+        for (CollisionObject obj : objList)
+        {
+            RayHitInfo temp = collisionInfo(ray, obj, direction);
+
+            if (temp.hit)
+            {
+                if (temp.distance > 0 && temp.distance < result.distance)
+                {
+                    std::cout << "here " << std::endl;
+                    result = temp;
+                }
+            }
+        }
+
+        return result;
     }
 }
