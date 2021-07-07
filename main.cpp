@@ -10,7 +10,7 @@
 #include <list>
 #include <vector>
 
-#define MAX_COLUMNS 20
+#define MAX_COLUMNS 5
 
 int main(void)
 {
@@ -40,10 +40,10 @@ int main(void)
 
     //Objects in play area
     std::vector<CollisionObject> objectList;
-    /*for (int i = 0; i < MAX_COLUMNS; i++)
+    for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 2, BLUE, "box.obj"));
-    }*/
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 1, float(GetRandomValue(-15, 15))}, 2, BLUE, "box.obj"));
+    }
     //Other collision stuff
     CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
     objectList.push_back(arch2);
@@ -51,8 +51,8 @@ int main(void)
     objectList.push_back(testFloor);
     CollisionObject testWall({0, 0, 10}, 1, BROWN, "wall.obj");
     objectList.push_back(testWall);
-    CollisionObject spBox({20, 0, 0}, 1, YELLOW, "Rwall.obj");
-    objectList.push_back(spBox);
+    CollisionObject rWall({20, 0, 0}, 1, YELLOW, "Rwall.obj");
+    objectList.push_back(rWall);
 
     static float mouseX = 0;
     static float mouseY = 0;
@@ -67,7 +67,7 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-
+    std::cout << objectList.size() << std::endl;
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -207,7 +207,7 @@ int main(void)
             if (!LTF::collision(obj, player))
             {
                 DrawModel(obj.getModel(), obj.getPosition(), obj.getScale(), obj.getColor());
-                //DrawBoundingBox(obj.getBox(), GREEN);
+                DrawBoundingBox(obj.getBox(), GREEN);
             }
             else
             {
@@ -220,7 +220,7 @@ int main(void)
         //----------------------------------------------------------------------------------
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
-        std::cout << LTF::collisionInfo(player.getRay(), objectList, 1).distance << std::endl;
+        std::cout << LTF::GetRayCollisionBox(player.getRay(), rWall.getBox()).hit << std::endl;
         //std::cout << LTF::Vector3Angle(player.getRay().direction,Vector3Perpendicular(player.getRay().direction)) << std::endl;
 
         // Stop clock and calulate deltaTime

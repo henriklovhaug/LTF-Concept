@@ -327,7 +327,7 @@ namespace LTF
         ray = rayTransform(ray, direction);
 
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
-        if (info.hit && info.distance < 5)
+        if (info.hit || info.distance < 5)
         {
             return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition());
         }
