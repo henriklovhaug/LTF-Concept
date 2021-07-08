@@ -4,16 +4,17 @@
 
 /**
  * @brief Construct a new Collision Object:: Collision Object object
- * 
+ *
  * @param position Vector3 position
  * @param isGround is it ground? soon to be removed
  * @param scale Scale of object. Will be scaled in all directions
  * @param name name of object file. i.e. "floor.obj"
+ *
+ * @note Position in Blender need to be {0,0,0}
  */
-CollisionObject::CollisionObject(Vector3 position, bool isGround, float scale,Color color, std::string name)
+CollisionObject::CollisionObject(Vector3 position, float scale,Color color, std::string name = "0")
 {
     setPosition(position);
-    setIsGround(isGround);
     setScale(scale);
     setOBJname(name);
     setColor(color);
@@ -32,7 +33,7 @@ void CollisionObject::boundingBoxCorrection()
 void CollisionObject::setPosition(Vector3 position)
 {
     this->position = position;
-} 
+}
 
 void CollisionObject::setOBJname(std::string name)
 {
@@ -44,10 +45,7 @@ void CollisionObject::setScale(float scale)
     this->scale = scale;
 }
 
-void CollisionObject::setIsGround(bool isGround)
-{
-    this->isGround = isGround;
-}
+
 
 void CollisionObject::setColor(Color color)
 {
@@ -69,10 +67,6 @@ std::string CollisionObject::getOBJname()
     return this->objURL;
 }
 
-bool CollisionObject::getIsGround()
-{
-    return this->isGround;
-}
 
 Color CollisionObject::getColor()
 {

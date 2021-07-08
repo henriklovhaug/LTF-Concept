@@ -26,29 +26,22 @@ private:
     Vector3 speed = {0, 0, 0};
 
     // Mouse delta
-    float mousex = 0;
-    float mousey = 0;
+    float mouseX = 0;
+    float mouseY = 0;
 
     // Planes used for movement
     Vector3 movement;
-
-    // Generate planes for movement
-    float dx;
-    float dy;
-    float dz;
-
-    float anglex;
-    float angley = atan2f(dy, sqrtf(dx *dx + dz * dz));
+    Ray ray;
 
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
     // Boolean var
-    bool canJump = true;
 
     // Radius     used for testing
     float radius = 1;
 
 public:
+    bool isCrouched = false;
     // Player will controll camera (Position, Target, Up)
 
     Player(Vector3 position, Vector3 target, Vector3 up);
@@ -58,16 +51,17 @@ public:
     void setUp(Vector3 up);
 
     //Movement methods and helpers
-    void updatePlaneXZ();
     void updateBases();
 
-    Vector3 projection(Vector3 v1, Vector3 v2b, Vector3 v3b);
+    Vector3 project(Vector3 v1, Vector3 v2b, Vector3 v3b);
     Vector3 getMovement(Vector3 v1, Vector3 v2);
-    
-    void moveForward();
+
+    void moveForward(float scalar);
     void moveBackward();
     void moveLeft();
     void moveRight();
+
+    void crouch();
 
     void jump();
     void updateGravity(float deltaTime);
@@ -86,6 +80,7 @@ public:
     Vector3 getNextPosition(int direction);
 
     Vector3 getTarget();
+    Ray getRay();
     float getTargetX();
     float getTargetY();
     float getTargetZ();
@@ -97,6 +92,7 @@ public:
     float getUpZ();
 
     float getSpeedY();
+    bool canJump();
 
     float getRadius();
 };

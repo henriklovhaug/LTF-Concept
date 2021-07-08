@@ -10,26 +10,25 @@
 #include <list>
 #include <vector>
 
-#define MAX_COLUMNS 20
+#define MAX_COLUMNS 5
 
 int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 2;
-    const int screenHeight = 450 * 2;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
     //test new class
-    CollisionObject myObj({0, 0, 0}, false, 1, ORANGE, "arch.obj");
 
     // Get delta time for force-sensitive physics
     clock_t start, finish;
     static float deltaTime = 0;
 
     // Initialize player
-    Player player({4.0f, 4.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+    Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
 
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
@@ -43,13 +42,22 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 2, float(GetRandomValue(-15, 15))}, false, 2, BLUE, "cone.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 2, BLUE, "cone.obj"));
     }
-    CollisionObject testFloor({0, -2, 0}, false, 2, GREEN, "floor.obj");
+    //Other collision stuff
+    CollisionObject box({-10.5f,0,0},1,BLUE,"box.obj");
+    objectList.push_back(box);
+    CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
+    objectList.push_back(arch2);
+    CollisionObject testFloor({0, -2, 0}, 2, GREEN, "floor.obj");
     objectList.push_back(testFloor);
+    CollisionObject testWall({0, 0, 10}, 1, BROWN, "wall.obj");
+    objectList.push_back(testWall);
+    CollisionObject rWall({20, 0, 0}, 1, YELLOW, "Rwall.obj");
+    objectList.push_back(rWall);
 
-    static float mousex = 0;
-    static float mousey = 0;
+    static float mouseX = 0;
+    static float mouseY = 0;
 
     static Vector2 previousMouse = GetMousePosition(); //Get the position of the mouse
 
@@ -61,9 +69,7 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << "max x: " << myObj.getBox().max.x << std::endl;
-    std::cout << "min x: " << myObj.getBox().min.x << std::endl;
-
+    std::cout << objectList.size() << std::endl;
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -74,31 +80,46 @@ int main(void)
 // Movement
 #pragma region movement
 
-        if (IsKeyDown('W') && !LTF::collision(objectList, player, 1))
+        if (IsKeyDown('W') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 1).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 1).distance <= 0))
         {
-            player.moveForward();
+            player.moveForward(1);
         }
-        if (IsKeyDown('S') && !LTF::collision(objectList, player, 2))
+        if (IsKeyDown('S') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 2).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 2).distance <= 0))
         {
             player.moveBackward();
         }
-        if (IsKeyDown('A') && !LTF::collision(objectList, player, 3))
+        if (IsKeyDown('A') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 3).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 3).distance <= 0))
         {
             player.moveLeft();
         }
 
-        if (IsKeyDown('D') && !LTF::collision(objectList, player, 4))
+        if (IsKeyDown('D') &&
+            (LTF::collisionInfo(player.getRay(), objectList, 4).distance > 0.5f ||
+             LTF::collisionInfo(player.getRay(), objectList, 4).distance <= 0))
         {
             player.moveRight();
         }
+
         if (IsKeyPressed(KEY_SPACE))
         {
             player.jump();
         }
 
+        if (IsKeyDown(KEY_LEFT_SHIFT))
+        {
+            std::cout << true << std::endl;
+            player.crouch();
+        }
+
         // Delta mouseposition
-        mousex += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
-        mousey += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
+        mouseX += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
+        mouseY += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
 
         previousMouse = currentMouse;
 
@@ -106,17 +127,17 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
-        //----------------------------------------------------------------------------------
-        
+                               //----------------------------------------------------------------------------------
+
 #pragma region forces and limits
         // Makes sure player can't turn camera over on it's head
-        if (mousey > 85.0f * DEG2RAD)
+        if (mouseY > 85.0f * DEG2RAD)
         {
-            mousey = 85.0f * DEG2RAD;
+            mouseY = 85.0f * DEG2RAD;
         }
-        else if (mousey < -85.0f * DEG2RAD)
+        else if (mouseY < -85.0f * DEG2RAD)
         {
-            mousey = -85.0f * DEG2RAD;
+            mouseY = -85.0f * DEG2RAD;
         }
 
         if (!LTF::collision(objectList, player, deltaTime))
@@ -128,7 +149,7 @@ int main(void)
             player.resetSpeed();
         }
 
-        player.updateTarget(mousex, mousey);
+        player.updateTarget(mouseX, mouseY);
 
 #pragma endregion
 
@@ -146,6 +167,11 @@ int main(void)
             player.setUp({0, 1.0f, 0});
             player.updateBases();
         }
+        if (IsKeyPressed('Z'))
+        {
+            player.resetSpeed();
+            player.setPosition({4.0f, 4.0f, 4.0f});
+        }
 
         // Draw
         //----------------------------------------------------------------------------------
@@ -156,21 +182,28 @@ int main(void)
         BeginMode3D(camera);
 
         DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
-        //DrawPlane({0.0f, 0.0f, 0.0f}, {32.0f, 32.0f}, LIGHTGRAY); // Draw ground
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
-        DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
-        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD);  // Draw a yellow wall
+        //DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
+        DrawCube({0.0f, 2.5f, 16.0f}, 32.0f, 5.0f, 1.0f, GOLD); // Draw a yellow wall
+        DrawRay({{1, 1, 0}, {0, 0, 0}}, PINK);
 
         //Testdraw models
-        if (!LTF::collision(myObj, player))
+
+        if (!LTF::collision(arch2, player))
         {
-            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), myObj.getColor());
+            DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), arch2.getColor());
         }
         else
         {
-            DrawModel(myObj.getModel(), myObj.getPosition(), myObj.getScale(), RED);
+            if (GetCollisionRayModel(player.getRay(), arch2.getModel()).hit &&
+                GetCollisionRayModel(player.getRay(), arch2.getModel()).distance < 1)
+            {
+                DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), RED);
+            }
+            else
+                DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), arch2.getColor());
         }
-        DrawBoundingBox(myObj.getBox(), GREEN);
+        DrawBoundingBox(arch2.getBox(), GREEN);
 
         for (CollisionObject obj : objectList)
         {
@@ -190,9 +223,8 @@ int main(void)
         //----------------------------------------------------------------------------------
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
-        //std::cout << LTF::collision(bounds,{0,0,20},player.getPosition(),player.getRadius()) << std::endl;
-        //std::cout << player.getPositionY() << std::endl;
-        std::cout << player.getPositionY() << std::endl;
+        std::cout << LTF::GetRayCollisionBox(player.getRay(), rWall.getBox()).hit << std::endl;
+        //std::cout << LTF::Vector3Angle(player.getRay().direction,Vector3Perpendicular(player.getRay().direction)) << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
