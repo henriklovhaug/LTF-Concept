@@ -169,6 +169,7 @@ int main(void)
         }
         if (IsKeyPressed('Z'))
         {
+            player.resetSpeed();
             player.setPosition({4.0f, 4.0f, 4.0f});
         }
 
