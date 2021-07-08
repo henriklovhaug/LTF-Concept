@@ -392,4 +392,24 @@ namespace LTF
 
         return result;
     }
+    RayHitInfo nextFallingInfo(Player player, std::vector<CollisionObject> list,int direction,float deltaTime)
+    {
+        RayHitInfo result = {0, INFINITY, 0, 0};
+
+        for (CollisionObject obj : list)
+        {
+            RayHitInfo temp = collisionInfo(player.getDownRayFromNextPosition(deltaTime), obj, direction,obj.getScale());
+
+            if (temp.hit)
+            {
+                if (temp.distance > 0 && temp.distance <= result.distance)
+                {
+                    result = temp;
+                }
+            }
+        }
+
+
+        return result;
+    }
 }

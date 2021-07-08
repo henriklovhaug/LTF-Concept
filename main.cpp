@@ -16,8 +16,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 3;
-    const int screenHeight = 450 * 3;
+    const int screenWidth = 800 * 2;
+    const int screenHeight = 450 * 2;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -142,14 +142,13 @@ int main(void)
             mouseY = -85.0f * DEG2RAD;
         }
 
-        if (!LTF::collision(objectList, player, deltaTime))
+        if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > 1.5f)
         {
             //std::cout << "there" << std::endl;
             player.updateGravity(deltaTime);
         }
         else
         {
-            //std::cout << "here" << std::endl;
             player.resetSpeed();
         }
 

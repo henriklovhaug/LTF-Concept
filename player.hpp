@@ -68,6 +68,7 @@ public:
     void updateGravity(float deltaTime);
     Vector3 getNextGravityVector(float deltaTime);
     Ray getDownRay();
+    Ray getDownRayFromNextPosition(float deltaTime);
     void resetSpeed();
 
     //Update target while playing

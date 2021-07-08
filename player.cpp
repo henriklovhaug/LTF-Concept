@@ -260,6 +260,12 @@ Ray Player::getDownRay()
     this->downRay.direction = getGravityVector();
     return downRay;
 }
+Ray Player::getDownRayFromNextPosition(float deltaTime)
+{
+    this->downRay.position = getNextGravityVector(deltaTime);
+    this->downRay.direction = getGravityVector();
+    return downRay;
+}
 #pragma endregion
 
 Vector3 Player::project(Vector3 v1, Vector3 v2b, Vector3 v3b)
