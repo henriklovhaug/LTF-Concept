@@ -247,6 +247,11 @@ float Player::getRadius()
     return this->radius;
 }
 
+float Player::getHeight()
+{
+    return this->height;
+}
+
 Ray Player::getRay()
 {
     this->ray.position = this->position;
@@ -260,12 +265,27 @@ Ray Player::getDownRay()
     this->downRay.direction = getGravityVector();
     return downRay;
 }
+
 Ray Player::getDownRayFromNextPosition(float deltaTime)
 {
     this->downRay.position = getNextGravityVector(deltaTime);
     this->downRay.direction = getGravityVector();
     return downRay;
 }
+
+Ray Player::getFeetRay()
+{
+    this->feetRay.position = getFeet();
+    this->feetRay.direction = Vector3Normalize(project(Vector3Subtract(this->target, getFeet()), bases.first, bases.second));
+    return feetRay;
+}
+
+Vector3 Player::getFeet()
+{
+    return Vector3Add(this->position, Vector3Scale(this->up,-this->height));
+}
+
+
 #pragma endregion
 
 Vector3 Player::project(Vector3 v1, Vector3 v2b, Vector3 v3b)

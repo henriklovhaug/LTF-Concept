@@ -84,26 +84,34 @@ int main(void)
 
         if (IsKeyDown('W') &&
             (LTF::collisionInfo(player.getRay(), objectList, 1).distance > 0.5f ||
-             LTF::collisionInfo(player.getRay(), objectList, 1).distance <= 0))
+             LTF::collisionInfo(player.getRay(), objectList, 1).distance <= 0) &&
+            (LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance > 0.5f ||
+             LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance <= 0))
         {
             player.moveForward(1);
         }
         if (IsKeyDown('S') &&
             (LTF::collisionInfo(player.getRay(), objectList, 2).distance > 0.5f ||
-             LTF::collisionInfo(player.getRay(), objectList, 2).distance <= 0))
+             LTF::collisionInfo(player.getRay(), objectList, 2).distance <= 0) &&
+            (LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance > 0.5f ||
+             LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance <= 0))
         {
             player.moveBackward();
         }
         if (IsKeyDown('A') &&
             (LTF::collisionInfo(player.getRay(), objectList, 3).distance > 0.5f ||
-             LTF::collisionInfo(player.getRay(), objectList, 3).distance <= 0))
+             LTF::collisionInfo(player.getRay(), objectList, 3).distance <= 0) &&
+            (LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance > 0.5f ||
+             LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance <= 0))
         {
             player.moveLeft();
         }
 
         if (IsKeyDown('D') &&
             (LTF::collisionInfo(player.getRay(), objectList, 4).distance > 0.5f ||
-             LTF::collisionInfo(player.getRay(), objectList, 4).distance <= 0))
+             LTF::collisionInfo(player.getRay(), objectList, 4).distance <= 0) &&
+            (LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance > 0.5f ||
+             LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance <= 0))
         {
             player.moveRight();
         }
@@ -142,7 +150,7 @@ int main(void)
             mouseY = -85.0f * DEG2RAD;
         }
 
-        if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > 1.5f)
+        if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > player.getHeight())
         {
             //std::cout << "there" << std::endl;
             player.updateGravity(deltaTime);
@@ -228,6 +236,8 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
+        std::cout << "head: " << player.getRay().position.y << std::endl;
+        std::cout << "feet: " << player.getFeetRay().position.y << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

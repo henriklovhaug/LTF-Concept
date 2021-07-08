@@ -329,7 +329,7 @@ namespace LTF
             // Reset ray.direction
             ray.direction = Vector3Negate(ray.direction);
             // Fix result
-            collision.distance *= 1.0f;
+            collision.distance *= -1.0f;
             collision.normal = Vector3Negate(collision.normal);
         }
 
@@ -342,7 +342,7 @@ namespace LTF
         ray = rayTransform(ray, direction);
 
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
-        if (info.hit && info.distance < 5)
+        if (info.hit)
         {
             return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition(), obj.getScale());
         }
