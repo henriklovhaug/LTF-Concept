@@ -55,7 +55,7 @@ int main(void)
     objectList.push_back(testWall);
     CollisionObject rWall({20, 0, 0}, 1, YELLOW, "Rwall.obj");
     objectList.push_back(rWall);
-    CollisionObject testFloor2({40,-6,0},2,GREEN,"floor.obj");
+    CollisionObject testFloor2({40, -6, 0}, 2, LIME, "floor.obj");
     objectList.push_back(testFloor2);
 
     static float mouseX = 0;
@@ -142,9 +142,7 @@ int main(void)
             mouseY = -85.0f * DEG2RAD;
         }
 
-        if (player.getSpeedY() <= 0 &&
-            (LTF::fallingInfo(player, objectList, 1).distance > 2 ||
-             LTF::fallingInfo(player, objectList, 1).distance <= 0))
+        if (!LTF::collision(objectList, player, deltaTime))
         {
             //std::cout << "there" << std::endl;
             player.updateGravity(deltaTime);
