@@ -14,7 +14,6 @@ void Player::updateTarget(float deltaX, float deltaY)
     setTarget({getPositionX() - transform.m12, getPositionY() - transform.m13, getPositionZ() - transform.m14});
 }
 
-
 void Player::updateBases()
 {
     if (up.x == 1)
@@ -36,7 +35,7 @@ void Player::updateBases()
 
 void Player::moveForward(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar)));
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED * scalar)));
 }
 void Player::moveBackward()
 {
@@ -105,10 +104,7 @@ Vector3 Player::getNextPosition(int direction)
  */
 void Player::jump()
 {
-    if (canJump())
-    {
-        speed = Vector3Scale(this->up,jumpConstant);
-    }
+    speed = Vector3Scale(this->up, jumpConstant);
 }
 
 bool Player::canJump()
@@ -254,8 +250,15 @@ float Player::getRadius()
 Ray Player::getRay()
 {
     this->ray.position = this->position;
-    this->ray.direction = Vector3Normalize(project(Vector3Subtract(this->target, this->position),bases.first,bases.second));
+    this->ray.direction = Vector3Normalize(project(Vector3Subtract(this->target, this->position), bases.first, bases.second));
     return ray;
+}
+
+Ray Player::getDownRay()
+{
+    this->downRay.position = this->position;
+    this->downRay.direction = getGravityVector();
+    return downRay;
 }
 #pragma endregion
 

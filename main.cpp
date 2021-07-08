@@ -45,7 +45,7 @@ int main(void)
         objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 2, BLUE, "cone.obj"));
     }
     //Other collision stuff
-    CollisionObject box({-10.5f,0,0},1,BLUE,"box.obj");
+    CollisionObject box({-10.5f, 0, 0}, 1, BLUE, "box.obj");
     objectList.push_back(box);
     CollisionObject arch2({0, 0, 0}, 1, ORANGE, "arch2.obj");
     objectList.push_back(arch2);
@@ -55,6 +55,8 @@ int main(void)
     objectList.push_back(testWall);
     CollisionObject rWall({20, 0, 0}, 1, YELLOW, "Rwall.obj");
     objectList.push_back(rWall);
+    CollisionObject testFloor2({40,-6,0},2,GREEN,"floor.obj");
+    objectList.push_back(testFloor2);
 
     static float mouseX = 0;
     static float mouseY = 0;
@@ -140,12 +142,16 @@ int main(void)
             mouseY = -85.0f * DEG2RAD;
         }
 
-        if (!LTF::collision(objectList, player, deltaTime))
+        if (player.getSpeedY() <= 0 &&
+            (LTF::fallingInfo(player, objectList, 1).distance > 2 ||
+             LTF::fallingInfo(player, objectList, 1).distance <= 0))
         {
+            //std::cout << "there" << std::endl;
             player.updateGravity(deltaTime);
         }
         else
         {
+            //std::cout << "here" << std::endl;
             player.resetSpeed();
         }
 
@@ -223,8 +229,8 @@ int main(void)
         //----------------------------------------------------------------------------------
         /*                               Console out place
         ----------------------------------------------------------------------------------*/
-        std::cout << LTF::GetRayCollisionBox(player.getRay(), rWall.getBox()).hit << std::endl;
-        //std::cout << LTF::Vector3Angle(player.getRay().direction,Vector3Perpendicular(player.getRay().direction)) << std::endl;
+        //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
+        //std::cout << player.getSpeedY() << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

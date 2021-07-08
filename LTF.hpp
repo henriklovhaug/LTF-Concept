@@ -51,6 +51,14 @@ namespace LTF
                player.getPositionZ() < object.getBox().max.z;
     }
 
+    /**
+     * @brief collision between object's boundingbox and vector
+     *
+     * @param object
+     * @param vector
+     * @return true
+     * @return false
+     */
     bool collision(CollisionObject object, Vector3 vector)
     {
         return object.getBox().min.x < vector.x &&
@@ -360,6 +368,27 @@ namespace LTF
                 }
             }
         }
+
+        return result;
+    }
+
+    RayHitInfo fallingInfo(Player player, std::vector<CollisionObject> list,int direction)
+    {
+        RayHitInfo result = {0, INFINITY, 0, 0};
+
+        for (CollisionObject obj : list)
+        {
+            RayHitInfo temp = collisionInfo(player.getDownRay(), obj, direction,obj.getScale());
+
+            if (temp.hit)
+            {
+                if (temp.distance > 0 && temp.distance <= result.distance)
+                {
+                    result = temp;
+                }
+            }
+        }
+
 
         return result;
     }

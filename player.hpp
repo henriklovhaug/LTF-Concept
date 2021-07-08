@@ -32,6 +32,7 @@ private:
     // Planes used for movement
     Vector3 movement;
     Ray ray;
+    Ray downRay;
 
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
@@ -66,6 +67,7 @@ public:
     void jump();
     void updateGravity(float deltaTime);
     Vector3 getNextGravityVector(float deltaTime);
+    Ray getDownRay();
     void resetSpeed();
 
     //Update target while playing
