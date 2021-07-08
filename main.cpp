@@ -58,6 +58,9 @@ int main(void)
     CollisionObject testFloor2({40, -6, 0}, 2, LIME, "floor.obj");
     objectList.push_back(testFloor2);
 
+    //Stuff that only needs to be drawn
+    CollisionObject gun({30,0,0},1,WHITE,"gun.obj");
+
     static float mouseX = 0;
     static float mouseY = 0;
 
@@ -152,7 +155,6 @@ int main(void)
 
         if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > player.getHeight())
         {
-            //std::cout << "there" << std::endl;
             player.updateGravity(deltaTime);
         }
         else
@@ -192,6 +194,7 @@ int main(void)
 
         BeginMode3D(camera);
 
+        DrawModel(gun.getModel(), gun.getPosition(),gun.getScale(),gun.getColor());
         DrawModel(testFloor.getModel(), testFloor.getPosition(), testFloor.getScale(), GRAY);
         DrawCube({-16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, BLUE); // Draw a blue wall
         //DrawCube({16.0f, 2.5f, 0.0f}, 1.0f, 5.0f, 32.0f, LIME);  // Draw a green wall
@@ -236,8 +239,6 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
-        std::cout << "head: " << player.getRay().position.y << std::endl;
-        std::cout << "feet: " << player.getFeetRay().position.y << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

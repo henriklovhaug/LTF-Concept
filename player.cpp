@@ -280,6 +280,13 @@ Ray Player::getFeetRay()
     return feetRay;
 }
 
+Ray Player::getShootingRay()
+{
+    this->shootingRay.position = this->position;
+    this->shootingRay.direction =Vector3Normalize(Vector3Subtract(this->target, this->position));
+    return shootingRay;
+}
+
 Vector3 Player::getFeet()
 {
     return Vector3Add(this->position, Vector3Scale(this->up,-this->height));

@@ -37,6 +37,7 @@ private:
     Ray ray;
     Ray feetRay;
     Ray downRay;
+    Ray shootingRay;
 
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
@@ -78,6 +79,7 @@ public:
     Ray getDownRayFromNextPosition(float deltaTime);
     Ray getFeetRay();
     Ray getRay();
+    Ray getShootingRay();
 
     //Update target while playing
 
