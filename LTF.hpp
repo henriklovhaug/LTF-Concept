@@ -275,8 +275,7 @@ namespace LTF
     {
         RayHitInfo collision = {0};
 
-        // Note: If ray.position is inside the box, the distance is negative (as if the ray was reversed)
-        // Reversing ray.direction will give use the correct result.
+
         bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
                          (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
                          (ray.position.z > box.min.z) && (ray.position.z < box.max.z);
@@ -328,7 +327,8 @@ namespace LTF
 
         return collision;
     }
-    //TODO: Handle objects other than squares
+
+
     RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction, float scale = 1)
     {
         ray = rayTransform(ray, direction);
