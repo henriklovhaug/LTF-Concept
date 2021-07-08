@@ -226,7 +226,7 @@ namespace LTF
 
         for (int m = 0; m < model.meshCount; m++)
         {
-            RayHitInfo meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position);
+            RayHitInfo meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position,scale);
 
             if (meshHitInfo.hit)
             {
@@ -336,7 +336,7 @@ namespace LTF
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
         if (info.hit || info.distance < 5)
         {
-            return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition());
+            return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition(), obj.getScale());
         }
         else
         {
@@ -344,13 +344,13 @@ namespace LTF
         }
     }
 
-    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction, float scale = 1)
+    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
     {
         RayHitInfo result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : objList)
         {
-            RayHitInfo temp = collisionInfo(ray, obj, direction,scale);
+            RayHitInfo temp = collisionInfo(ray, obj, direction,obj.getScale());
 
             if (temp.hit)
             {

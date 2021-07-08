@@ -16,8 +16,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 2;
-    const int screenHeight = 450 * 2;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -42,7 +42,7 @@ int main(void)
     std::vector<CollisionObject> objectList;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 1, BLUE, "cone.obj"));
+        objectList.push_back(CollisionObject({float(GetRandomValue(-15, 15)), 0, float(GetRandomValue(-15, 15))}, 2, BLUE, "cone.obj"));
     }
     //Other collision stuff
     CollisionObject box({-10.5f,0,0},1,BLUE,"box.obj");
