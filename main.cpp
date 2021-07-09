@@ -90,27 +90,27 @@ int main(void)
 #pragma region movement
 
         if (IsKeyDown('W') &&
-            LTF::collisionInfo(player.getRay(), objectList, 1).distance > 1.0f &&
-            LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance > 1.0f)
+            LTF::collisionInfo(player.getRay(), objectList, 1).distance > 1.5f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance > 1.5f)
         {
             player.moveForward(speedScalar);
         }
         if (IsKeyDown('S') &&
-            LTF::collisionInfo(player.getRay(), objectList, 2).distance > 1.0f &&
-            LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance > 1.0f)
+            LTF::collisionInfo(player.getRay(), objectList, 2).distance > 1.5f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance > 1.5f)
         {
             player.moveBackward(speedScalar);
         }
         if (IsKeyDown('A') &&
-            LTF::collisionInfo(player.getRay(), objectList, 3).distance > 1.0f &&
-            LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance > 1.0f)
+            LTF::collisionInfo(player.getRay(), objectList, 3).distance > 1.5f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance > 1.5f)
         {
             player.moveLeft(speedScalar);
         }
 
         if (IsKeyDown('D') &&
-            LTF::collisionInfo(player.getRay(), objectList, 4).distance > 1.0f &&
-            LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance > 1.0f)
+            LTF::collisionInfo(player.getRay(), objectList, 4).distance > 1.5f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance > 1.5f)
         {
             player.moveRight(speedScalar);
         }
@@ -155,12 +155,12 @@ int main(void)
         if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > player.getHeight())
         {
             player.updateGravity(deltaTime);
-        }
+        }/*
         else if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance < player.getHeight() - 0.5f &&
                  player.getSpeedY() == 0)
         {
             player.setPosition(Vector3Add(player.getPosition(), player.getUp()));
-        }
+        }*/
         else
         {
             player.resetSpeed();
