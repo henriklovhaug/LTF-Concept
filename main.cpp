@@ -7,6 +7,7 @@
 #include "player.hpp"
 #include "LTF.hpp"
 #include "collisionObject.hpp"
+#include "gun.hpp"
 #include <list>
 #include <vector>
 
@@ -135,11 +136,24 @@ int main(void)
 
         previousMouse = currentMouse;
 
+        if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > player.getHeight())
+        {
+            player.updateGravity(deltaTime);
+        }
+        else if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance < player.getHeight() - 0.5f &&
+                 player.getSpeedY() == 0)
+        {
+            player.setPosition(Vector3Add(player.getPosition(), player.getUp()));
+        }
+        else
+        {
+            player.resetSpeed();
+        }
 #pragma endregion
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
-                               //----------------------------------------------------------------------------------
+        //----------------------------------------------------------------------------------
 
 #pragma region forces and limits
         // Makes sure player can't turn camera over on it's head
@@ -152,19 +166,6 @@ int main(void)
             mouseY = -85.0f * DEG2RAD;
         }
 
-        if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance > player.getHeight())
-        {
-            player.updateGravity(deltaTime);
-        }/*
-        else if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance < player.getHeight() - 0.5f &&
-                 player.getSpeedY() == 0)
-        {
-            player.setPosition(Vector3Add(player.getPosition(), player.getUp()));
-        }*/
-        else
-        {
-            player.resetSpeed();
-        }
 
         //Moves camera around based on mouse movement
         player.updateTarget(mouseX, mouseY);
@@ -244,7 +245,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
-        std::cout << LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance << std::endl;
+        std::cout << LTF::collisionInfo(player.getFeetRay(),objectList,1).distance << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();

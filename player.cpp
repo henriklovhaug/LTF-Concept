@@ -40,15 +40,15 @@ void Player::moveForward(float scalar)
 }
 void Player::moveBackward(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED * scalar))));
 }
 void Player::moveLeft(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar)))));
 }
 void Player::moveRight(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar))));
 }
 
 void Player::crouch()
