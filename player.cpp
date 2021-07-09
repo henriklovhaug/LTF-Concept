@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include <iostream>
 
 /**
  * @brief Turns mouse movement into rotation of player
@@ -37,16 +38,15 @@ void Player::moveForward(float scalar)
 {
     setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED * scalar)));
 }
-void Player::moveBackward()
+void Player::moveBackward(float scalar)
 {
     setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }
-void Player::moveLeft()
+void Player::moveLeft(float scalar)
 {
-
     setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)))));
 }
-void Player::moveRight()
+void Player::moveRight(float scalar)
 {
     setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
 }

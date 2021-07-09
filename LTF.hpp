@@ -210,9 +210,9 @@ namespace LTF
                     c = vertdata[i * 3 + 2];
                 }
 
-                a = Vector3Add(Vector3Scale(Vector3Transform(a, transform),scale), position);
-                b = Vector3Add(Vector3Scale(Vector3Transform(b, transform),scale), position);
-                c = Vector3Add(Vector3Scale(Vector3Transform(c, transform),scale), position);
+                a = Vector3Add(Vector3Scale(Vector3Transform(a, transform), scale), position);
+                b = Vector3Add(Vector3Scale(Vector3Transform(b, transform), scale), position);
+                c = Vector3Add(Vector3Scale(Vector3Transform(c, transform), scale), position);
 
                 RayHitInfo triHitInfo = GetRayCollisionTriangle(ray, a, b, c);
 
@@ -234,7 +234,7 @@ namespace LTF
 
         for (int m = 0; m < model.meshCount; m++)
         {
-            RayHitInfo meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position,scale);
+            RayHitInfo meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position, scale);
 
             if (meshHitInfo.hit)
             {
@@ -282,7 +282,6 @@ namespace LTF
     RayHitInfo GetRayCollisionBox(Ray ray, BoundingBox box)
     {
         RayHitInfo collision = {0};
-
 
         bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
                          (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
@@ -336,7 +335,6 @@ namespace LTF
         return collision;
     }
 
-
     RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction, float scale = 1)
     {
         ray = rayTransform(ray, direction);
@@ -358,7 +356,7 @@ namespace LTF
 
         for (CollisionObject obj : objList)
         {
-            RayHitInfo temp = collisionInfo(ray, obj, direction,obj.getScale());
+            RayHitInfo temp = collisionInfo(ray, obj, direction, obj.getScale());
 
             if (temp.hit)
             {
@@ -372,13 +370,13 @@ namespace LTF
         return result;
     }
 
-    RayHitInfo fallingInfo(Player player, std::vector<CollisionObject> list,int direction)
+    RayHitInfo fallingInfo(Player player, std::vector<CollisionObject> list, int direction)
     {
         RayHitInfo result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : list)
         {
-            RayHitInfo temp = collisionInfo(player.getDownRay(), obj, direction,obj.getScale());
+            RayHitInfo temp = collisionInfo(player.getDownRay(), obj, direction, obj.getScale());
 
             if (temp.hit)
             {
@@ -389,16 +387,15 @@ namespace LTF
             }
         }
 
-
         return result;
     }
-    RayHitInfo nextFallingInfo(Player player, std::vector<CollisionObject> list,int direction,float deltaTime)
+    RayHitInfo nextFallingInfo(Player player, std::vector<CollisionObject> list, int direction, float deltaTime)
     {
         RayHitInfo result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : list)
         {
-            RayHitInfo temp = collisionInfo(player.getDownRayFromNextPosition(deltaTime), obj, direction,obj.getScale());
+            RayHitInfo temp = collisionInfo(player.getDownRayFromNextPosition(deltaTime), obj, direction, obj.getScale());
 
             if (temp.hit)
             {
@@ -409,7 +406,7 @@ namespace LTF
             }
         }
 
-
         return result;
     }
+
 }

@@ -64,9 +64,9 @@ public:
     Vector3 getMovement(Vector3 v1, Vector3 v2);
 
     void moveForward(float scalar);
-    void moveBackward();
-    void moveLeft();
-    void moveRight();
+    void moveBackward(float scalar);
+    void moveLeft(float scalar);
+    void moveRight(float scalar);
 
     void crouch();
 

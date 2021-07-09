@@ -29,6 +29,7 @@ int main(void)
 
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
+    float speedScalar = 1;
 
     // Define the camera to look into our 3d world (position, target, up vector)
     Camera camera = {0};
@@ -57,6 +58,8 @@ int main(void)
     objectList.push_back(rWall);
     CollisionObject testFloor2({40, -6, 0}, 2, LIME, "floor.obj");
     objectList.push_back(testFloor2);
+    CollisionObject stair({15, 2, -10}, 3, Color({0, 32, 132, 255}), "stair.obj");
+    objectList.push_back(stair);
 
     //Stuff that only needs to be drawn
     CollisionObject gun({30, 0, 0}, 1, WHITE, "gun.obj");
@@ -75,6 +78,7 @@ int main(void)
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
     std::cout << objectList.size() << std::endl;
+
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
@@ -86,37 +90,29 @@ int main(void)
 #pragma region movement
 
         if (IsKeyDown('W') &&
-            (LTF::collisionInfo(player.getRay(), objectList, 1).distance > 1.0f ||
-             LTF::collisionInfo(player.getRay(), objectList, 1).distance <= 0) &&
-            (LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance > 1.0f ||
-             LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance <= 0))
+            LTF::collisionInfo(player.getRay(), objectList, 1).distance > 1.0f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance > 1.0f)
         {
-            player.moveForward(1);
+            player.moveForward(speedScalar);
         }
         if (IsKeyDown('S') &&
-            (LTF::collisionInfo(player.getRay(), objectList, 2).distance > 1.0f ||
-             LTF::collisionInfo(player.getRay(), objectList, 2).distance <= 0) &&
-            (LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance > 1.0f ||
-             LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance <= 0))
+            LTF::collisionInfo(player.getRay(), objectList, 2).distance > 1.0f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 2).distance > 1.0f)
         {
-            player.moveBackward();
+            player.moveBackward(speedScalar);
         }
         if (IsKeyDown('A') &&
-            (LTF::collisionInfo(player.getRay(), objectList, 3).distance > 1.0f ||
-             LTF::collisionInfo(player.getRay(), objectList, 3).distance <= 0) &&
-            (LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance > 1.0f ||
-             LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance <= 0))
+            LTF::collisionInfo(player.getRay(), objectList, 3).distance > 1.0f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 3).distance > 1.0f)
         {
-            player.moveLeft();
+            player.moveLeft(speedScalar);
         }
 
         if (IsKeyDown('D') &&
-            (LTF::collisionInfo(player.getRay(), objectList, 4).distance > 1.0f ||
-             LTF::collisionInfo(player.getRay(), objectList, 4).distance <= 0) &&
-            (LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance > 1.0f ||
-             LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance <= 0))
+            LTF::collisionInfo(player.getRay(), objectList, 4).distance > 1.0f &&
+            LTF::collisionInfo(player.getFeetRay(), objectList, 4).distance > 1.0f)
         {
-            player.moveRight();
+            player.moveRight(speedScalar);
         }
 
         if (IsKeyPressed(KEY_SPACE))
@@ -126,8 +122,11 @@ int main(void)
 
         if (IsKeyDown(KEY_LEFT_SHIFT))
         {
-            std::cout << true << std::endl;
-            player.crouch();
+            speedScalar = 2;
+        }
+        if (IsKeyReleased(KEY_LEFT_SHIFT))
+        {
+            speedScalar = 1;
         }
 
         // Delta mouseposition
@@ -157,10 +156,9 @@ int main(void)
         {
             player.updateGravity(deltaTime);
         }
-        else if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance < player.getHeight() - 1.0f &&
+        else if (LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance < player.getHeight() - 0.5f &&
                  player.getSpeedY() == 0)
         {
-                 std::cout << "here" << std::endl;
             player.setPosition(Vector3Add(player.getPosition(), player.getUp()));
         }
         else
@@ -168,6 +166,7 @@ int main(void)
             player.resetSpeed();
         }
 
+        //Moves camera around based on mouse movement
         player.updateTarget(mouseX, mouseY);
 
 #pragma endregion
@@ -245,7 +244,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
-        //std::cout << LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance << std::endl;
+        std::cout << LTF::nextFallingInfo(player, objectList, 1, deltaTime).distance << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
