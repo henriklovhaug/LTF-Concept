@@ -95,7 +95,7 @@ namespace LTF
      * @param v1 Vector one
      * @param v2b Vector two
      * @param v3b Vector three
-     * @return Projected vector
+     * @return Projected vector normalized
      */
     Vector3 projectNormal(Vector3 v1, Vector3 v2b, Vector3 v3b)
     {
@@ -327,7 +327,7 @@ namespace LTF
         {
             // Reset ray.direction
             ray.direction = Vector3Negate(ray.direction);
-            // Fix result
+            // Fix result so distance can't be negative if player inside box
             collision.distance *= -1.0f;
             collision.normal = Vector3Negate(collision.normal);
         }
