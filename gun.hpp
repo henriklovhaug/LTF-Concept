@@ -5,6 +5,8 @@
 class Gun
 {
 private:
+
+
     // Gun name
     char gunName[256];
 
@@ -30,13 +32,8 @@ public:
     void setPosition(Vector3 position);
 
 
-    // Set gun model
-    void setModel(Model model);
-
-
     // Set gun texture
     void setTexture(Texture texture);
-
 
 
     // Set gun damage

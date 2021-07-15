@@ -130,6 +130,14 @@ int main(void)
             speedScalar = 1;
         }
 
+        if (IsKeyDown(KEY_LEFT_CONTROL))
+        {
+            speedScalar = 0.5;
+        }
+        if (IsKeyReleased(KEY_LEFT_CONTROL))
+        {
+            speedScalar = 1;
+        }
         // Delta mouseposition
         mouseX += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
         mouseY += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
