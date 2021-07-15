@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <raymath.h>
+#include <string>
 
 
 class Gun
@@ -14,7 +15,7 @@ private:
     Vector3 position;
 
     // Gun Model
-    Model gunModel;
+    std::string gunModel = "resources/guns";
 
     // Gun Model Texture
     Texture gunTexture;
@@ -32,6 +33,13 @@ public:
     void setPosition(Vector3 position);
 
 
+<<<<<<< HEAD
+=======
+    // Set gun model
+    void setModel(std::string model);
+
+
+>>>>>>> 8337529c683315471e2cc5d848140af4abcd446e
     // Set gun texture
     void setTexture(Texture texture);
 

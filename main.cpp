@@ -17,8 +17,8 @@ int main(void)
 {
     // Initialization
     //--------------------------------------------------------------------------------------
-    const int screenWidth = 800 * 2;
-    const int screenHeight = 450 * 2;
+    const int screenWidth = 800 * 3;
+    const int screenHeight = 450 * 3;
 
     InitWindow(screenWidth, screenHeight, "LTF");
 
@@ -161,7 +161,7 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
         UpdateCamera(&camera); // Update camera
-        //----------------------------------------------------------------------------------
+                               //----------------------------------------------------------------------------------
 
 #pragma region forces and limits
         // Makes sure player can't turn camera over on it's head
@@ -173,7 +173,6 @@ int main(void)
         {
             mouseY = -85.0f * DEG2RAD;
         }
-
 
         //Moves camera around based on mouse movement
         player.updateTarget(mouseX, mouseY);
@@ -253,7 +252,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
-        std::cout << LTF::collisionInfo(player.getFeetRay(),objectList,1).distance << std::endl;
+        std::cout << LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
