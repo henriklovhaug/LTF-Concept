@@ -7,7 +7,6 @@ class Gun
 {
 private:
 
-
     // Gun name
     char gunName[256];
 
@@ -33,13 +32,6 @@ public:
     void setPosition(Vector3 position);
 
 
-<<<<<<< HEAD
-=======
-    // Set gun model
-    void setModel(std::string model);
-
-
->>>>>>> 8337529c683315471e2cc5d848140af4abcd446e
     // Set gun texture
     void setTexture(Texture texture);
 

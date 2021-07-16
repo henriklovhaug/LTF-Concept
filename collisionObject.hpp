@@ -12,11 +12,17 @@ private:
     // URL for obj file
     std::string objURL = "resources/";
 
+    // URL for collision file
+    std::string collisionURL = "resources/";
+
     // Scale of object
     float scale;
 
     //Model loaded from file
     Model model;
+
+    //Collision Model
+    Model collisionModel;
 
     Color color;
 
@@ -29,6 +35,7 @@ public:
 
     void setPosition(Vector3 position);
     void setOBJname(std::string name);
+    void setCollisionModel(std::string name);
     void setScale(float scale);
     void boundingBoxCorrection();
     void setColor(Color color);
@@ -37,6 +44,7 @@ public:
     std::string getOBJname();
     float getScale();
     Model getModel();
+    Model getCollisionModel();
     BoundingBox getBox();
     Color getColor();
 };
