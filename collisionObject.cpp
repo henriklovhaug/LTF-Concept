@@ -19,9 +19,38 @@ CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std
     setOBJname(name);
     setColor(color);
     this->model = LoadModel(objURL.c_str());
-    this->box = MeshBoundingBox(this->model.meshes[0]);
+    this->collisionModel = LoadModel(objURL.c_str());
+    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
     scaleBox(scale);
     boundingBoxCorrection();
+}
+
+CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std::string name, std::string collisionModelURL)
+{
+    setPosition(position);
+    setScale(scale);
+    setOBJname(name);
+    setColor(color);
+    this->model = LoadModel(objURL.c_str());
+    this->collisionModel = LoadModel(collisionModelURL.c_str());
+    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
+    scaleBox(scale);
+    boundingBoxCorrection();
+}
+
+CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std::string name, std::vector<Colliders> colliders)
+{
+    setPosition(position);
+    setScale(scale);
+    setOBJname(name);
+    setColor(color);
+    this->model = LoadModel(objURL.c_str());
+    this->collisionModel = LoadModel(objURL.c_str());
+    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
+    scaleBox(scale);
+    boundingBoxCorrection();
+    this->colliders = colliders;
+
 }
 
 void CollisionObject::boundingBoxCorrection()
@@ -53,6 +82,11 @@ void CollisionObject::setScale(float scale)
 void CollisionObject::setColor(Color color)
 {
     this->color = color;
+}
+
+void CollisionObject::addColliders(Colliders colliders)
+{
+    this->colliders.push_back(colliders);
 }
 
 Vector3 CollisionObject::getPosition()
@@ -88,6 +122,11 @@ Model CollisionObject::getCollisionModel()
 BoundingBox CollisionObject::getBox()
 {
     return this->box;
+}
+
+std::vector<Colliders> CollisionObject::getColliders()
+{
+    return this->colliders;
 }
 
 void CollisionObject::scaleBox(float scale)

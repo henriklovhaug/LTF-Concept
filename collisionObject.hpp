@@ -1,5 +1,7 @@
 #include <raylib.h>
 #include <string>
+#include <vector>
+#include "colliders.hpp"
 
 #pragma once
 
@@ -24,14 +26,22 @@ private:
     //Collision Model
     Model collisionModel;
 
+    //Colliders list
+    std::vector<Colliders> colliders;
+
     Color color;
 
     //Bounds around model
     BoundingBox box;
     void scaleBox(float scale);
 
+
 public:
     CollisionObject(Vector3 position, float scale, Color color, std::string name);
+    //Second constructor for collisionObject
+    CollisionObject(Vector3 position, float scale, Color color, std::string name, std::string collisionModelURL);
+    //Third constructor for collisionObject
+    CollisionObject(Vector3 position, float scale, Color color, std::string name, std::vector<Colliders> colliders);
 
     void setPosition(Vector3 position);
     void setOBJname(std::string name);
@@ -39,6 +49,7 @@ public:
     void setScale(float scale);
     void boundingBoxCorrection();
     void setColor(Color color);
+    void addColliders(Colliders colliders);
 
     Vector3 getPosition();
     std::string getOBJname();
@@ -47,4 +58,5 @@ public:
     Model getCollisionModel();
     BoundingBox getBox();
     Color getColor();
+    std::vector<Colliders> getColliders();
 };

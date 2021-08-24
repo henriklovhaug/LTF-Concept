@@ -11,9 +11,10 @@
  * @brief Only use LTF in main
  *
  */
+
 namespace LTF
 {
-#pragma region collision
+#pragma region col lision
     bool collision(BoundingBox box, Vector3 positionBox, Vector3 center, float radius)
     {
         bool collision = false;
@@ -342,7 +343,7 @@ namespace LTF
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
         if (info.hit)
         {
-            return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition(), obj.getScale());
+            return GetRayCollisionModel(ray, obj.getCollisionModel(), obj.getPosition(), obj.getScale());
         }
         else
         {
@@ -409,5 +410,14 @@ namespace LTF
         return result;
     }
 
+    float Sphere(Vector3 point, Vector3 sphereRadius)
+    {
+        return Vector3Length(Vector3Subtract(point, sphereRadius));
+    }
 
+    float collidersCollisionSelector(CollisionObject object, Player player)
+    {
+        float distance = INFINITY;
+        return distance;
+    }
 }

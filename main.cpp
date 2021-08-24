@@ -10,6 +10,7 @@
 #include "gun.hpp"
 #include <list>
 #include <vector>
+#include <simdjson.h>
 
 #define MAX_COLUMNS 5
 
