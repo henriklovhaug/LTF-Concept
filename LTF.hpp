@@ -329,7 +329,7 @@ namespace LTF
             // Reset ray.direction
             ray.direction = Vector3Negate(ray.direction);
             // Fix result so distance can't be negative if player inside box
-            collision.distance *= -1.0f;
+           // collision.distance *= -1.0f;
             collision.normal = Vector3Negate(collision.normal);
         }
 
@@ -341,7 +341,7 @@ namespace LTF
         ray = rayTransform(ray, direction);
 
         RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
-        if (info.hit)
+        if (info.hit && info.distance < 10.0f)
         {
             return GetRayCollisionModel(ray, obj.getCollisionModel(), obj.getPosition(), obj.getScale());
         }
