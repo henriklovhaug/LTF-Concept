@@ -65,6 +65,7 @@ int main(void)
 
     //Stuff that only needs to be drawn
     CollisionObject gun({30, 0, 0}, 1, WHITE, "gun.obj");
+    objectList.push_back(gun);
 
     static float mouseX = 0;
     static float mouseY = 0;

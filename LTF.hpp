@@ -410,9 +410,9 @@ namespace LTF
         return result;
     }
 
-    float Sphere(Vector3 point, Vector3 sphereRadius)
+    float Sphere(Vector3 point, float sphereRadius, Vector3 center)
     {
-        return Vector3Length(Vector3Subtract(point, sphereRadius));
+        return Vector3Length(Vector3Subtract(point, center)) - sphereRadius;
     }
 
     float collidersCollisionSelector(CollisionObject object, Player player)

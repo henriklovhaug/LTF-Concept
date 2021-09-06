@@ -17,5 +17,8 @@ private:
 public:
     Colliders(std::string name, Vector3 position);
 
+    //getters
+    std::string getName();
+    Vector3 getPosition();
 };
 
