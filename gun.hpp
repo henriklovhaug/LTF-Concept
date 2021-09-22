@@ -23,7 +23,7 @@ private:
     float damage;
 
 public:
-    Gun(/* args */);
+    Gun(char *gunName, Vector3 position, float damage);
 
     // Set gun name
     void setName(char* name);

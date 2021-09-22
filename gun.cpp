@@ -20,3 +20,9 @@ void Gun::setTexture(Texture texture)
 {
     this->gunTexture = texture;
 }
+
+Gun::Gun(char *name, Vector3 position, float damage) {
+    this->setName(name);
+    this->setDamage(damage);
+    this->setPosition(position);
+}

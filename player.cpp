@@ -130,7 +130,7 @@ void Player::updateGravity(float deltaTime)
 /**
  * @brief gives where the player will be next tick
  *
- * @param deltaTime makes it independent from framrate
+ * @param deltaTime makes it independent from framerate
  * @return Vector3
  */
 Vector3 Player::getNextGravityVector(float deltaTime)
