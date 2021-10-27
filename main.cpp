@@ -26,7 +26,7 @@ int main(void)
     //test new class
 
     // Get delta time for force-sensitive physics
-    clock_t start, finish;
+    clock_t new_time, old_time;
     static float deltaTime = 0;
 
     // Initialize player
@@ -80,12 +80,18 @@ int main(void)
     /*--------------------------------------------------------------------------------------
     Console sysout area for properties not needed to be repeated during playing
     ---------------------------------------------------------------------------------------*/
-    std::cout << objectList.size() << std::endl;
+    //std::cout << objectList.size() << std::endl;
+
+    old_time = clock();
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        start = clock();
+        new_time = clock();
+        deltaTime = (float(new_time) - float(old_time)) / CLOCKS_PER_SEC;
+        std::cout << deltaTime << std::endl;
+        old_time = new_time;
+
         DisableCursor(); // Mouse can move freely without worrying about screenborders
         Vector2 currentMouse = GetMousePosition();
 
@@ -264,9 +270,6 @@ int main(void)
         //std::cout << player.getSpeedY() << std::endl;
         //std::cout << LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance << std::endl;
 
-        // Stop clock and calulate deltaTime
-        finish = clock();
-        deltaTime = (float(finish) - float(start)) / CLOCKS_PER_SEC;
     }
 
     // De-Initialization
