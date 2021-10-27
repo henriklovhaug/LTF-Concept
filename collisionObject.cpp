@@ -20,7 +20,7 @@ CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std
     setColor(color);
     this->model = LoadModel(objURL.c_str());
     this->collisionModel = LoadModel(objURL.c_str());
-    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
+    this->box = GetMeshBoundingBox(this->collisionModel.meshes[0]);
     scaleBox(scale);
     boundingBoxCorrection();
 }
@@ -33,7 +33,7 @@ CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std
     setColor(color);
     this->model = LoadModel(objURL.c_str());
     this->collisionModel = LoadModel(collisionModelURL.c_str());
-    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
+    this->box = GetMeshBoundingBox(this->collisionModel.meshes[0]);
     scaleBox(scale);
     boundingBoxCorrection();
 }
@@ -46,7 +46,7 @@ CollisionObject::CollisionObject(Vector3 position, float scale, Color color, std
     setColor(color);
     this->model = LoadModel(objURL.c_str());
     this->collisionModel = LoadModel(objURL.c_str());
-    this->box = MeshBoundingBox(this->collisionModel.meshes[0]);
+    this->box = GetMeshBoundingBox(this->collisionModel.meshes[0]);
     scaleBox(scale);
     boundingBoxCorrection();
     this->colliders = colliders;

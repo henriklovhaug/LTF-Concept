@@ -10,7 +10,7 @@
 #include "gun.hpp"
 #include <list>
 #include <vector>
-#include <simdjson.h>
+//#include <simdjson.h>
 
 #define MAX_COLUMNS 5
 
@@ -224,8 +224,8 @@ int main(void)
         }
         else
         {
-            if (GetCollisionRayModel(player.getRay(), arch2.getModel()).hit &&
-                GetCollisionRayModel(player.getRay(), arch2.getModel()).distance < 1)
+            if (GetRayCollisionModel(player.getRay(), arch2.getModel()).hit &&
+                GetRayCollisionModel(player.getRay(), arch2.getModel()).distance < 1)
             {
                 DrawModel(arch2.getModel(), arch2.getPosition(), arch2.getScale(), RED);
             }
