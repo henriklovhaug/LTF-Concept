@@ -140,6 +140,14 @@ int main(void)
         {
             speedScalar = 1;
         }
+        if (IsKeyPressed(KEY_NINE))
+        {
+            camera.fovy += 10;
+        }
+        if (IsKeyPressed(KEY_ZERO))
+        {
+            camera.fovy -= 10;
+        }
         // Delta mouseposition
         mouseX += (currentMouse.x - previousMouse.x) * -SENSITIVITY; //SENSITIVITY is found in player.hpp
         mouseY += (currentMouse.y - previousMouse.y) * -SENSITIVITY;
