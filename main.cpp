@@ -254,7 +254,7 @@ int main(void)
         ----------------------------------------------------------------------------------*/
         //std::cout << LTF::collisionInfo(player.getRay(), arch2,2).hit << std::endl;
         //std::cout << player.getSpeedY() << std::endl;
-        std::cout << LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance << std::endl;
+        //std::cout << LTF::collisionInfo(player.getFeetRay(), objectList, 1).distance << std::endl;
 
         // Stop clock and calulate deltaTime
         finish = clock();
