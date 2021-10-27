@@ -33,8 +33,23 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 
 endif()
 
+file(GLOB MY_PUBLIC_HEADERS
+  "myDir/*.h"
+)
+
+file(COPY ${MY_PUBLIC_HEADERS} DESTINATION myDestination)
+
 file(GLOB PROJECT_SOURCE_FILES CONFIGURE_DEPS ./*.cpp)
 #file(GLOB PROJECT_HEADER_FILES CONFIGURE_DEPS ./*.hpp)
+File(GLOB MY_OBJ_HEADERS
+    "${CMAKE_SOURCE_DIR}/resources/*.obj"
+)
+FILE(COPY ${MY_OBJ_HEADERS} DESTINATION "${CMAKE_BINARY_DIR}/Debug/Resources")
+
+File(GLOB MY_MTL_HEADERS
+    "${CMAKE_SOURCE_DIR}/resources/*.MTL"
+)
+FILE(COPY ${MY_MTL_HEADERS} DESTINATION "${CMAKE_BINARY_DIR}/Debug/Resources")
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
