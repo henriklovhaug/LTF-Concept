@@ -34,7 +34,7 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 
 endif()
 
-file(GLOB PROJECT_SOURCE_FILES CONFIGURE_DEPS ./*.cpp)
+file(GLOB PROJECT_SOURCE_FILES CONFIGURE_DEPS ${PROJECT_SOURCE_DIR}/*.cpp)
 #file(GLOB PROJECT_RESOURCES_FILES CONFIGURE_DEPS ./resources/*)
 
 include_directories(${PROJECT_SOURCE_DIR}/resources)
