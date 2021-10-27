@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
+cmake_policy(SET CMP0072 NEW)
 
 project(LTF VERSION 0.1.0)
 
@@ -34,11 +35,11 @@ if (NOT raylib_FOUND) # If there's none, fetch and build raylib
 endif()
 
 file(GLOB PROJECT_SOURCE_FILES CONFIGURE_DEPS ./*.cpp)
-#file(GLOB PROJECT_HEADER_FILES CONFIGURE_DEPS ./*.hpp)
+#file(GLOB PROJECT_RESOURCES_FILES CONFIGURE_DEPS ./resources/*)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/resources)
 
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_FILES} ${PROJECT_HEADER_FILES})
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} raylib)
 #target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
