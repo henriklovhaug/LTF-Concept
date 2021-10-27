@@ -25,6 +25,9 @@ private:
     //Speed vector
     Vector3 speed = {0, 0, 0};
 
+    //Height of player
+    float height = 1.5f;
+
     // Mouse delta
     float mouseX = 0;
     float mouseY = 0;
@@ -32,6 +35,9 @@ private:
     // Planes used for movement
     Vector3 movement;
     Ray ray;
+    Ray feetRay;
+    Ray downRay;
+    Ray shootingRay;
 
     std::pair<Vector3, Vector3> bases = {{1, 0, 0}, {0, 0, 1}};
 
@@ -49,6 +55,7 @@ public:
     void setPosition(Vector3 position);
     void setTarget(Vector3 target);
     void setUp(Vector3 up);
+    void setHeight(float height);
 
     //Movement methods and helpers
     void updateBases();
@@ -57,9 +64,9 @@ public:
     Vector3 getMovement(Vector3 v1, Vector3 v2);
 
     void moveForward(float scalar);
-    void moveBackward();
-    void moveLeft();
-    void moveRight();
+    void moveBackward(float scalar);
+    void moveLeft(float scalar);
+    void moveRight(float scalar);
 
     void crouch();
 
@@ -67,6 +74,12 @@ public:
     void updateGravity(float deltaTime);
     Vector3 getNextGravityVector(float deltaTime);
     void resetSpeed();
+
+    Ray getDownRay();
+    Ray getDownRayFromNextPosition(float deltaTime);
+    Ray getFeetRay();
+    Ray getRay();
+    Ray getShootingRay();
 
     //Update target while playing
 
@@ -80,7 +93,6 @@ public:
     Vector3 getNextPosition(int direction);
 
     Vector3 getTarget();
-    Ray getRay();
     float getTargetX();
     float getTargetY();
     float getTargetZ();
@@ -95,4 +107,6 @@ public:
     bool canJump();
 
     float getRadius();
+    float getHeight();
+    Vector3 getFeet();
 };

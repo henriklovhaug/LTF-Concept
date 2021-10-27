@@ -11,9 +11,10 @@
  * @brief Only use LTF in main
  *
  */
+
 namespace LTF
 {
-#pragma region collision
+#pragma region col lision
     bool collision(BoundingBox box, Vector3 positionBox, Vector3 center, float radius)
     {
         bool collision = false;
@@ -51,6 +52,14 @@ namespace LTF
                player.getPositionZ() < object.getBox().max.z;
     }
 
+    /**
+     * @brief collision between object's boundingbox and vector
+     *
+     * @param object
+     * @param vector
+     * @return true
+     * @return false
+     */
     bool collision(CollisionObject object, Vector3 vector)
     {
         return object.getBox().min.x < vector.x &&
@@ -87,7 +96,7 @@ namespace LTF
      * @param v1 Vector one
      * @param v2b Vector two
      * @param v3b Vector three
-     * @return Projected vector
+     * @return Projected vector normalized
      */
     Vector3 projectNormal(Vector3 v1, Vector3 v2b, Vector3 v3b)
     {
@@ -115,11 +124,11 @@ namespace LTF
     }
 
     //gathered from https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm and raylib's src/models.c
-    RayHitInfo GetRayCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, float scale = 1)
+    RayCollision GetCollisionTriangle(Ray ray, Vector3 p1, Vector3 p2, Vector3 p3, float scale = 1)
     {
 #define EPSILON 0.000001 // A small number
 
-        RayHitInfo collision = {0};
+        RayCollision collision = {0};
         Vector3 edge1 = {0};
         Vector3 edge2 = {0};
         Vector3 p, q, tv;
@@ -169,15 +178,15 @@ namespace LTF
             collision.hit = true;
             collision.distance = t;
             collision.normal = Vector3Normalize(Vector3CrossProduct(edge1, edge2));
-            collision.position = Vector3Add(ray.position, Vector3Scale(ray.direction, t));
+            collision.point = Vector3Add(ray.position, Vector3Scale(ray.direction, t));
         }
 
         return collision;
     }
 
-    RayHitInfo GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix transform, Vector3 position, float scale = 1)
+    RayCollision GetRayCollisionMesh(Ray ray, Mesh mesh, Matrix transform, Vector3 position, float scale = 1)
     {
-        RayHitInfo collision = {0};
+        RayCollision collision = {0};
 
         if (mesh.vertices != NULL)
         {
@@ -202,11 +211,11 @@ namespace LTF
                     c = vertdata[i * 3 + 2];
                 }
 
-                a = Vector3Add(Vector3Scale(Vector3Transform(a, transform),scale), position);
-                b = Vector3Add(Vector3Scale(Vector3Transform(b, transform),scale), position);
-                c = Vector3Add(Vector3Scale(Vector3Transform(c, transform),scale), position);
+                a = Vector3Add(Vector3Scale(Vector3Transform(a, transform), scale), position);
+                b = Vector3Add(Vector3Scale(Vector3Transform(b, transform), scale), position);
+                c = Vector3Add(Vector3Scale(Vector3Transform(c, transform), scale), position);
 
-                RayHitInfo triHitInfo = GetRayCollisionTriangle(ray, a, b, c);
+                RayCollision triHitInfo = GetRayCollisionTriangle(ray, a, b, c);
 
                 if (triHitInfo.hit)
                 {
@@ -220,13 +229,13 @@ namespace LTF
         return collision;
     }
 
-    RayHitInfo GetRayCollisionModel(Ray ray, Model model, Vector3 position, float scale = 1)
+    RayCollision GetCollisionModel(Ray ray, Model model, Vector3 position, float scale = 1)
     {
-        RayHitInfo collision = {0};
+        RayCollision collision = {0};
 
         for (int m = 0; m < model.meshCount; m++)
         {
-            RayHitInfo meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position,scale);
+            RayCollision meshHitInfo = GetRayCollisionMesh(ray, model.meshes[m], model.transform, position, scale);
 
             if (meshHitInfo.hit)
             {
@@ -269,12 +278,11 @@ namespace LTF
      *
      * @param ray (Player position, Player direction from player point of view)
      * @param box (boundingbox of object)
-     * @return RayHitInfo (bool hit, etc..)
+     * @return RayCollision (bool hit, etc..)
      */
-    RayHitInfo GetRayCollisionBox(Ray ray, BoundingBox box)
+    RayCollision GetCollisionBox(Ray ray, BoundingBox box)
     {
-        RayHitInfo collision = {0};
-
+        RayCollision collision = {0};
 
         bool insideBox = (ray.position.x > box.min.x) && (ray.position.x < box.max.x) &&
                          (ray.position.y > box.min.y) && (ray.position.y < box.max.y) &&
@@ -300,11 +308,11 @@ namespace LTF
 
         collision.hit = !((t[7] < 0) || (t[6] > t[7]));
         collision.distance = t[6];
-        collision.position = Vector3Add(ray.position, Vector3Scale(ray.direction, collision.distance));
+        collision.point = Vector3Add(ray.position, Vector3Scale(ray.direction, collision.distance));
 
         collision.normal = Vector3Lerp(box.min, box.max, 0.5f);
 
-        collision.normal = Vector3Subtract(collision.position, collision.normal);
+        collision.normal = Vector3Subtract(collision.point, collision.normal);
 
         collision.normal = Vector3Scale(collision.normal, 2.01f);
         collision.normal = Vector3Divide(collision.normal, Vector3Subtract(box.max, box.min));
@@ -320,23 +328,22 @@ namespace LTF
         {
             // Reset ray.direction
             ray.direction = Vector3Negate(ray.direction);
-            // Fix result
-            collision.distance *= 1.0f;
+            // Fix result so distance can't be negative if player inside box
+           // collision.distance *= -1.0f;
             collision.normal = Vector3Negate(collision.normal);
         }
 
         return collision;
     }
 
-
-    RayHitInfo collisionInfo(Ray ray, CollisionObject obj, int direction, float scale = 1)
+    RayCollision collisionInfo(Ray ray, CollisionObject obj, int direction, float scale = 1)
     {
         ray = rayTransform(ray, direction);
 
-        RayHitInfo info = GetRayCollisionBox(ray, obj.getBox());
-        if (info.hit && info.distance < 5)
+        RayCollision info = GetCollisionBox(ray, obj.getBox());
+        if (info.hit && info.distance < 10.0f)
         {
-            return GetRayCollisionModel(ray, obj.getModel(), obj.getPosition(), obj.getScale());
+            return GetCollisionModel(ray, obj.getCollisionModel(), obj.getPosition(), obj.getScale());
         }
         else
         {
@@ -344,13 +351,13 @@ namespace LTF
         }
     }
 
-    RayHitInfo collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
+    RayCollision collisionInfo(Ray ray, std::vector<CollisionObject> objList, int direction)
     {
-        RayHitInfo result = {0, INFINITY, 0, 0};
+        RayCollision result = {0, INFINITY, 0, 0};
 
         for (CollisionObject obj : objList)
         {
-            RayHitInfo temp = collisionInfo(ray, obj, direction,obj.getScale());
+            RayCollision temp = collisionInfo(ray, obj, direction, obj.getScale());
 
             if (temp.hit)
             {
@@ -362,5 +369,55 @@ namespace LTF
         }
 
         return result;
+    }
+
+    RayCollision fallingInfo(Player player, std::vector<CollisionObject> list, int direction)
+    {
+        RayCollision result = {0, INFINITY, 0, 0};
+
+        for (CollisionObject obj : list)
+        {
+            RayCollision temp = collisionInfo(player.getDownRay(), obj, direction, obj.getScale());
+
+            if (temp.hit)
+            {
+                if (temp.distance > 0 && temp.distance <= result.distance)
+                {
+                    result = temp;
+                }
+            }
+        }
+
+        return result;
+    }
+    RayCollision nextFallingInfo(Player player, std::vector<CollisionObject> list, int direction, float deltaTime)
+    {
+        RayCollision result = {0, INFINITY, 0, 0};
+
+        for (CollisionObject obj : list)
+        {
+            RayCollision temp = collisionInfo(player.getDownRayFromNextPosition(deltaTime), obj, direction, obj.getScale());
+
+            if (temp.hit)
+            {
+                if (temp.distance > 0 && temp.distance <= result.distance)
+                {
+                    result = temp;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    float Sphere(Vector3 point, float sphereRadius, Vector3 center)
+    {
+        return Vector3Length(Vector3Subtract(point, center)) - sphereRadius;
+    }
+
+    float collidersCollisionSelector(CollisionObject object, Player player)
+    {
+        float distance = INFINITY;
+        return distance;
     }
 }

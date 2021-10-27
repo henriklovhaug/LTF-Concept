@@ -1,4 +1,5 @@
-#include "Player.hpp"
+#include "player.hpp"
+#include <iostream>
 
 /**
  * @brief Turns mouse movement into rotation of player
@@ -13,7 +14,6 @@ void Player::updateTarget(float deltaX, float deltaY)
     Matrix transform = MatrixMultiply(translation, rotation);
     setTarget({getPositionX() - transform.m12, getPositionY() - transform.m13, getPositionZ() - transform.m14});
 }
-
 
 void Player::updateBases()
 {
@@ -36,20 +36,19 @@ void Player::updateBases()
 
 void Player::moveForward(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar)));
+    setPosition(Vector3Add(getPosition(), Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED * scalar)));
 }
-void Player::moveBackward()
+void Player::moveBackward(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED * scalar))));
 }
-void Player::moveLeft()
+void Player::moveLeft(float scalar)
 {
-
-    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED)))));
+    setPosition(Vector3Add(getPosition(), Vector3Negate(Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar)))));
 }
-void Player::moveRight()
+void Player::moveRight(float scalar)
 {
-    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED))));
+    setPosition(Vector3Add(getPosition(), Vector3Perpendicular(Vector3Scale(getMovement(bases.first, bases.second), MOVESPEED*scalar))));
 }
 
 void Player::crouch()
@@ -105,10 +104,7 @@ Vector3 Player::getNextPosition(int direction)
  */
 void Player::jump()
 {
-    if (canJump())
-    {
-        speed = Vector3Scale(this->up,jumpConstant);
-    }
+    speed = Vector3Scale(this->up, jumpConstant);
 }
 
 bool Player::canJump()
@@ -134,7 +130,7 @@ void Player::updateGravity(float deltaTime)
 /**
  * @brief gives where the player will be next tick
  *
- * @param deltaTime makes it independent from framrate
+ * @param deltaTime makes it independent from framerate
  * @return Vector3
  */
 Vector3 Player::getNextGravityVector(float deltaTime)
@@ -251,12 +247,52 @@ float Player::getRadius()
     return this->radius;
 }
 
+float Player::getHeight()
+{
+    return this->height;
+}
+
 Ray Player::getRay()
 {
     this->ray.position = this->position;
-    this->ray.direction = Vector3Normalize(project(Vector3Subtract(this->target, this->position),bases.first,bases.second));
+    this->ray.direction = Vector3Normalize(project(Vector3Subtract(this->target, this->position), bases.first, bases.second));
     return ray;
 }
+
+Ray Player::getDownRay()
+{
+    this->downRay.position = this->position;
+    this->downRay.direction = getGravityVector();
+    return downRay;
+}
+
+Ray Player::getDownRayFromNextPosition(float deltaTime)
+{
+    this->downRay.position = getNextGravityVector(deltaTime);
+    this->downRay.direction = getGravityVector();
+    return downRay;
+}
+
+Ray Player::getFeetRay()
+{
+    this->feetRay.position = getFeet();
+    this->feetRay.direction = Vector3Normalize(project(Vector3Subtract(this->target, getFeet()), bases.first, bases.second));
+    return feetRay;
+}
+
+Ray Player::getShootingRay()
+{
+    this->shootingRay.position = this->position;
+    this->shootingRay.direction =Vector3Normalize(Vector3Subtract(this->target, this->position));
+    return shootingRay;
+}
+
+Vector3 Player::getFeet()
+{
+    return Vector3Add(this->position, Vector3Scale(this->up,-this->height));
+}
+
+
 #pragma endregion
 
 Vector3 Player::project(Vector3 v1, Vector3 v2b, Vector3 v3b)
