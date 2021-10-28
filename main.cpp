@@ -26,8 +26,8 @@ int main(void)
     //test new class
 
     // Get delta time for force-sensitive physics
-    float new_time, old_time;
-    static float deltaTime = 0;
+    double new_time, old_time;
+    static double deltaTime = 0;
 
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
@@ -88,7 +88,7 @@ int main(void)
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         new_time = LTF::ns();
-        deltaTime = (float(new_time) - float(old_time)) / 1000000000.0f;
+        deltaTime = (double(new_time) - double(old_time)) / 1000000000.0f;
         std::cout << deltaTime << std::endl;
         old_time = new_time;
 
