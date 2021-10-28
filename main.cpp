@@ -262,6 +262,10 @@ int main(void)
         }
 
         EndMode3D();
+
+        // Debug Drawing
+        LTF::debugToScreen("dT: %f ms", deltaTime*1000, 60, 60);
+
         EndDrawing();
         //----------------------------------------------------------------------------------
         /*                               Console out place

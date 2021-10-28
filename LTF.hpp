@@ -11,9 +11,16 @@
  * @brief Only use LTF in main
  *
  */
-
 namespace LTF
 {
+
+    void debugToScreen(std::string text, float value, int x, int y, int size=20) {
+        char buff[64];
+        snprintf(buff, sizeof(buff), text.c_str(), value);
+        std::string debugLine = buff;
+        DrawText(debugLine.c_str(), x, y, size, RED);
+    }
+
 #pragma region col lision
     bool collision(BoundingBox box, Vector3 positionBox, Vector3 center, float radius)
     {
