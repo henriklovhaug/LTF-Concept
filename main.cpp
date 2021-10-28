@@ -26,7 +26,7 @@ int main(void)
     //test new class
 
     // Get delta time for force-sensitive physics
-    clock_t new_time, old_time;
+    float new_time, old_time;
     static float deltaTime = 0;
 
     // Initialize player
@@ -82,13 +82,13 @@ int main(void)
     ---------------------------------------------------------------------------------------*/
     //std::cout << objectList.size() << std::endl;
 
-    old_time = clock();
+    old_time = LTF::ns();
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        new_time = clock();
-        deltaTime = (float(new_time) - float(old_time)) / CLOCKS_PER_SEC;
+        new_time = LTF::ns();
+        deltaTime = (float(new_time) - float(old_time)) / 1000000000.0f;
         std::cout << deltaTime << std::endl;
         old_time = new_time;
 
