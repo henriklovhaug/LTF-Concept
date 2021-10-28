@@ -438,9 +438,6 @@ namespace LTF
 #else
 #define CLOCKID CLOCK_REALTIME
 #endif
-#elif defined(__APPLE__)
-#define HAVE_MACH_TIMER
-#include <mach/mach_time.h>
 #elif defined(_WIN32)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -448,19 +445,8 @@ namespace LTF
     static uint64_t ns()
     {
         static uint64_t is_init = 0;
-#if defined(__APPLE__)
-        static mach_timebase_info_data_t info;
-        if (0 == is_init)
-        {
-            mach_timebase_info(&info);
-            is_init = 1;
-        }
-        uint64_t now;
-        now = mach_absolute_time();
-        now *= info.numer;
-        now /= info.denom;
-        return now;
-#elif defined(__linux)
+
+#if defined(__linux)
         static struct timespec linux_rate;
         if (0 == is_init)
         {
