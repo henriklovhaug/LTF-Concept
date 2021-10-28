@@ -82,12 +82,12 @@ int main(void)
     ---------------------------------------------------------------------------------------*/
     //std::cout << objectList.size() << std::endl;
 
-    old_time = LTF::ns();
+    old_time = LTF::clock();
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        new_time = LTF::ns();
+        new_time = LTF::clock();
         deltaTime = (double(new_time) - double(old_time)) / 1000000000.0f;
         std::cout << deltaTime << std::endl;
         old_time = new_time;

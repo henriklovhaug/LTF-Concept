@@ -429,6 +429,7 @@ namespace LTF
         return distance;
     }
 
+
 #include <stdint.h>
 #if defined(__linux)
 #define HAVE_POSIX_TIMER
@@ -442,7 +443,12 @@ namespace LTF
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
-    static uint64_t ns()
+    /**
+     * @brief System intependent high resolution timer.
+     *
+     * @return nanoseconds
+     */
+    static uint64_t clock()
     {
         static uint64_t is_init = 0;
 
