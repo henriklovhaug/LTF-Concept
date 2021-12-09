@@ -11,10 +11,18 @@
  * @brief Only use LTF in main
  *
  */
-
 namespace LTF
 {
-#pragma region col lision
+
+    void debugToScreen(std::string text, float value, int x, int y, int size = 20)
+    {
+        char buff[64];
+        snprintf(buff, sizeof(buff), text.c_str(), value);
+        std::string debugLine = buff;
+        DrawText(debugLine.c_str(), x, y, size, RED);
+    }
+
+#pragma region collision
     bool collision(BoundingBox box, Vector3 positionBox, Vector3 center, float radius)
     {
         bool collision = false;
@@ -329,7 +337,7 @@ namespace LTF
             // Reset ray.direction
             ray.direction = Vector3Negate(ray.direction);
             // Fix result so distance can't be negative if player inside box
-           // collision.distance *= -1.0f;
+            // collision.distance *= -1.0f;
             collision.normal = Vector3Negate(collision.normal);
         }
 
@@ -419,5 +427,53 @@ namespace LTF
     {
         float distance = INFINITY;
         return distance;
+    }
+
+
+#include <stdint.h>
+#if defined(__linux)
+#define HAVE_POSIX_TIMER
+#include <time.h>
+#ifdef CLOCK_MONOTONIC
+#define CLOCKID CLOCK_MONOTONIC
+#else
+#define CLOCKID CLOCK_REALTIME
+#endif
+#elif defined(_WIN32)
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+    /**
+     * @brief System intependent high resolution timer.
+     *
+     * @return nanoseconds
+     */
+    static uint64_t clock()
+    {
+        static uint64_t is_init = 0;
+
+#if defined(__linux)
+        static struct timespec linux_rate;
+        if (0 == is_init)
+        {
+            clock_getres(CLOCKID, &linux_rate);
+            is_init = 1;
+        }
+        uint64_t now;
+        struct timespec spec;
+        clock_gettime(CLOCKID, &spec);
+        now = spec.tv_sec * 1.0e9 + spec.tv_nsec;
+        return now;
+#elif defined(_WIN32)
+        static LARGE_INTEGER win_frequency;
+        if (0 == is_init)
+        {
+            QueryPerformanceFrequency(&win_frequency);
+            is_init = 1;
+        }
+        LARGE_INTEGER now;
+        QueryPerformanceCounter(&now);
+        return (uint64_t)((1e9 * now.QuadPart) / win_frequency.QuadPart);
+#endif
     }
 }

@@ -26,8 +26,8 @@ int main(void)
     //test new class
 
     // Get delta time for force-sensitive physics
-    clock_t new_time, old_time;
-    static float deltaTime = 0;
+    double new_time, old_time;
+    static double deltaTime = 0;
 
     // Initialize player
     Player player({4.0f, 20.0f, 4.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f});
@@ -82,13 +82,13 @@ int main(void)
     ---------------------------------------------------------------------------------------*/
     //std::cout << objectList.size() << std::endl;
 
-    old_time = clock();
+    old_time = LTF::clock();
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        new_time = clock();
-        deltaTime = (float(new_time) - float(old_time)) / CLOCKS_PER_SEC;
+        new_time = LTF::clock();
+        deltaTime = (double(new_time) - double(old_time)) / 1000000000.0f;
         std::cout << deltaTime << std::endl;
         old_time = new_time;
 
@@ -262,6 +262,10 @@ int main(void)
         }
 
         EndMode3D();
+
+        // Debug Drawing
+        LTF::debugToScreen("dT: %f ms", deltaTime*1000, 60, 60);
+
         EndDrawing();
         //----------------------------------------------------------------------------------
         /*                               Console out place
